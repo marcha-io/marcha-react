@@ -1,26 +1,24 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Layout } from 'antd'
+import { Content } from 'antd/es/layout/layout'
+import React from 'react'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
-function App() {
+import Home from './home/Home'
+import Navbar from './navbar/Navbar'
+
+const App = (): React.ReactElement => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <BrowserRouter>
+      <Layout>
+        <Navbar />
+        <Content>
+          <Routes>
+            <Route index element={<Home />} />
+          </Routes>
+        </Content>
+      </Layout>
+    </BrowserRouter>
+  )
 }
 
-export default App;
+export default App
