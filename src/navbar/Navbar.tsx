@@ -3,7 +3,7 @@ import { Header } from 'antd/es/layout/layout'
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 
-import UserIcon from './UserIcon'
+import UserSignUpIcon from './UserSignUpIcon'
 
 const items: MenuProps['items'] = [
   {
@@ -56,7 +56,7 @@ const Navbar = (): React.ReactElement => {
           />
         </Col>
         <Col offset={3} span={1}>
-          <UserIcon />
+          <UserSignUpIcon />
         </Col>
       </Row>
     </Header>

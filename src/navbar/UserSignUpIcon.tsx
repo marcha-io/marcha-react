@@ -22,7 +22,7 @@ const items: MenuProps['items'] = [
   },
 ]
 
-const UserIcon = (): React.ReactElement => {
+const UserSignUpIcon = (): React.ReactElement => {
   return (
     <Dropdown menu={{ items }} placement="bottom">
       <UserOutlined style={{ fontSize: 18 }} />
@@ -30,4 +30,4 @@ const UserIcon = (): React.ReactElement => {
   )
 }
 
-export default UserIcon
+export default UserSignUpIcon
