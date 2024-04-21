@@ -1,0 +1,1086 @@
+"""A high precision floating point value represented as a string"""
+scalar BigFloat
+
+"""
+Boolean expression comparing fields on type "BigFloat"
+"""
+input BigFloatFilter {
+  eq: BigFloat
+  gt: BigFloat
+  gte: BigFloat
+  in: [BigFloat!]
+  is: FilterIs
+  lt: BigFloat
+  lte: BigFloat
+  neq: BigFloat
+}
+
+"""An arbitrary size integer represented as a string"""
+scalar BigInt
+
+"""
+Boolean expression comparing fields on type "BigInt"
+"""
+input BigIntFilter {
+  eq: BigInt
+  gt: BigInt
+  gte: BigInt
+  in: [BigInt!]
+  is: FilterIs
+  lt: BigInt
+  lte: BigInt
+  neq: BigInt
+}
+
+"""
+Boolean expression comparing fields on type "Boolean"
+"""
+input BooleanFilter {
+  eq: Boolean
+  is: FilterIs
+}
+
+type Communities implements Node {
+  """Globally Unique Record Identifier"""
+  nodeId: ID!
+  id: BigInt!
+  createdAt: Datetime!
+  name: String!
+  description: String
+  address: JSON!
+  image: String
+  communityUsersCollection(
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """
+    Skip n values from the after cursor. Alternative to cursor pagination. Backward pagination not supported.
+    """
+    offset: Int
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: CommunityUsersFilter
+
+    """Sort order to apply to the collection"""
+    orderBy: [CommunityUsersOrderBy!]
+  ): CommunityUsersConnection
+}
+
+type CommunitiesConnection {
+  edges: [CommunitiesEdge!]!
+  pageInfo: PageInfo!
+}
+
+type CommunitiesDeleteResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [Communities!]!
+}
+
+type CommunitiesEdge {
+  cursor: String!
+  node: Communities!
+}
+
+input CommunitiesFilter {
+  id: BigIntFilter
+  createdAt: DatetimeFilter
+  name: StringFilter
+  description: StringFilter
+  image: StringFilter
+  nodeId: IDFilter
+
+  """
+  Returns true only if all its inner filters are true, otherwise returns false
+  """
+  and: [CommunitiesFilter!]
+
+  """
+  Returns true if at least one of its inner filters is true, otherwise returns false
+  """
+  or: [CommunitiesFilter!]
+
+  """Negates a filter"""
+  not: CommunitiesFilter
+}
+
+input CommunitiesInsertInput {
+  createdAt: Datetime
+  name: String
+  description: String
+  address: JSON
+  image: String
+}
+
+type CommunitiesInsertResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [Communities!]!
+}
+
+input CommunitiesOrderBy {
+  id: OrderByDirection
+  createdAt: OrderByDirection
+  name: OrderByDirection
+  description: OrderByDirection
+  image: OrderByDirection
+}
+
+input CommunitiesUpdateInput {
+  createdAt: Datetime
+  name: String
+  description: String
+  address: JSON
+  image: String
+}
+
+type CommunitiesUpdateResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [Communities!]!
+}
+
+enum CommunityUserReviewStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+
+"""
+Boolean expression comparing fields on type "CommunityUserReviewStatus"
+"""
+input CommunityUserReviewStatusFilter {
+  eq: CommunityUserReviewStatus
+  in: [CommunityUserReviewStatus!]
+  is: FilterIs
+  neq: CommunityUserReviewStatus
+}
+
+type CommunityUsers implements Node {
+  """Globally Unique Record Identifier"""
+  nodeId: ID!
+  id: BigInt!
+  createdAt: Datetime!
+  communityId: BigInt!
+  userId: UUID!
+  status: CommunityUserReviewStatus!
+  user: Profiles!
+  community: Communities!
+}
+
+type CommunityUsersConnection {
+  edges: [CommunityUsersEdge!]!
+  pageInfo: PageInfo!
+}
+
+type CommunityUsersDeleteResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [CommunityUsers!]!
+}
+
+type CommunityUsersEdge {
+  cursor: String!
+  node: CommunityUsers!
+}
+
+input CommunityUsersFilter {
+  id: BigIntFilter
+  createdAt: DatetimeFilter
+  communityId: BigIntFilter
+  userId: UUIDFilter
+  status: CommunityUserReviewStatusFilter
+  nodeId: IDFilter
+
+  """
+  Returns true only if all its inner filters are true, otherwise returns false
+  """
+  and: [CommunityUsersFilter!]
+
+  """
+  Returns true if at least one of its inner filters is true, otherwise returns false
+  """
+  or: [CommunityUsersFilter!]
+
+  """Negates a filter"""
+  not: CommunityUsersFilter
+}
+
+input CommunityUsersInsertInput {
+  createdAt: Datetime
+  communityId: BigInt
+  userId: UUID
+  status: CommunityUserReviewStatus
+}
+
+type CommunityUsersInsertResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [CommunityUsers!]!
+}
+
+input CommunityUsersOrderBy {
+  id: OrderByDirection
+  createdAt: OrderByDirection
+  communityId: OrderByDirection
+  userId: OrderByDirection
+  status: OrderByDirection
+}
+
+input CommunityUsersUpdateInput {
+  createdAt: Datetime
+  communityId: BigInt
+  userId: UUID
+  status: CommunityUserReviewStatus
+}
+
+type CommunityUsersUpdateResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [CommunityUsers!]!
+}
+
+"""
+An opaque string using for tracking a position in results during pagination
+"""
+scalar Cursor
+
+"""A date wihout time information"""
+scalar Date
+
+"""
+Boolean expression comparing fields on type "Date"
+"""
+input DateFilter {
+  eq: Date
+  gt: Date
+  gte: Date
+  in: [Date!]
+  is: FilterIs
+  lt: Date
+  lte: Date
+  neq: Date
+}
+
+"""A date and time"""
+scalar Datetime
+
+"""
+Boolean expression comparing fields on type "Datetime"
+"""
+input DatetimeFilter {
+  eq: Datetime
+  gt: Datetime
+  gte: Datetime
+  in: [Datetime!]
+  is: FilterIs
+  lt: Datetime
+  lte: Datetime
+  neq: Datetime
+}
+
+enum FilterIs {
+  NULL
+  NOT_NULL
+}
+
+"""
+Boolean expression comparing fields on type "Float"
+"""
+input FloatFilter {
+  eq: Float
+  gt: Float
+  gte: Float
+  in: [Float!]
+  is: FilterIs
+  lt: Float
+  lte: Float
+  neq: Float
+}
+
+"""
+Boolean expression comparing fields on type "ID"
+"""
+input IDFilter {
+  eq: ID
+}
+
+"""
+Boolean expression comparing fields on type "Int"
+"""
+input IntFilter {
+  eq: Int
+  gt: Int
+  gte: Int
+  in: [Int!]
+  is: FilterIs
+  lt: Int
+  lte: Int
+  neq: Int
+}
+
+"""A Javascript Object Notation value serialized as a string"""
+scalar JSON
+
+"""The root type for creating and mutating data"""
+type Mutation {
+  """Deletes zero or more records from the `Communities` collection"""
+  deleteFromCommunitiesCollection(
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: CommunitiesFilter
+
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+  ): CommunitiesDeleteResponse!
+
+  """Deletes zero or more records from the `CommunityUsers` collection"""
+  deleteFromCommunityUsersCollection(
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: CommunityUsersFilter
+
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+  ): CommunityUsersDeleteResponse!
+
+  """Deletes zero or more records from the `Products` collection"""
+  deleteFromProductsCollection(
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: ProductsFilter
+
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+  ): ProductsDeleteResponse!
+
+  """Deletes zero or more records from the `ProfileAddresses` collection"""
+  deleteFromProfileAddressesCollection(
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: ProfileAddressesFilter
+
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+  ): ProfileAddressesDeleteResponse!
+
+  """Deletes zero or more records from the `Profiles` collection"""
+  deleteFromProfilesCollection(
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: ProfilesFilter
+
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+  ): ProfilesDeleteResponse!
+
+  """Adds one or more `Communities` records to the collection"""
+  insertIntoCommunitiesCollection(objects: [CommunitiesInsertInput!]!): CommunitiesInsertResponse
+
+  """Adds one or more `CommunityUsers` records to the collection"""
+  insertIntoCommunityUsersCollection(objects: [CommunityUsersInsertInput!]!): CommunityUsersInsertResponse
+
+  """Adds one or more `Products` records to the collection"""
+  insertIntoProductsCollection(objects: [ProductsInsertInput!]!): ProductsInsertResponse
+
+  """Adds one or more `ProfileAddresses` records to the collection"""
+  insertIntoProfileAddressesCollection(objects: [ProfileAddressesInsertInput!]!): ProfileAddressesInsertResponse
+
+  """Adds one or more `Profiles` records to the collection"""
+  insertIntoProfilesCollection(objects: [ProfilesInsertInput!]!): ProfilesInsertResponse
+
+  """Updates zero or more records in the `Communities` collection"""
+  updateCommunitiesCollection(
+    """
+    Fields that are set will be updated for all records matching the `filter`
+    """
+    set: CommunitiesUpdateInput!
+
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: CommunitiesFilter
+
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+  ): CommunitiesUpdateResponse!
+
+  """Updates zero or more records in the `CommunityUsers` collection"""
+  updateCommunityUsersCollection(
+    """
+    Fields that are set will be updated for all records matching the `filter`
+    """
+    set: CommunityUsersUpdateInput!
+
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: CommunityUsersFilter
+
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+  ): CommunityUsersUpdateResponse!
+
+  """Updates zero or more records in the `Products` collection"""
+  updateProductsCollection(
+    """
+    Fields that are set will be updated for all records matching the `filter`
+    """
+    set: ProductsUpdateInput!
+
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: ProductsFilter
+
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+  ): ProductsUpdateResponse!
+
+  """Updates zero or more records in the `ProfileAddresses` collection"""
+  updateProfileAddressesCollection(
+    """
+    Fields that are set will be updated for all records matching the `filter`
+    """
+    set: ProfileAddressesUpdateInput!
+
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: ProfileAddressesFilter
+
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+  ): ProfileAddressesUpdateResponse!
+
+  """Updates zero or more records in the `Profiles` collection"""
+  updateProfilesCollection(
+    """
+    Fields that are set will be updated for all records matching the `filter`
+    """
+    set: ProfilesUpdateInput!
+
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: ProfilesFilter
+
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+  ): ProfilesUpdateResponse!
+}
+
+interface Node {
+  """Retrieves a record by `ID`"""
+  nodeId: ID!
+}
+
+"""Any type not handled by the type system"""
+scalar Opaque
+
+"""
+Boolean expression comparing fields on type "Opaque"
+"""
+input OpaqueFilter {
+  eq: Opaque
+  is: FilterIs
+}
+
+"""Defines a per-field sorting order"""
+enum OrderByDirection {
+  """Ascending order, nulls first"""
+  AscNullsFirst
+
+  """Ascending order, nulls last"""
+  AscNullsLast
+
+  """Descending order, nulls first"""
+  DescNullsFirst
+
+  """Descending order, nulls last"""
+  DescNullsLast
+}
+
+type PageInfo {
+  endCursor: String
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+}
+
+type Products implements Node {
+  """Globally Unique Record Identifier"""
+  nodeId: ID!
+  id: BigInt!
+  createdAt: Datetime!
+  name: String!
+  price: Float!
+  image: String!
+  description: String
+  userId: UUID
+  user: Profiles
+}
+
+type ProductsConnection {
+  edges: [ProductsEdge!]!
+  pageInfo: PageInfo!
+}
+
+type ProductsDeleteResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [Products!]!
+}
+
+type ProductsEdge {
+  cursor: String!
+  node: Products!
+}
+
+input ProductsFilter {
+  id: BigIntFilter
+  createdAt: DatetimeFilter
+  name: StringFilter
+  price: FloatFilter
+  image: StringFilter
+  description: StringFilter
+  userId: UUIDFilter
+  nodeId: IDFilter
+
+  """
+  Returns true only if all its inner filters are true, otherwise returns false
+  """
+  and: [ProductsFilter!]
+
+  """
+  Returns true if at least one of its inner filters is true, otherwise returns false
+  """
+  or: [ProductsFilter!]
+
+  """Negates a filter"""
+  not: ProductsFilter
+}
+
+input ProductsInsertInput {
+  createdAt: Datetime
+  name: String
+  price: Float
+  image: String
+  description: String
+  userId: UUID
+}
+
+type ProductsInsertResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [Products!]!
+}
+
+input ProductsOrderBy {
+  id: OrderByDirection
+  createdAt: OrderByDirection
+  name: OrderByDirection
+  price: OrderByDirection
+  image: OrderByDirection
+  description: OrderByDirection
+  userId: OrderByDirection
+}
+
+input ProductsUpdateInput {
+  createdAt: Datetime
+  name: String
+  price: Float
+  image: String
+  description: String
+  userId: UUID
+}
+
+type ProductsUpdateResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [Products!]!
+}
+
+type ProfileAddresses implements Node {
+  """Globally Unique Record Identifier"""
+  nodeId: ID!
+  id: BigInt!
+  createdAt: Datetime!
+  addressLine1: String!
+  addressLine2: String
+  city: String!
+  state: String!
+  postcode: String!
+  country: String!
+  userId: UUID!
+  user: Profiles!
+}
+
+type ProfileAddressesConnection {
+  edges: [ProfileAddressesEdge!]!
+  pageInfo: PageInfo!
+}
+
+type ProfileAddressesDeleteResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [ProfileAddresses!]!
+}
+
+type ProfileAddressesEdge {
+  cursor: String!
+  node: ProfileAddresses!
+}
+
+input ProfileAddressesFilter {
+  id: BigIntFilter
+  createdAt: DatetimeFilter
+  addressLine1: StringFilter
+  addressLine2: StringFilter
+  city: StringFilter
+  state: StringFilter
+  postcode: StringFilter
+  country: StringFilter
+  userId: UUIDFilter
+  nodeId: IDFilter
+
+  """
+  Returns true only if all its inner filters are true, otherwise returns false
+  """
+  and: [ProfileAddressesFilter!]
+
+  """
+  Returns true if at least one of its inner filters is true, otherwise returns false
+  """
+  or: [ProfileAddressesFilter!]
+
+  """Negates a filter"""
+  not: ProfileAddressesFilter
+}
+
+input ProfileAddressesInsertInput {
+  createdAt: Datetime
+  addressLine1: String
+  addressLine2: String
+  city: String
+  state: String
+  postcode: String
+  country: String
+  userId: UUID
+}
+
+type ProfileAddressesInsertResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [ProfileAddresses!]!
+}
+
+input ProfileAddressesOrderBy {
+  id: OrderByDirection
+  createdAt: OrderByDirection
+  addressLine1: OrderByDirection
+  addressLine2: OrderByDirection
+  city: OrderByDirection
+  state: OrderByDirection
+  postcode: OrderByDirection
+  country: OrderByDirection
+  userId: OrderByDirection
+}
+
+input ProfileAddressesUpdateInput {
+  createdAt: Datetime
+  addressLine1: String
+  addressLine2: String
+  city: String
+  state: String
+  postcode: String
+  country: String
+  userId: UUID
+}
+
+type ProfileAddressesUpdateResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [ProfileAddresses!]!
+}
+
+type Profiles implements Node {
+  """Globally Unique Record Identifier"""
+  nodeId: ID!
+  id: UUID!
+  updatedAt: Datetime!
+  username: String!
+  avatarUrl: String
+  firstName: String!
+  lastName: String!
+  description: String!
+  onboarded: Boolean!
+  productsCollection(
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """
+    Skip n values from the after cursor. Alternative to cursor pagination. Backward pagination not supported.
+    """
+    offset: Int
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: ProductsFilter
+
+    """Sort order to apply to the collection"""
+    orderBy: [ProductsOrderBy!]
+  ): ProductsConnection
+  communityUsers: CommunityUsers
+  profileAddressesCollection(
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """
+    Skip n values from the after cursor. Alternative to cursor pagination. Backward pagination not supported.
+    """
+    offset: Int
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: ProfileAddressesFilter
+
+    """Sort order to apply to the collection"""
+    orderBy: [ProfileAddressesOrderBy!]
+  ): ProfileAddressesConnection
+}
+
+type ProfilesConnection {
+  edges: [ProfilesEdge!]!
+  pageInfo: PageInfo!
+}
+
+type ProfilesDeleteResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [Profiles!]!
+}
+
+type ProfilesEdge {
+  cursor: String!
+  node: Profiles!
+}
+
+input ProfilesFilter {
+  id: UUIDFilter
+  updatedAt: DatetimeFilter
+  username: StringFilter
+  avatarUrl: StringFilter
+  firstName: StringFilter
+  lastName: StringFilter
+  description: StringFilter
+  onboarded: BooleanFilter
+  nodeId: IDFilter
+
+  """
+  Returns true only if all its inner filters are true, otherwise returns false
+  """
+  and: [ProfilesFilter!]
+
+  """
+  Returns true if at least one of its inner filters is true, otherwise returns false
+  """
+  or: [ProfilesFilter!]
+
+  """Negates a filter"""
+  not: ProfilesFilter
+}
+
+input ProfilesInsertInput {
+  id: UUID
+  updatedAt: Datetime
+  username: String
+  avatarUrl: String
+  firstName: String
+  lastName: String
+  description: String
+  onboarded: Boolean
+}
+
+type ProfilesInsertResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [Profiles!]!
+}
+
+input ProfilesOrderBy {
+  id: OrderByDirection
+  updatedAt: OrderByDirection
+  username: OrderByDirection
+  avatarUrl: OrderByDirection
+  firstName: OrderByDirection
+  lastName: OrderByDirection
+  description: OrderByDirection
+  onboarded: OrderByDirection
+}
+
+input ProfilesUpdateInput {
+  id: UUID
+  updatedAt: Datetime
+  username: String
+  avatarUrl: String
+  firstName: String
+  lastName: String
+  description: String
+  onboarded: Boolean
+}
+
+type ProfilesUpdateResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [Profiles!]!
+}
+
+"""The root type for querying data"""
+type Query {
+  """A pagable collection of type `Communities`"""
+  communitiesCollection(
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """
+    Skip n values from the after cursor. Alternative to cursor pagination. Backward pagination not supported.
+    """
+    offset: Int
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: CommunitiesFilter
+
+    """Sort order to apply to the collection"""
+    orderBy: [CommunitiesOrderBy!]
+  ): CommunitiesConnection
+
+  """A pagable collection of type `CommunityUsers`"""
+  communityUsersCollection(
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """
+    Skip n values from the after cursor. Alternative to cursor pagination. Backward pagination not supported.
+    """
+    offset: Int
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: CommunityUsersFilter
+
+    """Sort order to apply to the collection"""
+    orderBy: [CommunityUsersOrderBy!]
+  ): CommunityUsersConnection
+
+  """Retrieve a record by its `ID`"""
+  node(
+    """The record's `ID`"""
+    nodeId: ID!
+  ): Node
+
+  """A pagable collection of type `Products`"""
+  productsCollection(
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """
+    Skip n values from the after cursor. Alternative to cursor pagination. Backward pagination not supported.
+    """
+    offset: Int
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: ProductsFilter
+
+    """Sort order to apply to the collection"""
+    orderBy: [ProductsOrderBy!]
+  ): ProductsConnection
+
+  """A pagable collection of type `ProfileAddresses`"""
+  profileAddressesCollection(
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """
+    Skip n values from the after cursor. Alternative to cursor pagination. Backward pagination not supported.
+    """
+    offset: Int
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: ProfileAddressesFilter
+
+    """Sort order to apply to the collection"""
+    orderBy: [ProfileAddressesOrderBy!]
+  ): ProfileAddressesConnection
+
+  """A pagable collection of type `Profiles`"""
+  profilesCollection(
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """
+    Skip n values from the after cursor. Alternative to cursor pagination. Backward pagination not supported.
+    """
+    offset: Int
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: ProfilesFilter
+
+    """Sort order to apply to the collection"""
+    orderBy: [ProfilesOrderBy!]
+  ): ProfilesConnection
+}
+
+"""
+Boolean expression comparing fields on type "String"
+"""
+input StringFilter {
+  eq: String
+  gt: String
+  gte: String
+  ilike: String
+  in: [String!]
+  iregex: String
+  is: FilterIs
+  like: String
+  lt: String
+  lte: String
+  neq: String
+  regex: String
+  startsWith: String
+}
+
+"""A time without date information"""
+scalar Time
+
+"""
+Boolean expression comparing fields on type "Time"
+"""
+input TimeFilter {
+  eq: Time
+  gt: Time
+  gte: Time
+  in: [Time!]
+  is: FilterIs
+  lt: Time
+  lte: Time
+  neq: Time
+}
+
+"""A universally unique identifier"""
+scalar UUID
+
+"""
+Boolean expression comparing fields on type "UUID"
+"""
+input UUIDFilter {
+  eq: UUID
+  in: [UUID!]
+  is: FilterIs
+  neq: UUID
+}
+

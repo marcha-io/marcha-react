@@ -1,7 +1,7 @@
-import { UserOutlined } from '@ant-design/icons'
-import { Dropdown, MenuProps } from 'antd'
-import React from 'react'
-import { Link } from 'react-router-dom'
+import { UserOutlined } from '@ant-design/icons';
+import { Dropdown, MenuProps } from 'antd';
+import React from 'react';
+import { Link } from 'react-router-dom';
 
 const items: MenuProps['items'] = [
   {
@@ -20,14 +20,14 @@ const items: MenuProps['items'] = [
       </Link>
     ),
   },
-]
+];
 
 const UserSignUpIcon = (): React.ReactElement => {
   return (
     <Dropdown menu={{ items }} placement="bottom">
       <UserOutlined style={{ fontSize: 18 }} />
     </Dropdown>
-  )
-}
+  );
+};
 
-export default UserSignUpIcon
+export default UserSignUpIcon;
