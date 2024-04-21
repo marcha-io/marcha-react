@@ -16,7 +16,7 @@ const App = (): React.ReactElement => {
   return (
     <RelayEnvironmentProvider environment={environment}>
       <BrowserRouter>
-        <Layout>
+        <Layout style={{ minHeight: '900px' }}>
           <Navbar />
           <Content style={{ padding: '0 48px', margin: '16px 0' }}>
             <div
