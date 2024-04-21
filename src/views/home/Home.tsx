@@ -2,7 +2,7 @@ import { Layout, Typography, theme } from 'antd';
 import { Content, Header } from 'antd/es/layout/layout';
 import React from 'react';
 
-import ProductsContainerWrapper from '../components/Cards/Products/ProductsContainerWrapper';
+import ProductsContainerWrapper from '../../components/Cards/Products/ProductsContainerWrapper';
 
 const Home = (): React.ReactElement => {
   const {
@@ -10,7 +10,7 @@ const Home = (): React.ReactElement => {
   } = theme.useToken();
 
   return (
-    <Layout>
+    <Layout style={{ height: '100%' }}>
       <Header
         style={{
           backgroundColor: colorBgContainer,

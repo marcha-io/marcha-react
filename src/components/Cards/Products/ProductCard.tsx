@@ -1,5 +1,5 @@
 import { Avatar, Card } from 'antd';
-import { graphql } from 'babel-plugin-relay/macro';
+import graphql from 'babel-plugin-relay/macro';
 import { useEffect, useState } from 'react';
 import { useFragment } from 'react-relay';
 
@@ -54,8 +54,6 @@ const ProductCard = ({ fragmentRef, hoverable }: Props): React.ReactElement => {
       setAvatarBlob(blob)
     );
   }, [product]);
-
-  console.log(imageBlob, imageBlob ? URL.createObjectURL(imageBlob) : '');
 
   return (
     <Card
