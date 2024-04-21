@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<ffc10b016c6c02d1270131f5dd0d8814>>
+ * @generated SignedSource<<3ea2db1f5e3579a7bc3af5acee7d84c6>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -116,13 +116,6 @@ return {
                     "alias": null,
                     "args": null,
                     "kind": "ScalarField",
-                    "name": "id",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
                     "name": "name",
                     "storageKey": null
                   },
@@ -159,13 +152,6 @@ return {
                         "alias": null,
                         "args": null,
                         "kind": "ScalarField",
-                        "name": "username",
-                        "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
                         "name": "avatarUrl",
                         "storageKey": null
                       },
@@ -186,12 +172,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "689652605c14b1319fefe54263a6290a",
+    "cacheID": "dc5b124af49098e38b22b2c56ee8826d",
     "id": null,
     "metadata": {},
     "name": "ProductsContainerWrapperQuery",
     "operationKind": "query",
-    "text": "query ProductsContainerWrapperQuery {\n  productsCollection {\n    edges {\n      node {\n        ...ProductCardFragmentQuery\n        nodeId\n      }\n    }\n  }\n}\n\nfragment ProductCardFragmentQuery on Products {\n  id\n  name\n  description\n  price\n  image\n  user {\n    username\n    avatarUrl\n    nodeId\n  }\n}\n"
+    "text": "query ProductsContainerWrapperQuery {\n  productsCollection {\n    edges {\n      node {\n        ...ProductCardFragmentQuery\n        nodeId\n      }\n    }\n  }\n}\n\nfragment ProductCardFragmentQuery on Products {\n  name\n  description\n  price\n  image\n  user {\n    avatarUrl\n    nodeId\n  }\n}\n"
   }
 };
 })();
