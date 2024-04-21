@@ -4,7 +4,7 @@ import React from 'react';
 import { RelayEnvironmentProvider } from 'react-relay';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
-import Navbar from './navbar/Navbar';
+import Navbar from './components/navbar/Navbar';
 import environment from './relay/relay_environment';
 import Home from './views/home/Home';
 
