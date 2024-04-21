@@ -1,5 +1,5 @@
 import { Spin } from 'antd';
-import { graphql } from 'babel-plugin-relay/macro';
+import graphql from 'babel-plugin-relay/macro';
 import React, { Suspense } from 'react';
 import { useLazyLoadQuery } from 'react-relay';
 

@@ -4,9 +4,9 @@ import React from 'react';
 import { RelayEnvironmentProvider } from 'react-relay';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
-import Home from './home/Home';
 import Navbar from './navbar/Navbar';
 import environment from './relay/relay_environment';
+import Home from './views/home/Home';
 
 const App = (): React.ReactElement => {
   const {
@@ -16,7 +16,7 @@ const App = (): React.ReactElement => {
   return (
     <RelayEnvironmentProvider environment={environment}>
       <BrowserRouter>
-        <Layout>
+        <Layout style={{ minHeight: '900px' }}>
           <Navbar />
           <Content style={{ padding: '0 48px', margin: '16px 0' }}>
             <div
