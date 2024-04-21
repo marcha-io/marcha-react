@@ -1,9 +1,9 @@
-import { Col, Image, Menu, MenuProps, Row } from 'antd'
-import { Header } from 'antd/es/layout/layout'
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Col, Image, Menu, MenuProps, Row } from 'antd';
+import { Header } from 'antd/es/layout/layout';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
-import UserSignUpIcon from './UserSignUpIcon'
+import UserSignUpIcon from './UserSignUpIcon';
 
 const items: MenuProps['items'] = [
   {
@@ -39,10 +39,10 @@ const items: MenuProps['items'] = [
       </Link>
     ),
   },
-]
+];
 
 const Navbar = (): React.ReactElement => {
-  const [selectedKey, setSelectedKey] = useState('logo')
+  const [selectedKey, setSelectedKey] = useState('logo');
 
   return (
     <Header style={{ background: 'white' }}>
@@ -60,7 +60,7 @@ const Navbar = (): React.ReactElement => {
         </Col>
       </Row>
     </Header>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;
