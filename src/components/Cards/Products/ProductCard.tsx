@@ -3,7 +3,7 @@ import graphql from 'babel-plugin-relay/macro';
 import { useEffect, useState } from 'react';
 import { useFragment } from 'react-relay';
 
-import { supabase } from '../../../relay/supabase';
+import { supabase } from '../../../lib/supabase';
 import { ProductCardFragmentQuery$key } from './__generated__/ProductCardFragmentQuery.graphql';
 
 const { Meta } = Card;
