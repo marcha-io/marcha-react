@@ -45,7 +45,14 @@ const Navbar = (): React.ReactElement => {
   const [selectedKey, setSelectedKey] = useState('logo');
 
   return (
-    <Header>
+    <Header
+      style={{
+        position: 'sticky',
+        top: 0,
+        zIndex: 1,
+        width: '100%',
+      }}
+    >
       <Row>
         <Col span={20}>
           <Menu
