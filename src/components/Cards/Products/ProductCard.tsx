@@ -58,7 +58,7 @@ const ProductCard = ({ fragmentRef, hoverable }: Props): React.ReactElement => {
   return (
     <Card
       hoverable={hoverable}
-      style={{ width: 300, minHeight: 350 }}
+      style={{ width: 300, height: 350 }}
       cover={
         <img
           height={250}
