@@ -21,6 +21,7 @@ const productFragmentQuery = graphql`
     image
     user {
       avatarUrl
+      username
     }
   }
 `;
