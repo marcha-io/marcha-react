@@ -1,10 +1,14 @@
 import { Layout, theme } from 'antd';
-import { Content } from 'antd/es/layout/layout';
+import { Content, Footer } from 'antd/es/layout/layout';
+import Title from 'antd/es/typography/Title';
 import React from 'react';
 import { RelayEnvironmentProvider } from 'react-relay';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import Navbar from './components/navbar/Navbar';
+import environment from './relay/relay_environment';
+import Communities from './views/communities/Communities';
+import Feed from './views/feed/Feed';
 import environment from './lib/relay_environment';
 import Home from './views/home/Home';
 
@@ -29,9 +33,14 @@ const App = (): React.ReactElement => {
             >
               <Routes>
                 <Route index element={<Home />} />
+                <Route path="/communities" element={<Communities />} />
+                <Route path="/feed" element={<Feed />} />
               </Routes>
             </div>
           </Content>
+          <Footer>
+            <Title level={1}> Footer </Title>
+          </Footer>
         </Layout>
       </BrowserRouter>
     </RelayEnvironmentProvider>
