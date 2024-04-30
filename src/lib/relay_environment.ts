@@ -6,7 +6,8 @@ import {
   Store,
 } from 'relay-runtime';
 
-import { SUPABASE_ANON_KEY, SUPABASE_URL, supabase } from './supabase';
+import { SUPABASE_ANON_KEY, SUPABASE_URL } from './supabase';
+import supabase from './supabase';
 
 const fetchQuery: FetchFunction = async (operation, variables) => {
   const {

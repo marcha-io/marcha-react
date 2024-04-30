@@ -4,6 +4,7 @@ import React from 'react';
 import { RelayEnvironmentProvider } from 'react-relay';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
+import SignUpPage from '../src/views/home/SignUp';
 import Navbar from './components/navbar/Navbar';
 import environment from './lib/relay_environment';
 import Home from './views/home/Home';
@@ -29,6 +30,7 @@ const App = (): React.ReactElement => {
             >
               <Routes>
                 <Route index element={<Home />} />
+                <Route path="/sign_up" element={<SignUpPage />} />
               </Routes>
             </div>
           </Content>
