@@ -16,6 +16,11 @@ root.render(
         token: {
           colorPrimary: '#F65E44',
         },
+        components: {
+          Layout: {
+            headerBg: 'white',
+          },
+        },
       }}
     >
       <App />
