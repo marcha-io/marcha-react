@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<79ff0fc9d0e304fde2587b5e75ee6f0d>>
+ * @generated SignedSource<<32af522c17cbeeaf2be757c545816bb0>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -17,6 +17,7 @@ export type ProductCardFragmentQuery$data = {
   readonly price: number;
   readonly user: {
     readonly avatarUrl: string | null | undefined;
+    readonly username: string;
   } | null | undefined;
   readonly " $fragmentType": "ProductCardFragmentQuery";
 };
@@ -73,6 +74,13 @@ const node: ReaderFragment = {
           "kind": "ScalarField",
           "name": "avatarUrl",
           "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "username",
+          "storageKey": null
         }
       ],
       "storageKey": null
@@ -82,6 +90,6 @@ const node: ReaderFragment = {
   "abstractKey": null
 };
 
-(node as any).hash = "ad3a8ccc5cf9d7c8bcb89b41c3e0bb02";
+(node as any).hash = "403db67e4f5665cfc9dc84f091033c26";
 
 export default node;

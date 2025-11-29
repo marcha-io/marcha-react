@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<3ea2db1f5e3579a7bc3af5acee7d84c6>>
+ * @generated SignedSource<<04607052a9046eb560c3a655689026a0>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -155,6 +155,13 @@ return {
                         "name": "avatarUrl",
                         "storageKey": null
                       },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "username",
+                        "storageKey": null
+                      },
                       (v0/*: any*/)
                     ],
                     "storageKey": null
@@ -172,12 +179,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "dc5b124af49098e38b22b2c56ee8826d",
+    "cacheID": "598d18f57aa2c8f59dd799d612fe194f",
     "id": null,
     "metadata": {},
     "name": "ProductsContainerWrapperQuery",
     "operationKind": "query",
-    "text": "query ProductsContainerWrapperQuery {\n  productsCollection {\n    edges {\n      node {\n        ...ProductCardFragmentQuery\n        nodeId\n      }\n    }\n  }\n}\n\nfragment ProductCardFragmentQuery on Products {\n  name\n  description\n  price\n  image\n  user {\n    avatarUrl\n    nodeId\n  }\n}\n"
+    "text": "query ProductsContainerWrapperQuery {\n  productsCollection {\n    edges {\n      node {\n        ...ProductCardFragmentQuery\n        nodeId\n      }\n    }\n  }\n}\n\nfragment ProductCardFragmentQuery on Products {\n  name\n  description\n  price\n  image\n  user {\n    avatarUrl\n    username\n    nodeId\n  }\n}\n"
   }
 };
 })();

@@ -1,4 +1,4 @@
-import { Card, Flex } from 'antd';
+import { Card, Empty, Flex } from 'antd';
 import React, { Suspense } from 'react';
 
 import ProductCard from './ProductCard';
@@ -10,13 +10,18 @@ type Props = {
 
 const ProductCardsContainer = ({ data }: Props): React.ReactElement => {
   const edges = data.productsCollection?.edges;
+
   return (
     <Flex gap={12} wrap="wrap" justify="center">
-      {edges?.map((fragment) => (
-        <Suspense fallback={<Card loading={true} />}>
-          <ProductCard fragmentRef={fragment.node} hoverable={true} />
-        </Suspense>
-      ))}
+      {edges?.length ? (
+        edges?.map((fragment) => (
+          <Suspense fallback={<Card loading={true} />}>
+            <ProductCard fragmentRef={fragment.node} hoverable={true} />
+          </Suspense>
+        ))
+      ) : (
+        <Empty description="No Items in Feed" />
+      )}
     </Flex>
   );
 };

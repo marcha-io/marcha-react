@@ -1,4 +1,4 @@
-import { Spin } from 'antd';
+import { Flex, Spin } from 'antd';
 import React, { Suspense } from 'react';
 
 import ProductsContainerWrapper from '../../components/Cards/Products/ProductsContainerWrapper';
@@ -7,9 +7,9 @@ const Feed = (): React.ReactElement => {
   return (
     <Suspense
       fallback={
-        <Spin tip="Loading Products..." size="large">
-          <></>
-        </Spin>
+        <Flex gap={12} wrap="wrap" justify="center">
+          <Spin tip="Loading Products..." size="large" />{' '}
+        </Flex>
       }
     >
       <ProductsContainerWrapper />{' '}

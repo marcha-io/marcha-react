@@ -6,8 +6,7 @@
 ## Env variables
 
 - REACT_APP_SUPABASE_URL
-- REACT_APP_SUPABASE_KEY
-
+- REACT_APP_SUPABASE_ANON_KEY 
 
 ## Updating Graphql Schema
 
