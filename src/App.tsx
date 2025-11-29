@@ -10,6 +10,7 @@ import environment from './lib/relay_environment';
 import Communities from './views/communities/Communities';
 import Feed from './views/feed/Feed';
 import Home from './views/home/Home';
+import SignIn from './views/sign_up/SignIn';
 
 const App = (): React.ReactElement => {
   const {
@@ -34,6 +35,7 @@ const App = (): React.ReactElement => {
                 <Route index element={<Home />} />
                 <Route path="/communities" element={<Communities />} />
                 <Route path="/feed" element={<Feed />} />
+                <Route path="/sign_in" element={<SignIn />} />
               </Routes>
             </div>
           </Content>
