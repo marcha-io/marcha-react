@@ -3,7 +3,9 @@ import { Dropdown, MenuProps } from 'antd';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const items: MenuProps['items'] = [
+import LogOutNavbar from './LogOutNavbar';
+
+const loggedOutItems: MenuProps['items'] = [
   {
     key: '1',
     label: (
@@ -22,7 +24,38 @@ const items: MenuProps['items'] = [
   },
 ];
 
-const UserSignUpIcon = (): React.ReactElement => {
+const loggedInItems = (
+  setIsUserLoggedIn: React.Dispatch<React.SetStateAction<boolean>>
+): MenuProps['items'] => {
+  return [
+    {
+      key: '1',
+      label: (
+        <Link rel="noopener noreferrer" to="/">
+          Dashboard
+        </Link>
+      ),
+    },
+    {
+      key: '2',
+      label: <LogOutNavbar setIsUserLoggedIn={setIsUserLoggedIn} />,
+    },
+  ];
+};
+
+type Props = {
+  isUserLoggedIn: boolean;
+  setIsUserLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+const UserSignUpIcon = ({
+  isUserLoggedIn,
+  setIsUserLoggedIn,
+}: Props): React.ReactElement => {
+  const items = isUserLoggedIn
+    ? loggedInItems(setIsUserLoggedIn)
+    : loggedOutItems;
+
   return (
     <Dropdown menu={{ items }} placement="bottom">
       <UserOutlined style={{ fontSize: 18 }} />

@@ -1,7 +1,7 @@
 import { Layout, theme } from 'antd';
 import { Content, Footer } from 'antd/es/layout/layout';
 import Title from 'antd/es/typography/Title';
-import React from 'react';
+import React, { useState } from 'react';
 import { RelayEnvironmentProvider } from 'react-relay';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
@@ -17,11 +17,16 @@ const App = (): React.ReactElement => {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
 
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
+
   return (
     <RelayEnvironmentProvider environment={environment}>
       <BrowserRouter>
-        <Layout style={{ minHeight: '900px' }}>
-          <Navbar />
+        <Layout style={{ minHeight: '1000px' }}>
+          <Navbar
+            isUserLoggedIn={isUserLoggedIn}
+            setIsUserLoggedIn={setIsUserLoggedIn}
+          />
           <Content style={{ padding: '0 48px', margin: '16px 0' }}>
             <div
               style={{
@@ -35,7 +40,10 @@ const App = (): React.ReactElement => {
                 <Route index element={<Home />} />
                 <Route path="/communities" element={<Communities />} />
                 <Route path="/feed" element={<Feed />} />
-                <Route path="/sign_in" element={<SignIn />} />
+                <Route
+                  path="/sign_in"
+                  element={<SignIn setIsUserLoggedIn={setIsUserLoggedIn} />}
+                />
               </Routes>
             </div>
           </Content>
