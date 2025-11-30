@@ -41,7 +41,15 @@ const items: MenuProps['items'] = [
   },
 ];
 
-const Navbar = (): React.ReactElement => {
+type Props = {
+  isUserLoggedIn: boolean;
+  setIsUserLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+const Navbar = ({
+  isUserLoggedIn,
+  setIsUserLoggedIn,
+}: Props): React.ReactElement => {
   const [selectedKey, setSelectedKey] = useState('logo');
 
   return (
@@ -63,7 +71,10 @@ const Navbar = (): React.ReactElement => {
           />
         </Col>
         <Col offset={3} span={1}>
-          <UserSignUpIcon />
+          <UserSignUpIcon
+            isUserLoggedIn={isUserLoggedIn}
+            setIsUserLoggedIn={setIsUserLoggedIn}
+          />
         </Col>
       </Row>
     </Header>
