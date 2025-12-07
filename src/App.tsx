@@ -1,6 +1,6 @@
-import { Layout, theme } from 'antd';
 import { Content, Footer } from 'antd/es/layout/layout';
 import Title from 'antd/es/typography/Title';
+import { Layout, theme } from 'antd/lib';
 import React, { useState } from 'react';
 import { RelayEnvironmentProvider } from 'react-relay';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';

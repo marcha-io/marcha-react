@@ -1,4 +1,4 @@
-import { Flex, Spin } from 'antd';
+import { Flex, Spin } from 'antd/lib';
 import React, { Suspense, useEffect, useMemo } from 'react';
 import {
   EntryPointContainer,

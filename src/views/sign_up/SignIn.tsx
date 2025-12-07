@@ -1,4 +1,5 @@
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
+import { Header } from 'antd/es/layout/layout';
 import {
   Button,
   Checkbox,
@@ -7,8 +8,7 @@ import {
   Input,
   Typography,
   notification,
-} from 'antd';
-import { Header } from 'antd/es/layout/layout';
+} from 'antd/lib';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 

@@ -1,4 +1,4 @@
-import { Col, Row } from 'antd';
+import { Col, Row } from 'antd/lib';
 import React from 'react';
 
 const Communities = (): React.ReactElement => {

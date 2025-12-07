@@ -65,7 +65,7 @@
     "get-graphql-schema": "^2.1.2",
     "graphql": "^16.8.1",
     "prettier": "^3.2.5",
-    "react-router-dom": "^6.22.3",
+    "react-router-dom": "^6.30.2",
     "supabase": "^1.157.2",
     "typescript-eslint": "^7.7.0"
   }

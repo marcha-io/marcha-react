@@ -1,4 +1,4 @@
-import { Avatar, Card } from 'antd';
+import { Avatar, Card } from 'antd/lib';
 import graphql from 'babel-plugin-relay/macro';
 import { useEffect, useState } from 'react';
 import { useFragment } from 'react-relay';
