@@ -1,11 +1,16 @@
 import graphql from 'babel-plugin-relay/macro';
 import React from 'react';
-import { useLazyLoadQuery } from 'react-relay';
+import {
+  EntryPointComponent,
+  PreloadedQuery,
+  useLazyLoadQuery,
+  usePreloadedQuery,
+} from 'react-relay';
 
 import ProductCardsContainer from './ProductCardsContainer';
 import type { ProductsContainerWrapperQuery } from './__generated__/ProductsContainerWrapperQuery.graphql';
 
-const query = graphql`
+export const productsContainerWrapperQuery = graphql`
   query ProductsContainerWrapperQuery {
     productsCollection {
       edges {
@@ -17,8 +22,23 @@ const query = graphql`
   }
 `;
 
-const ProductsContainerWrapper = (): React.ReactElement => {
-  const data = useLazyLoadQuery<ProductsContainerWrapperQuery>(query, {});
+type Props = {
+  queries: {
+    productsContainerWrapperQuery: PreloadedQuery<ProductsContainerWrapperQuery>;
+  };
+};
+
+const ProductsContainerWrapper: EntryPointComponent<
+  {
+    productsContainerWrapperQuery: ProductsContainerWrapperQuery;
+  },
+  Record<string, never>,
+  Record<string, never>
+> = (props: Props): React.ReactElement => {
+  const data = usePreloadedQuery<ProductsContainerWrapperQuery>(
+    productsContainerWrapperQuery,
+    props.queries.productsContainerWrapperQuery
+  );
 
   return <ProductCardsContainer data={data} />;
 };
