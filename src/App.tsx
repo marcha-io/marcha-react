@@ -8,7 +8,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Navbar from './components/navbar/Navbar';
 import environment from './lib/relay_environment';
 import Communities from './views/communities/Communities';
-import Feed from './views/feed/Feed';
+import Feed from './views/feed/Feed.entrypoint';
 import Home from './views/home/Home';
 import SignIn from './views/sign_up/SignIn';
 
@@ -22,7 +22,7 @@ const App = (): React.ReactElement => {
   return (
     <RelayEnvironmentProvider environment={environment}>
       <BrowserRouter>
-        <Layout style={{ minHeight: '1000px' }}>
+        <Layout style={{ minHeight: '100vh' }}>
           <Navbar
             isUserLoggedIn={isUserLoggedIn}
             setIsUserLoggedIn={setIsUserLoggedIn}
