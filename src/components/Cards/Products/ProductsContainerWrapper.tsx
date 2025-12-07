@@ -3,7 +3,6 @@ import React from 'react';
 import {
   EntryPointComponent,
   PreloadedQuery,
-  useLazyLoadQuery,
   usePreloadedQuery,
 } from 'react-relay';
 

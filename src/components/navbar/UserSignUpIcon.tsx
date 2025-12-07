@@ -1,5 +1,5 @@
 import { UserOutlined } from '@ant-design/icons';
-import { Dropdown, MenuProps } from 'antd';
+import { Dropdown, MenuProps } from 'antd/lib';
 import React from 'react';
 import { Link } from 'react-router-dom';
 

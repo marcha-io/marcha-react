@@ -1,4 +1,4 @@
-import { notification } from 'antd';
+import { notification } from 'antd/lib';
 
 import { supabase } from '../../lib/supabase';
 

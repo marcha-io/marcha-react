@@ -1,4 +1,4 @@
-import { Card, Empty, Flex } from 'antd';
+import { Card, Empty, Flex } from 'antd/lib';
 import React, { Suspense } from 'react';
 
 import ProductCard from './ProductCard';
