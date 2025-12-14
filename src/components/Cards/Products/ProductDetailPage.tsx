@@ -10,6 +10,7 @@ import {
   Card,
   Col,
   Descriptions,
+  Image,
   Row,
   Space,
   Tag,
@@ -96,24 +97,53 @@ const ProductDetailPage: EntryPointComponent<
   }
 
   return (
-    <div style={{ padding: '24px', maxWidth: '1200px', margin: '0 auto' }}>
-      <Row gutter={[32, 32]}>
-        {/* Product Image */}
-        <Col xs={24} md={12}>
-          <Card
-            cover={
-              <img
-                alt={product.name}
-                src={imageBlob ? URL.createObjectURL(imageBlob) : ''}
-                style={{
-                  width: '100%',
-                  objectFit: 'cover',
-                }}
-              />
-            }
-          >
-            {/* Product Info */}
-            <Descriptions column={1}>
+    <Row gutter={[32, 32]}>
+      {/* Product Image */}
+      <Col xs={24} md={12}>
+        <Card
+          classNames={{ body: 'product-detail-image' }}
+          styles={{ body: { padding: 0 } }}
+        >
+          <Image
+            alt={product.name}
+            src={imageBlob ? URL.createObjectURL(imageBlob) : ''}
+            style={{
+              width: '100%',
+            }}
+          />
+        </Card>
+      </Col>
+
+      {/* Product Details */}
+      <Col xs={24} md={12}>
+        <Space orientation="vertical" size="large" style={{ width: '100%' }}>
+          {/* Product Title and Price */}
+          <div>
+            <Title level={2} style={{ marginBottom: '8px' }}>
+              {product.name}
+            </Title>
+          </div>
+
+          {/* Action Buttons */}
+          <Space size="middle" style={{ width: '100%' }}>
+            <Button
+              type="primary"
+              size="large"
+              icon={<ShoppingCartOutlined />}
+              style={{ flex: 1 }}
+            >
+              Add to Cart
+            </Button>
+            <Button size="large" icon={<HeartOutlined />}>
+              Save
+            </Button>
+            <Button size="large" icon={<ShareAltOutlined />}>
+              Share
+            </Button>
+          </Space>
+
+          <Card title="Product Information">
+            <Descriptions column={2}>
               <Descriptions.Item label="Price">
                 ${product.price}{' '}
               </Descriptions.Item>
@@ -121,74 +151,38 @@ const ProductDetailPage: EntryPointComponent<
               <Descriptions.Item label="Status">
                 <Tag color="green">{product.condition}</Tag>
               </Descriptions.Item>
-
-              <Descriptions.Item label="Listed">
-                {new Date(product.createdAt).toLocaleDateString()}
-              </Descriptions.Item>
             </Descriptions>
           </Card>
-        </Col>
 
-        {/* Product Details */}
-        <Col xs={24} md={12}>
-          <Space direction="vertical" size="large" style={{ width: '100%' }}>
-            {/* Product Title and Price */}
-            <div>
-              <Title level={2} style={{ marginBottom: '8px' }}>
-                {product.name}
-              </Title>
-            </div>
+          {/* Description */}
+          <Card title="Description">
+            <Paragraph>{product.description}</Paragraph>
+          </Card>
 
-            {/* Action Buttons */}
-            <Space size="middle" style={{ width: '100%' }}>
-              <Button
-                type="primary"
-                size="large"
-                icon={<ShoppingCartOutlined />}
-                style={{ flex: 1 }}
-              >
-                Add to Cart
-              </Button>
-              <Button size="large" icon={<HeartOutlined />}>
-                Save
-              </Button>
-              <Button size="large" icon={<ShareAltOutlined />}>
-                Share
-              </Button>
+          {/* Seller Info */}
+          <Card title="Seller Information">
+            <Space size="middle">
+              <Avatar
+                size={64}
+                src={
+                  avatarBlob ? URL.createObjectURL(avatarBlob) : AVATAR_DEFAULT
+                }
+                icon={<UserOutlined />}
+              />
+              <div>
+                <Title level={5} style={{ marginBottom: '4px' }}>
+                  {product.user?.username || 'Anonymous'}
+                </Title>
+                <br />
+                <Button type="link" style={{ paddingLeft: 0 }}>
+                  View Seller Profile
+                </Button>
+              </div>
             </Space>
-
-            {/* Description */}
-            <Card title="Description">
-              <Paragraph>{product.description}</Paragraph>
-            </Card>
-
-            {/* Seller Info */}
-            <Card title="Seller Information">
-              <Space size="middle">
-                <Avatar
-                  size={64}
-                  src={
-                    avatarBlob
-                      ? URL.createObjectURL(avatarBlob)
-                      : AVATAR_DEFAULT
-                  }
-                  icon={<UserOutlined />}
-                />
-                <div>
-                  <Title level={5} style={{ marginBottom: '4px' }}>
-                    {product.user?.username || 'Anonymous'}
-                  </Title>
-                  <br />
-                  <Button type="link" style={{ paddingLeft: 0 }}>
-                    View Seller Profile
-                  </Button>
-                </div>
-              </Space>
-            </Card>
-          </Space>
-        </Col>
-      </Row>
-    </div>
+          </Card>
+        </Space>
+      </Col>
+    </Row>
   );
 };
 
