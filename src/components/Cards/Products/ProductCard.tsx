@@ -1,9 +1,10 @@
-import { Avatar, Card } from 'antd/lib';
+import { Avatar, Card } from 'antd';
 import graphql from 'babel-plugin-relay/macro';
 import { useEffect, useState } from 'react';
 import { useFragment } from 'react-relay';
+import { useNavigate } from 'react-router-dom';
 
-import { supabase } from '../../../lib/supabase';
+import fetchFromStorage from '../../../utils/fetch_from_storage';
 import { ProductCardFragmentQuery$key } from './__generated__/ProductCardFragmentQuery.graphql';
 
 const { Meta } = Card;
@@ -19,6 +20,7 @@ const productFragmentQuery = graphql`
     description
     price
     image
+    id
     user {
       avatarUrl
       username
@@ -28,24 +30,12 @@ const productFragmentQuery = graphql`
 
 const AVATAR_DEFAULT = 'https://api.dicebear.com/7.x/miniavs/svg?seed=8';
 
-const fetchFromStorage = async (url: string, storage_name: string) => {
-  const { data: blob, error } = await supabase.storage
-    .from(storage_name)
-    .download(url);
-
-  if (error != null) {
-    console.log(error);
-    return null;
-  }
-
-  return blob;
-};
-
 const ProductCard = ({ fragmentRef, hoverable }: Props): React.ReactElement => {
   const [imageBlob, setImageBlob] = useState<Blob | null>(null);
   const [avatarBlob, setAvatarBlob] = useState<Blob | null>(null);
 
   const product = useFragment(productFragmentQuery, fragmentRef);
+  const navigation = useNavigate();
 
   useEffect(() => {
     fetchFromStorage(product.image, 'product-images').then((blob) =>
@@ -67,6 +57,7 @@ const ProductCard = ({ fragmentRef, hoverable }: Props): React.ReactElement => {
           src={imageBlob ? URL.createObjectURL(imageBlob) : ''}
         />
       }
+      onClick={() => navigation(`${product.id}`)}
     >
       <Meta
         avatar={
