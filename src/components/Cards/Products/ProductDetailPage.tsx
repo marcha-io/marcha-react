@@ -107,13 +107,26 @@ const ProductDetailPage: EntryPointComponent<
                 src={imageBlob ? URL.createObjectURL(imageBlob) : ''}
                 style={{
                   width: '100%',
-                  height: '500px',
                   objectFit: 'cover',
-                  borderRadius: '8px',
                 }}
               />
             }
-          />
+          >
+            {/* Product Info */}
+            <Descriptions column={1}>
+              <Descriptions.Item label="Price">
+                ${product.price}{' '}
+              </Descriptions.Item>
+
+              <Descriptions.Item label="Status">
+                <Tag color="green">{product.condition}</Tag>
+              </Descriptions.Item>
+
+              <Descriptions.Item label="Listed">
+                {new Date(product.createdAt).toLocaleDateString()}
+              </Descriptions.Item>
+            </Descriptions>
+          </Card>
         </Col>
 
         {/* Product Details */}
@@ -123,9 +136,6 @@ const ProductDetailPage: EntryPointComponent<
             <div>
               <Title level={2} style={{ marginBottom: '8px' }}>
                 {product.name}
-              </Title>
-              <Title level={3} type="success" style={{ marginTop: 0 }}>
-                ${product.price}
               </Title>
             </div>
 
@@ -150,18 +160,6 @@ const ProductDetailPage: EntryPointComponent<
             {/* Description */}
             <Card title="Description">
               <Paragraph>{product.description}</Paragraph>
-            </Card>
-
-            {/* Product Info */}
-            <Card title="Product Information">
-              <Descriptions column={1}>
-                <Descriptions.Item label="Listed">
-                  {new Date(product.createdAt).toLocaleDateString()}
-                </Descriptions.Item>
-                <Descriptions.Item label="Status">
-                  <Tag color="green">{product.condition}</Tag>
-                </Descriptions.Item>
-              </Descriptions>
             </Card>
 
             {/* Seller Info */}
