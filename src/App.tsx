@@ -9,8 +9,8 @@ import Navbar from './components/navbar/Navbar';
 import environment from './lib/relay_environment';
 import Communities from './views/communities/Communities';
 import Feed from './views/feed/Feed.entrypoint';
+import Product from './views/feed/Product.entrypoint';
 import Home from './views/home/Home';
-import Product from './views/product/Product.entrypoint';
 import SignIn from './views/sign_up/SignIn';
 
 const App = (): React.ReactElement => {
