@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<56b12a58a67d35a828fc7ef2f0fe759a>>
+ * @generated SignedSource<<acd8a4e08612d5c6b6521427c0b013fc>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -9,6 +9,7 @@
 // @ts-nocheck
 
 import { ConcreteRequest, Query } from 'relay-runtime';
+export type ProductCondition = "Good" | "Like" | "New" | "Used" | "new" | "%future added value";
 export type ProductDetailPageQuery$variables = {
   id?: string | null | undefined;
 };
@@ -16,8 +17,9 @@ export type ProductDetailPageQuery$data = {
   readonly productsCollection: {
     readonly edges: ReadonlyArray<{
       readonly node: {
+        readonly condition: ProductCondition;
         readonly createdAt: string;
-        readonly description: string | null | undefined;
+        readonly description: string;
         readonly id: string;
         readonly image: string;
         readonly name: string;
@@ -25,7 +27,7 @@ export type ProductDetailPageQuery$data = {
         readonly user: {
           readonly avatarUrl: string | null | undefined;
           readonly id: string;
-          readonly username: string;
+          readonly username: string | null | undefined;
         } | null | undefined;
       };
     }>;
@@ -109,17 +111,24 @@ v8 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "username",
+  "name": "condition",
   "storageKey": null
 },
 v9 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "avatarUrl",
+  "name": "username",
   "storageKey": null
 },
 v10 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "avatarUrl",
+  "storageKey": null
+},
+v11 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -163,6 +172,7 @@ return {
                   (v5/*: any*/),
                   (v6/*: any*/),
                   (v7/*: any*/),
+                  (v8/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -172,8 +182,8 @@ return {
                     "plural": false,
                     "selections": [
                       (v2/*: any*/),
-                      (v8/*: any*/),
-                      (v9/*: any*/)
+                      (v9/*: any*/),
+                      (v10/*: any*/)
                     ],
                     "storageKey": null
                   }
@@ -226,6 +236,7 @@ return {
                   (v5/*: any*/),
                   (v6/*: any*/),
                   (v7/*: any*/),
+                  (v8/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -235,13 +246,13 @@ return {
                     "plural": false,
                     "selections": [
                       (v2/*: any*/),
-                      (v8/*: any*/),
                       (v9/*: any*/),
-                      (v10/*: any*/)
+                      (v10/*: any*/),
+                      (v11/*: any*/)
                     ],
                     "storageKey": null
                   },
-                  (v10/*: any*/)
+                  (v11/*: any*/)
                 ],
                 "storageKey": null
               }
@@ -254,16 +265,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "d64a2bc6a3668142b3a35dd088e51da7",
+    "cacheID": "613825f81e950c025f33d318bd4ad676",
     "id": null,
     "metadata": {},
     "name": "ProductDetailPageQuery",
     "operationKind": "query",
-    "text": "query ProductDetailPageQuery(\n  $id: BigInt\n) {\n  productsCollection(filter: {id: {eq: $id}}) {\n    edges {\n      node {\n        id\n        name\n        description\n        price\n        image\n        createdAt\n        user {\n          id\n          username\n          avatarUrl\n          nodeId\n        }\n        nodeId\n      }\n    }\n  }\n}\n"
+    "text": "query ProductDetailPageQuery(\n  $id: BigInt\n) {\n  productsCollection(filter: {id: {eq: $id}}) {\n    edges {\n      node {\n        id\n        name\n        description\n        price\n        image\n        createdAt\n        condition\n        user {\n          id\n          username\n          avatarUrl\n          nodeId\n        }\n        nodeId\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "08a58169d19203c6dc7b2ee50755e32a";
+(node as any).hash = "9acdd2148a25fba46b788193eacd80e4";
 
 export default node;

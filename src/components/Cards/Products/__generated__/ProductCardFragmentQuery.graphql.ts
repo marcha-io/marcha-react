@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<c29a14d3df0e37f09a2a9073456746d9>>
+ * @generated SignedSource<<fcb4197419d478412f743ad5c66b2d65>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -11,14 +11,14 @@
 import { Fragment, ReaderFragment } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
 export type ProductCardFragmentQuery$data = {
-  readonly description: string | null | undefined;
+  readonly description: string;
   readonly id: string;
   readonly image: string;
   readonly name: string;
   readonly price: number;
   readonly user: {
     readonly avatarUrl: string | null | undefined;
-    readonly username: string;
+    readonly username: string | null | undefined;
   } | null | undefined;
   readonly " $fragmentType": "ProductCardFragmentQuery";
 };

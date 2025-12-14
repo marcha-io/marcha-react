@@ -40,6 +40,7 @@ const productDetailQuery = graphql`
           price
           image
           createdAt
+          condition
           user {
             id
             username
@@ -158,7 +159,7 @@ const ProductDetailPage: EntryPointComponent<
                   {new Date(product.createdAt).toLocaleDateString()}
                 </Descriptions.Item>
                 <Descriptions.Item label="Status">
-                  <Tag color="green">Available</Tag>
+                  <Tag color="green">{product.condition}</Tag>
                 </Descriptions.Item>
               </Descriptions>
             </Card>

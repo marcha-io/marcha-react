@@ -15,6 +15,17 @@ input BigFloatFilter {
   neq: BigFloat
 }
 
+"""
+Boolean expression comparing fields on type "BigFloatList"
+"""
+input BigFloatListFilter {
+  containedBy: [BigFloat!]
+  contains: [BigFloat!]
+  eq: [BigFloat!]
+  is: FilterIs
+  overlaps: [BigFloat!]
+}
+
 """An arbitrary size integer represented as a string"""
 scalar BigInt
 
@@ -33,11 +44,140 @@ input BigIntFilter {
 }
 
 """
+Boolean expression comparing fields on type "BigIntList"
+"""
+input BigIntListFilter {
+  containedBy: [BigInt!]
+  contains: [BigInt!]
+  eq: [BigInt!]
+  is: FilterIs
+  overlaps: [BigInt!]
+}
+
+"""
 Boolean expression comparing fields on type "Boolean"
 """
 input BooleanFilter {
   eq: Boolean
   is: FilterIs
+}
+
+"""
+Boolean expression comparing fields on type "BooleanList"
+"""
+input BooleanListFilter {
+  containedBy: [Boolean!]
+  contains: [Boolean!]
+  eq: [Boolean!]
+  is: FilterIs
+  overlaps: [Boolean!]
+}
+
+type Categories implements Node {
+  """Globally Unique Record Identifier"""
+  nodeId: ID!
+  id: UUID!
+  createdAt: Datetime!
+  name: String!
+  attributes: JSON
+  productsCollection(
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """
+    Skip n values from the after cursor. Alternative to cursor pagination. Backward pagination not supported.
+    """
+    offset: Int
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: ProductsFilter
+
+    """Sort order to apply to the collection"""
+    orderBy: [ProductsOrderBy!]
+  ): ProductsConnection
+}
+
+type CategoriesConnection {
+  edges: [CategoriesEdge!]!
+  pageInfo: PageInfo!
+}
+
+type CategoriesDeleteResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [Categories!]!
+}
+
+type CategoriesEdge {
+  cursor: String!
+  node: Categories!
+}
+
+input CategoriesFilter {
+  id: UUIDFilter
+  createdAt: DatetimeFilter
+  name: StringFilter
+  nodeId: IDFilter
+
+  """
+  Returns true only if all its inner filters are true, otherwise returns false
+  """
+  and: [CategoriesFilter!]
+
+  """
+  Returns true if at least one of its inner filters is true, otherwise returns false
+  """
+  or: [CategoriesFilter!]
+
+  """Negates a filter"""
+  not: CategoriesFilter
+}
+
+input CategoriesInsertInput {
+  id: UUID
+  createdAt: Datetime
+  name: String
+  attributes: JSON
+}
+
+type CategoriesInsertResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [Categories!]!
+}
+
+input CategoriesOrderBy {
+  id: OrderByDirection
+  createdAt: OrderByDirection
+  name: OrderByDirection
+}
+
+input CategoriesUpdateInput {
+  id: UUID
+  createdAt: Datetime
+  name: String
+  attributes: JSON
+}
+
+type CategoriesUpdateResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [Categories!]!
 }
 
 type Communities implements Node {
@@ -46,9 +186,33 @@ type Communities implements Node {
   id: BigInt!
   createdAt: Datetime!
   name: String!
-  description: String
+  description: String!
   address: JSON!
   image: String
+  productsCommunitiesCollection(
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """
+    Skip n values from the after cursor. Alternative to cursor pagination. Backward pagination not supported.
+    """
+    offset: Int
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: ProductsCommunitiesFilter
+
+    """Sort order to apply to the collection"""
+    orderBy: [ProductsCommunitiesOrderBy!]
+  ): ProductsCommunitiesConnection
   communityUsersCollection(
     """Query the first `n` records in the collection"""
     first: Int
@@ -179,8 +343,8 @@ type CommunityUsers implements Node {
   communityId: BigInt!
   userId: UUID!
   status: CommunityUserReviewStatus!
-  user: Profiles!
-  community: Communities!
+  community: Communities
+  user: Profiles
 }
 
 type CommunityUsersConnection {
@@ -266,7 +430,7 @@ An opaque string using for tracking a position in results during pagination
 """
 scalar Cursor
 
-"""A date wihout time information"""
+"""A date without time information"""
 scalar Date
 
 """
@@ -281,6 +445,17 @@ input DateFilter {
   lt: Date
   lte: Date
   neq: Date
+}
+
+"""
+Boolean expression comparing fields on type "DateList"
+"""
+input DateListFilter {
+  containedBy: [Date!]
+  contains: [Date!]
+  eq: [Date!]
+  is: FilterIs
+  overlaps: [Date!]
 }
 
 """A date and time"""
@@ -300,6 +475,17 @@ input DatetimeFilter {
   neq: Datetime
 }
 
+"""
+Boolean expression comparing fields on type "DatetimeList"
+"""
+input DatetimeListFilter {
+  containedBy: [Datetime!]
+  contains: [Datetime!]
+  eq: [Datetime!]
+  is: FilterIs
+  overlaps: [Datetime!]
+}
+
 enum FilterIs {
   NULL
   NOT_NULL
@@ -317,6 +503,17 @@ input FloatFilter {
   lt: Float
   lte: Float
   neq: Float
+}
+
+"""
+Boolean expression comparing fields on type "FloatList"
+"""
+input FloatListFilter {
+  containedBy: [Float!]
+  contains: [Float!]
+  eq: [Float!]
+  is: FilterIs
+  overlaps: [Float!]
 }
 
 """
@@ -340,11 +537,118 @@ input IntFilter {
   neq: Int
 }
 
+"""
+Boolean expression comparing fields on type "IntList"
+"""
+input IntListFilter {
+  containedBy: [Int!]
+  contains: [Int!]
+  eq: [Int!]
+  is: FilterIs
+  overlaps: [Int!]
+}
+
 """A Javascript Object Notation value serialized as a string"""
 scalar JSON
 
+type Likes implements Node {
+  """Globally Unique Record Identifier"""
+  nodeId: ID!
+  id: BigInt!
+  userId: UUID
+  productId: BigInt
+  createdAt: Datetime
+  product: Products
+  user: Profiles
+}
+
+type LikesConnection {
+  edges: [LikesEdge!]!
+  pageInfo: PageInfo!
+}
+
+type LikesDeleteResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [Likes!]!
+}
+
+type LikesEdge {
+  cursor: String!
+  node: Likes!
+}
+
+input LikesFilter {
+  id: BigIntFilter
+  userId: UUIDFilter
+  productId: BigIntFilter
+  createdAt: DatetimeFilter
+  nodeId: IDFilter
+
+  """
+  Returns true only if all its inner filters are true, otherwise returns false
+  """
+  and: [LikesFilter!]
+
+  """
+  Returns true if at least one of its inner filters is true, otherwise returns false
+  """
+  or: [LikesFilter!]
+
+  """Negates a filter"""
+  not: LikesFilter
+}
+
+input LikesInsertInput {
+  userId: UUID
+  productId: BigInt
+  createdAt: Datetime
+}
+
+type LikesInsertResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [Likes!]!
+}
+
+input LikesOrderBy {
+  id: OrderByDirection
+  userId: OrderByDirection
+  productId: OrderByDirection
+  createdAt: OrderByDirection
+}
+
+input LikesUpdateInput {
+  userId: UUID
+  productId: BigInt
+  createdAt: Datetime
+}
+
+type LikesUpdateResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [Likes!]!
+}
+
 """The root type for creating and mutating data"""
 type Mutation {
+  """Deletes zero or more records from the `Categories` collection"""
+  deleteFromCategoriesCollection(
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: CategoriesFilter
+
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+  ): CategoriesDeleteResponse!
+
   """Deletes zero or more records from the `Communities` collection"""
   deleteFromCommunitiesCollection(
     """Restricts the mutation's impact to records matching the criteria"""
@@ -367,6 +671,17 @@ type Mutation {
     atMost: Int! = 1
   ): CommunityUsersDeleteResponse!
 
+  """Deletes zero or more records from the `Likes` collection"""
+  deleteFromLikesCollection(
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: LikesFilter
+
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+  ): LikesDeleteResponse!
+
   """Deletes zero or more records from the `Products` collection"""
   deleteFromProductsCollection(
     """Restricts the mutation's impact to records matching the criteria"""
@@ -377,6 +692,17 @@ type Mutation {
     """
     atMost: Int! = 1
   ): ProductsDeleteResponse!
+
+  """Deletes zero or more records from the `ProductsCommunities` collection"""
+  deleteFromProductsCommunitiesCollection(
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: ProductsCommunitiesFilter
+
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+  ): ProductsCommunitiesDeleteResponse!
 
   """Deletes zero or more records from the `ProfileAddresses` collection"""
   deleteFromProfileAddressesCollection(
@@ -400,20 +726,45 @@ type Mutation {
     atMost: Int! = 1
   ): ProfilesDeleteResponse!
 
+  """Adds one or more `Categories` records to the collection"""
+  insertIntoCategoriesCollection(objects: [CategoriesInsertInput!]!): CategoriesInsertResponse
+
   """Adds one or more `Communities` records to the collection"""
   insertIntoCommunitiesCollection(objects: [CommunitiesInsertInput!]!): CommunitiesInsertResponse
 
   """Adds one or more `CommunityUsers` records to the collection"""
   insertIntoCommunityUsersCollection(objects: [CommunityUsersInsertInput!]!): CommunityUsersInsertResponse
 
+  """Adds one or more `Likes` records to the collection"""
+  insertIntoLikesCollection(objects: [LikesInsertInput!]!): LikesInsertResponse
+
   """Adds one or more `Products` records to the collection"""
   insertIntoProductsCollection(objects: [ProductsInsertInput!]!): ProductsInsertResponse
+
+  """Adds one or more `ProductsCommunities` records to the collection"""
+  insertIntoProductsCommunitiesCollection(objects: [ProductsCommunitiesInsertInput!]!): ProductsCommunitiesInsertResponse
 
   """Adds one or more `ProfileAddresses` records to the collection"""
   insertIntoProfileAddressesCollection(objects: [ProfileAddressesInsertInput!]!): ProfileAddressesInsertResponse
 
   """Adds one or more `Profiles` records to the collection"""
   insertIntoProfilesCollection(objects: [ProfilesInsertInput!]!): ProfilesInsertResponse
+
+  """Updates zero or more records in the `Categories` collection"""
+  updateCategoriesCollection(
+    """
+    Fields that are set will be updated for all records matching the `filter`
+    """
+    set: CategoriesUpdateInput!
+
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: CategoriesFilter
+
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+  ): CategoriesUpdateResponse!
 
   """Updates zero or more records in the `Communities` collection"""
   updateCommunitiesCollection(
@@ -447,6 +798,22 @@ type Mutation {
     atMost: Int! = 1
   ): CommunityUsersUpdateResponse!
 
+  """Updates zero or more records in the `Likes` collection"""
+  updateLikesCollection(
+    """
+    Fields that are set will be updated for all records matching the `filter`
+    """
+    set: LikesUpdateInput!
+
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: LikesFilter
+
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+  ): LikesUpdateResponse!
+
   """Updates zero or more records in the `Products` collection"""
   updateProductsCollection(
     """
@@ -462,6 +829,22 @@ type Mutation {
     """
     atMost: Int! = 1
   ): ProductsUpdateResponse!
+
+  """Updates zero or more records in the `ProductsCommunities` collection"""
+  updateProductsCommunitiesCollection(
+    """
+    Fields that are set will be updated for all records matching the `filter`
+    """
+    set: ProductsCommunitiesUpdateInput!
+
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: ProductsCommunitiesFilter
+
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+  ): ProductsCommunitiesUpdateResponse!
 
   """Updates zero or more records in the `ProfileAddresses` collection"""
   updateProfileAddressesCollection(
@@ -494,6 +877,7 @@ type Mutation {
     """
     atMost: Int! = 1
   ): ProfilesUpdateResponse!
+  userHasProductAccess(pProductId: BigInt!): Boolean
 }
 
 interface Node {
@@ -534,6 +918,23 @@ type PageInfo {
   startCursor: String
 }
 
+enum ProductCondition {
+  New
+  Like_new
+  Good
+  Used
+}
+
+"""
+Boolean expression comparing fields on type "ProductCondition"
+"""
+input ProductConditionFilter {
+  eq: ProductCondition
+  in: [ProductCondition!]
+  is: FilterIs
+  neq: ProductCondition
+}
+
 type Products implements Node {
   """Globally Unique Record Identifier"""
   nodeId: ID!
@@ -542,9 +943,146 @@ type Products implements Node {
   name: String!
   price: Float!
   image: String!
-  description: String
-  userId: UUID
+  description: String!
+  userId: UUID!
+  categoryId: UUID
+  condition: ProductCondition!
+  isPublic: Boolean!
+  category: Categories
   user: Profiles
+  likesCollection(
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """
+    Skip n values from the after cursor. Alternative to cursor pagination. Backward pagination not supported.
+    """
+    offset: Int
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: LikesFilter
+
+    """Sort order to apply to the collection"""
+    orderBy: [LikesOrderBy!]
+  ): LikesConnection
+  productsCommunitiesCollection(
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """
+    Skip n values from the after cursor. Alternative to cursor pagination. Backward pagination not supported.
+    """
+    offset: Int
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: ProductsCommunitiesFilter
+
+    """Sort order to apply to the collection"""
+    orderBy: [ProductsCommunitiesOrderBy!]
+  ): ProductsCommunitiesConnection
+}
+
+type ProductsCommunities implements Node {
+  """Globally Unique Record Identifier"""
+  nodeId: ID!
+  id: BigInt!
+  createdAt: Datetime!
+  productId: BigInt!
+  communityId: BigInt
+  community: Communities
+  product: Products
+}
+
+type ProductsCommunitiesConnection {
+  edges: [ProductsCommunitiesEdge!]!
+  pageInfo: PageInfo!
+}
+
+type ProductsCommunitiesDeleteResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [ProductsCommunities!]!
+}
+
+type ProductsCommunitiesEdge {
+  cursor: String!
+  node: ProductsCommunities!
+}
+
+input ProductsCommunitiesFilter {
+  id: BigIntFilter
+  createdAt: DatetimeFilter
+  productId: BigIntFilter
+  communityId: BigIntFilter
+  nodeId: IDFilter
+
+  """
+  Returns true only if all its inner filters are true, otherwise returns false
+  """
+  and: [ProductsCommunitiesFilter!]
+
+  """
+  Returns true if at least one of its inner filters is true, otherwise returns false
+  """
+  or: [ProductsCommunitiesFilter!]
+
+  """Negates a filter"""
+  not: ProductsCommunitiesFilter
+}
+
+input ProductsCommunitiesInsertInput {
+  createdAt: Datetime
+  productId: BigInt
+  communityId: BigInt
+}
+
+type ProductsCommunitiesInsertResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [ProductsCommunities!]!
+}
+
+input ProductsCommunitiesOrderBy {
+  id: OrderByDirection
+  createdAt: OrderByDirection
+  productId: OrderByDirection
+  communityId: OrderByDirection
+}
+
+input ProductsCommunitiesUpdateInput {
+  createdAt: Datetime
+  productId: BigInt
+  communityId: BigInt
+}
+
+type ProductsCommunitiesUpdateResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [ProductsCommunities!]!
 }
 
 type ProductsConnection {
@@ -573,6 +1111,9 @@ input ProductsFilter {
   image: StringFilter
   description: StringFilter
   userId: UUIDFilter
+  categoryId: UUIDFilter
+  condition: ProductConditionFilter
+  isPublic: BooleanFilter
   nodeId: IDFilter
 
   """
@@ -596,6 +1137,9 @@ input ProductsInsertInput {
   image: String
   description: String
   userId: UUID
+  categoryId: UUID
+  condition: ProductCondition
+  isPublic: Boolean
 }
 
 type ProductsInsertResponse {
@@ -614,6 +1158,9 @@ input ProductsOrderBy {
   image: OrderByDirection
   description: OrderByDirection
   userId: OrderByDirection
+  categoryId: OrderByDirection
+  condition: OrderByDirection
+  isPublic: OrderByDirection
 }
 
 input ProductsUpdateInput {
@@ -623,6 +1170,9 @@ input ProductsUpdateInput {
   image: String
   description: String
   userId: UUID
+  categoryId: UUID
+  condition: ProductCondition
+  isPublic: Boolean
 }
 
 type ProductsUpdateResponse {
@@ -645,7 +1195,7 @@ type ProfileAddresses implements Node {
   postcode: String!
   country: String!
   userId: UUID!
-  user: Profiles!
+  user: Profiles
 }
 
 type ProfileAddressesConnection {
@@ -747,12 +1297,37 @@ type Profiles implements Node {
   nodeId: ID!
   id: UUID!
   updatedAt: Datetime!
-  username: String!
+  username: String
   avatarUrl: String
-  firstName: String!
-  lastName: String!
-  description: String!
+  firstName: String
+  lastName: String
+  description: String
   onboarded: Boolean!
+  likesCollection(
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """
+    Skip n values from the after cursor. Alternative to cursor pagination. Backward pagination not supported.
+    """
+    offset: Int
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: LikesFilter
+
+    """Sort order to apply to the collection"""
+    orderBy: [LikesOrderBy!]
+  ): LikesConnection
+  communityUsers: CommunityUsers
   productsCollection(
     """Query the first `n` records in the collection"""
     first: Int
@@ -777,7 +1352,6 @@ type Profiles implements Node {
     """Sort order to apply to the collection"""
     orderBy: [ProductsOrderBy!]
   ): ProductsConnection
-  communityUsers: CommunityUsers
   profileAddressesCollection(
     """Query the first `n` records in the collection"""
     first: Int
@@ -898,6 +1472,32 @@ type ProfilesUpdateResponse {
 
 """The root type for querying data"""
 type Query {
+  """A pagable collection of type `Categories`"""
+  categoriesCollection(
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """
+    Skip n values from the after cursor. Alternative to cursor pagination. Backward pagination not supported.
+    """
+    offset: Int
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: CategoriesFilter
+
+    """Sort order to apply to the collection"""
+    orderBy: [CategoriesOrderBy!]
+  ): CategoriesConnection
+
   """A pagable collection of type `Communities`"""
   communitiesCollection(
     """Query the first `n` records in the collection"""
@@ -950,6 +1550,32 @@ type Query {
     orderBy: [CommunityUsersOrderBy!]
   ): CommunityUsersConnection
 
+  """A pagable collection of type `Likes`"""
+  likesCollection(
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """
+    Skip n values from the after cursor. Alternative to cursor pagination. Backward pagination not supported.
+    """
+    offset: Int
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: LikesFilter
+
+    """Sort order to apply to the collection"""
+    orderBy: [LikesOrderBy!]
+  ): LikesConnection
+
   """Retrieve a record by its `ID`"""
   node(
     """The record's `ID`"""
@@ -981,6 +1607,32 @@ type Query {
     """Sort order to apply to the collection"""
     orderBy: [ProductsOrderBy!]
   ): ProductsConnection
+
+  """A pagable collection of type `ProductsCommunities`"""
+  productsCommunitiesCollection(
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """
+    Skip n values from the after cursor. Alternative to cursor pagination. Backward pagination not supported.
+    """
+    offset: Int
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: ProductsCommunitiesFilter
+
+    """Sort order to apply to the collection"""
+    orderBy: [ProductsCommunitiesOrderBy!]
+  ): ProductsCommunitiesConnection
 
   """A pagable collection of type `ProfileAddresses`"""
   profileAddressesCollection(
@@ -1054,6 +1706,17 @@ input StringFilter {
   startsWith: String
 }
 
+"""
+Boolean expression comparing fields on type "StringList"
+"""
+input StringListFilter {
+  containedBy: [String!]
+  contains: [String!]
+  eq: [String!]
+  is: FilterIs
+  overlaps: [String!]
+}
+
 """A time without date information"""
 scalar Time
 
@@ -1071,6 +1734,17 @@ input TimeFilter {
   neq: Time
 }
 
+"""
+Boolean expression comparing fields on type "TimeList"
+"""
+input TimeListFilter {
+  containedBy: [Time!]
+  contains: [Time!]
+  eq: [Time!]
+  is: FilterIs
+  overlaps: [Time!]
+}
+
 """A universally unique identifier"""
 scalar UUID
 
@@ -1082,5 +1756,16 @@ input UUIDFilter {
   in: [UUID!]
   is: FilterIs
   neq: UUID
+}
+
+"""
+Boolean expression comparing fields on type "UUIDList"
+"""
+input UUIDListFilter {
+  containedBy: [UUID!]
+  contains: [UUID!]
+  eq: [UUID!]
+  is: FilterIs
+  overlaps: [UUID!]
 }
 
