@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<4ff012b5d3f4ec4d47895f470d10c162>>
+ * @generated SignedSource<<e8f529efc767f909296f4acc290321ac>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -10,8 +10,8 @@
 
 import { ConcreteRequest, Query } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
-export type ProductsContainerWrapperQuery$variables = Record<PropertyKey, never>;
-export type ProductsContainerWrapperQuery$data = {
+export type ProductsContainerEntryPointQuery$variables = Record<PropertyKey, never>;
+export type ProductsContainerEntryPointQuery$data = {
   readonly productsCollection: {
     readonly edges: ReadonlyArray<{
       readonly node: {
@@ -20,9 +20,9 @@ export type ProductsContainerWrapperQuery$data = {
     }>;
   } | null | undefined;
 };
-export type ProductsContainerWrapperQuery = {
-  response: ProductsContainerWrapperQuery$data;
-  variables: ProductsContainerWrapperQuery$variables;
+export type ProductsContainerEntryPointQuery = {
+  response: ProductsContainerEntryPointQuery$data;
+  variables: ProductsContainerEntryPointQuery$variables;
 };
 
 const node: ConcreteRequest = (function(){
@@ -38,7 +38,7 @@ return {
     "argumentDefinitions": [],
     "kind": "Fragment",
     "metadata": null,
-    "name": "ProductsContainerWrapperQuery",
+    "name": "ProductsContainerEntryPointQuery",
     "selections": [
       {
         "alias": null,
@@ -86,7 +86,7 @@ return {
   "operation": {
     "argumentDefinitions": [],
     "kind": "Operation",
-    "name": "ProductsContainerWrapperQuery",
+    "name": "ProductsContainerEntryPointQuery",
     "selections": [
       {
         "alias": null,
@@ -143,13 +143,6 @@ return {
                   {
                     "alias": null,
                     "args": null,
-                    "kind": "ScalarField",
-                    "name": "id",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
                     "concreteType": "Profiles",
                     "kind": "LinkedField",
                     "name": "user",
@@ -186,16 +179,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "1b50a36e2bdf994830d50fefbc35423c",
+    "cacheID": "07d877d0d3f71e1948c9f0a03b5580c3",
     "id": null,
     "metadata": {},
-    "name": "ProductsContainerWrapperQuery",
+    "name": "ProductsContainerEntryPointQuery",
     "operationKind": "query",
-    "text": "query ProductsContainerWrapperQuery {\n  productsCollection {\n    edges {\n      node {\n        ...ProductCardFragmentQuery\n        nodeId\n      }\n    }\n  }\n}\n\nfragment ProductCardFragmentQuery on Products {\n  name\n  description\n  price\n  image\n  id\n  user {\n    avatarUrl\n    username\n    nodeId\n  }\n}\n"
+    "text": "query ProductsContainerEntryPointQuery {\n  productsCollection {\n    edges {\n      node {\n        ...ProductCardFragmentQuery\n        nodeId\n      }\n    }\n  }\n}\n\nfragment ProductCardFragmentQuery on Products {\n  name\n  description\n  price\n  image\n  user {\n    avatarUrl\n    username\n    nodeId\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "ff5e9c6aedc4cabb6df976ded11512cf";
+(node as any).hash = "cd6dd848ab491dbe11700e895daaa8b9";
 
 export default node;

@@ -1,6 +1,6 @@
+import { Layout, theme } from 'antd';
 import { Content, Footer } from 'antd/es/layout/layout';
 import Title from 'antd/es/typography/Title';
-import { Layout, theme } from 'antd/lib';
 import React, { useState } from 'react';
 import { RelayEnvironmentProvider } from 'react-relay';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
@@ -9,6 +9,7 @@ import Navbar from './components/navbar/Navbar';
 import environment from './lib/relay_environment';
 import Communities from './views/communities/Communities';
 import Feed from './views/feed/Feed.entrypoint';
+import Product from './views/feed/Product.entrypoint';
 import Home from './views/home/Home';
 import SignIn from './views/sign_up/SignIn';
 
@@ -39,7 +40,10 @@ const App = (): React.ReactElement => {
               <Routes>
                 <Route index element={<Home />} />
                 <Route path="/communities" element={<Communities />} />
-                <Route path="/feed" element={<Feed />} />
+                <Route path="/feed">
+                  <Route index element={<Feed />} />
+                  <Route path=":product_id" element={<Product />} />
+                </Route>
                 <Route
                   path="/sign_in"
                   element={<SignIn setIsUserLoggedIn={setIsUserLoggedIn} />}

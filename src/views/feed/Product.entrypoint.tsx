@@ -5,33 +5,39 @@ import {
   useEntryPointLoader,
   useRelayEnvironment,
 } from 'react-relay';
+import { useNavigate, useParams } from 'react-router-dom';
 
-import ProductsContainerWrapperQuery from '../../components/Cards/Products/__generated__/ProductsContainerWrapperQuery.graphql';
+import ProductDetailPageQuery from '../../components/Cards/Products/__generated__/ProductDetailPageQuery.graphql';
 import { createEntryPoint } from '../../utils/create_entrypoint';
 import JSResource from '../../utils/make_resource';
 
-const FeedEntryPoint = createEntryPoint({
-  root: JSResource('ProductCardsContainerWrapper', () =>
-    import('../../components/Cards/Products/ProductsContainerWrapper').then(
+type Params = {
+  product_id: string;
+};
+
+const ProductEntryPoint = createEntryPoint({
+  root: JSResource('ProductDetailPage', () =>
+    import('../../components/Cards/Products/ProductDetailPage').then(
       (module) => {
         return module.default;
       }
     )
   ),
-  getPreloadProps() {
+  getPreloadProps(params: Params) {
     return {
       queries: {
-        productsContainerWrapperQuery: {
-          parameters: ProductsContainerWrapperQuery,
-          variables: {},
+        productDetailPageQuery: {
+          parameters: ProductDetailPageQuery,
+          variables: { id: params.product_id },
         },
       },
     } as const;
   },
 });
 
-const Feed = (): React.ReactElement | null => {
+const ProductDetailPage = (): React.ReactElement | null => {
   const relayEnvironment = useRelayEnvironment();
+  const navigation = useNavigate();
 
   const environmentProvider = useMemo(
     () => ({ getEnvironment: () => relayEnvironment }),
@@ -40,14 +46,20 @@ const Feed = (): React.ReactElement | null => {
 
   const [entryPointRef, loadEntryPoint] = useEntryPointLoader(
     environmentProvider,
-    FeedEntryPoint
+    ProductEntryPoint
   );
+
+  const { product_id } = useParams();
+  if (product_id == null) {
+    navigation('/feed');
+    return <></>;
+  }
 
   useEffect(() => {
     if (entryPointRef == null) {
-      loadEntryPoint({});
+      loadEntryPoint({ product_id });
     }
-  }, []);
+  }, [product_id]);
 
   if (!entryPointRef) return null;
 
@@ -64,4 +76,4 @@ const Feed = (): React.ReactElement | null => {
   );
 };
 
-export default Feed;
+export default ProductDetailPage;

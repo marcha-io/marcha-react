@@ -1,5 +1,5 @@
+import { Col, Image, Menu, MenuProps, Row } from 'antd';
 import { Header } from 'antd/es/layout/layout';
-import { Col, Image, Menu, MenuProps, Row } from 'antd/lib';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
