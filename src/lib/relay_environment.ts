@@ -3,7 +3,9 @@ import {
   FetchFunction,
   Network,
   RecordSource,
+  RecordSourceSelectorProxy,
   Store,
+  commitLocalUpdate,
 } from 'relay-runtime';
 
 import { SUPABASE_ANON_KEY, SUPABASE_URL, supabase } from './supabase';
@@ -50,5 +52,10 @@ const environment = new Environment({
     },
   ],
 });
+
+export const invalidateRelayStore = () =>
+  commitLocalUpdate(environment, (store: RecordSourceSelectorProxy) => {
+    store.invalidateStore();
+  });
 
 export default environment;

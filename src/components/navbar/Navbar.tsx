@@ -1,15 +1,16 @@
 import { Col, Image, Menu, MenuProps, Row } from 'antd';
 import { Header } from 'antd/es/layout/layout';
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react';
+import { Link, useLocation } from 'react-router-dom';
 
+import { Paths } from '../../views/paths';
 import UserSignUpIcon from './UserSignUpIcon';
 
 const items: MenuProps['items'] = [
   {
-    key: 'logo',
+    key: Paths.Main,
     label: (
-      <Link rel="noopener noreferrer" to="/">
+      <Link rel="noopener noreferrer" to={Paths.Main}>
         <Image
           src="/assets/marcha_logo.png"
           preview={false}
@@ -24,17 +25,17 @@ const items: MenuProps['items'] = [
     type: 'divider',
   },
   {
-    key: 'communities',
+    key: Paths.Communities,
     label: (
-      <Link rel="noopener noreferrer" to="/communities">
+      <Link rel="noopener noreferrer" to={Paths.Communities}>
         Communities
       </Link>
     ),
   },
   {
-    key: 'feed',
+    key: Paths.Feed,
     label: (
-      <Link rel="noopener noreferrer" to="/feed">
+      <Link rel="noopener noreferrer" to={Paths.Feed}>
         Feed
       </Link>
     ),
@@ -50,8 +51,6 @@ const Navbar = ({
   isUserLoggedIn,
   setIsUserLoggedIn,
 }: Props): React.ReactElement => {
-  const [selectedKey, setSelectedKey] = useState('logo');
-
   return (
     <Header
       style={{
@@ -65,8 +64,7 @@ const Navbar = ({
         <Col span={20}>
           <Menu
             mode="horizontal"
-            selectedKeys={[selectedKey]}
-            onSelect={(item) => setSelectedKey(item.key)}
+            selectedKeys={[useLocation().pathname]}
             items={items}
           />
         </Col>
