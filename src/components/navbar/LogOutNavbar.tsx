@@ -1,6 +1,9 @@
 import { notification } from 'antd';
+import { useNavigate } from 'react-router-dom';
 
+import { invalidateRelayStore } from '../../lib/relay_environment';
 import { supabase } from '../../lib/supabase';
+import { Paths } from '../../views/paths';
 
 type Props = {
   setIsUserLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
@@ -8,6 +11,7 @@ type Props = {
 
 function LogOutNavbar({ setIsUserLoggedIn }: Props): React.ReactElement {
   const [api, contextHolder] = notification.useNotification();
+  const navigate = useNavigate();
 
   const logOut = () => {
     supabase.auth.signOut().then(({ error }) => {
@@ -26,7 +30,10 @@ function LogOutNavbar({ setIsUserLoggedIn }: Props): React.ReactElement {
         duration: 2,
         pauseOnHover: false,
       });
+
+      invalidateRelayStore();
       setIsUserLoggedIn(false);
+      navigate(Paths.Main);
     });
   };
 

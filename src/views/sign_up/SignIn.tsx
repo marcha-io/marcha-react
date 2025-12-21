@@ -12,7 +12,9 @@ import { Header } from 'antd/es/layout/layout';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { invalidateRelayStore } from '../../lib/relay_environment';
 import { supabase } from '../../lib/supabase';
+import { Paths } from '../paths';
 
 type TSignInForm = {
   email: string;
@@ -50,8 +52,9 @@ const SignIn = ({ setIsUserLoggedIn }: Props): React.ReactElement => {
     }
 
     api.success({ title: 'Sign in successful!' });
+    invalidateRelayStore();
     setIsUserLoggedIn(true);
-    navigate('/');
+    navigate(Paths.Main);
   };
 
   return (
