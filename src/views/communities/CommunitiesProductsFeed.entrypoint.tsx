@@ -5,36 +5,36 @@ import {
   useEntryPointLoader,
   useRelayEnvironment,
 } from 'react-relay';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useNavigation, useParams } from 'react-router-dom';
 
-import ProductDetailPageQuery from '../../components//Products/__generated__/ProductDetailPageQuery.graphql';
+import CommunitiesProductsContainerWrapperQuery from '../../components/communities/products/__generated__/CommunitiesProductsContainerWrapperQuery.graphql';
 import { createEntryPoint } from '../../utils/create_entrypoint';
 import JSResource from '../../utils/make_resource';
 import { Paths } from '../paths';
 
-type Params = {
-  product_id: string;
-};
+type Params = { community_id: string };
 
-const ProductEntryPoint = createEntryPoint({
-  root: JSResource('ProductDetailPage', () =>
-    import('../../components/Products/ProductDetailPage').then((module) => {
+const CommunitiesProductsFeedEntryPoint = createEntryPoint({
+  root: JSResource('CommunitiesProductsContainerWrapper', () =>
+    import(
+      '../../components/communities/products/CommunitiesProductsContainerWrapper'
+    ).then((module) => {
       return module.default;
     })
   ),
   getPreloadProps(params: Params) {
     return {
       queries: {
-        productDetailPageQuery: {
-          parameters: ProductDetailPageQuery,
-          variables: { id: params.product_id },
+        communitiesProductsContainerWrapperQuery: {
+          parameters: CommunitiesProductsContainerWrapperQuery,
+          variables: { id: params.community_id },
         },
       },
     } as const;
   },
 });
 
-const ProductDetailPage = (): React.ReactElement | null => {
+const CommunitiesProductsFeed = (): React.ReactElement | null => {
   const relayEnvironment = useRelayEnvironment();
   const navigation = useNavigate();
 
@@ -45,20 +45,20 @@ const ProductDetailPage = (): React.ReactElement | null => {
 
   const [entryPointRef, loadEntryPoint] = useEntryPointLoader(
     environmentProvider,
-    ProductEntryPoint
+    CommunitiesProductsFeedEntryPoint
   );
 
-  const { product_id } = useParams();
-  if (product_id == null) {
-    navigation(Paths.Feed);
+  const { community_id } = useParams();
+  if (community_id == null) {
+    navigation(Paths.Communities);
     return <></>;
   }
 
   useEffect(() => {
     if (entryPointRef == null) {
-      loadEntryPoint({ product_id });
+      loadEntryPoint({ community_id });
     }
-  }, [product_id]);
+  }, []);
 
   if (!entryPointRef) return null;
 
@@ -66,7 +66,7 @@ const ProductDetailPage = (): React.ReactElement | null => {
     <Suspense
       fallback={
         <Flex gap={12} wrap="wrap" justify="center">
-          <Spin tip="Loading Products..." size="large" />{' '}
+          <Spin tip="Loading Products in Community..." size="large" />{' '}
         </Flex>
       }
     >
@@ -75,4 +75,4 @@ const ProductDetailPage = (): React.ReactElement | null => {
   );
 };
 
-export default ProductDetailPage;
+export default CommunitiesProductsFeed;

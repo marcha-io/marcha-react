@@ -4,6 +4,7 @@ import { useFragment } from 'react-relay';
 import { useNavigate } from 'react-router-dom';
 
 import fetchFromStorage from '../../utils/fetch_from_storage';
+import { Paths } from '../../views/paths';
 import GeneralCard from '../Cards/GeneralCard';
 import { ProductCardFragmentQuery$key } from './__generated__/ProductCardFragmentQuery.graphql';
 
@@ -49,7 +50,7 @@ const ProductCard = ({ fragmentRef, hoverable }: Props): React.ReactElement => {
     <GeneralCard
       name={product.name}
       description={product.description}
-      onClick={() => navigation(`${product.id}`)}
+      onClick={() => navigation(`${Paths.Feed}/${product.id}`)}
       hoverable={hoverable}
       imageBlob={imageBlob}
       avatarBlob={avatarBlob}

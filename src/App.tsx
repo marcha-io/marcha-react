@@ -9,6 +9,7 @@ import Navbar from './components/navbar/Navbar';
 import environment from './lib/relay_environment';
 import { supabase } from './lib/supabase';
 import CommunitiesFeed from './views/communities/CommunitiesFeed.entrypoint';
+import CommunitiesProductsFeed from './views/communities/CommunitiesProductsFeed.entrypoint';
 import Feed from './views/feed/Feed.entrypoint';
 import Product from './views/feed/Product.entrypoint';
 import Home from './views/home/Home';
@@ -47,7 +48,13 @@ const App = (): React.ReactElement => {
             >
               <Routes>
                 <Route index element={<Home />} />
-                <Route path={Paths.Communities} element={<CommunitiesFeed />} />
+                <Route path={Paths.Communities}>
+                  <Route index element={<CommunitiesFeed />} />
+                  <Route
+                    path=":community_id"
+                    element={<CommunitiesProductsFeed />}
+                  />
+                </Route>
                 <Route path={Paths.Feed}>
                   <Route index element={<Feed />} />
                   <Route path=":product_id" element={<Product />} />
