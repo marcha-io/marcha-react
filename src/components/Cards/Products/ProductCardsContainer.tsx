@@ -16,7 +16,7 @@ const ProductCardsContainer = ({ data }: Props): React.ReactElement => {
       {edges?.length ? (
         edges?.map((fragment) => (
           <Suspense fallback={<Card loading={true} />}>
-            <ProductCard fragmentRef={fragment.node} hoverable={true} />
+            <ProductCard fragmentRef={fragment.node} />
           </Suspense>
         ))
       ) : (

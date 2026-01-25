@@ -1,13 +1,11 @@
-import { Avatar, Card } from 'antd';
 import graphql from 'babel-plugin-relay/macro';
 import { useEffect, useState } from 'react';
 import { useFragment } from 'react-relay';
 import { useNavigate } from 'react-router-dom';
 
 import fetchFromStorage from '../../../utils/fetch_from_storage';
+import GeneralCard from '../GeneralCard';
 import { ProductCardFragmentQuery$key } from './__generated__/ProductCardFragmentQuery.graphql';
-
-const { Meta } = Card;
 
 type Props = {
   fragmentRef: ProductCardFragmentQuery$key;
@@ -28,10 +26,8 @@ const productFragmentQuery = graphql`
   }
 `;
 
-const AVATAR_DEFAULT = 'https://api.dicebear.com/7.x/miniavs/svg?seed=8';
-
 const ProductCard = ({ fragmentRef, hoverable }: Props): React.ReactElement => {
-  const [imageBlob, setImageBlob] = useState<Blob | null>(null);
+  const [imageBlob, setImageBlob] = useState<Blob>(new Blob());
   const [avatarBlob, setAvatarBlob] = useState<Blob | null>(null);
 
   const product = useFragment(productFragmentQuery, fragmentRef);
@@ -39,7 +35,7 @@ const ProductCard = ({ fragmentRef, hoverable }: Props): React.ReactElement => {
 
   useEffect(() => {
     fetchFromStorage(product.image, 'product-images').then((blob) =>
-      setImageBlob(blob)
+      setImageBlob(blob ?? imageBlob)
     );
     fetchFromStorage(product.user?.avatarUrl ?? '', 'avatars').then((blob) =>
       setAvatarBlob(blob)
@@ -47,28 +43,15 @@ const ProductCard = ({ fragmentRef, hoverable }: Props): React.ReactElement => {
   }, [product]);
 
   return (
-    <Card
-      hoverable={hoverable}
-      style={{ width: 300, height: 350 }}
-      cover={
-        <img
-          height={250}
-          alt={product.name}
-          src={imageBlob ? URL.createObjectURL(imageBlob) : ''}
-        />
-      }
+    <GeneralCard
+      name={product.name}
+      description={product.description}
       onClick={() => navigation(`${product.id}`)}
-    >
-      <Meta
-        avatar={
-          <Avatar
-            src={avatarBlob ? URL.createObjectURL(avatarBlob) : AVATAR_DEFAULT}
-          />
-        }
-        title={product.name}
-        description={product.description}
-      />
-    </Card>
+      hoverable={hoverable}
+      imageBlob={imageBlob}
+      avatarBlob={avatarBlob}
+      hasAvatar={true}
+    />
   );
 };
 
