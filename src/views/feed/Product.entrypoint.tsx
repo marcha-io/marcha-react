@@ -7,7 +7,7 @@ import {
 } from 'react-relay';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import ProductDetailPageQuery from '../../components/Cards/Products/__generated__/ProductDetailPageQuery.graphql';
+import ProductDetailPageQuery from '../../components/products/__generated__/ProductDetailPageQuery.graphql';
 import { createEntryPoint } from '../../utils/create_entrypoint';
 import JSResource from '../../utils/make_resource';
 
@@ -17,7 +17,7 @@ type Params = {
 
 const ProductEntryPoint = createEntryPoint({
   root: JSResource('ProductDetailPage', () =>
-    import('../../components/Products/ProductDetailPage').then((module) => {
+    import('../../components/products/ProductDetailPage').then((module) => {
       return module.default;
     })
   ),
