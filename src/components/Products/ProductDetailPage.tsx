@@ -25,7 +25,7 @@ import {
 } from 'react-relay';
 import { useNavigate } from 'react-router-dom';
 
-import fetchFromStorage from '../../../utils/fetch_from_storage';
+import fetchFromStorage from '../../utils/fetch_from_storage';
 import { ProductDetailPageQuery } from './__generated__/ProductDetailPageQuery.graphql';
 
 const { Title, Paragraph } = Typography;

@@ -17,11 +17,9 @@ type Params = {
 
 const ProductEntryPoint = createEntryPoint({
   root: JSResource('ProductDetailPage', () =>
-    import('../../components/Cards/Products/ProductDetailPage').then(
-      (module) => {
-        return module.default;
-      }
-    )
+    import('../../components/Products/ProductDetailPage').then((module) => {
+      return module.default;
+    })
   ),
   getPreloadProps(params: Params) {
     return {
