@@ -6,13 +6,13 @@ import {
   useRelayEnvironment,
 } from 'react-relay';
 
-import ProductsContainerWrapperQuery from '../../components/products/__generated__/ProductsContainerWrapperQuery.graphql';
+import ProductsContainerWrapperQuery from '../../components/Products/__generated__/ProductsContainerWrapperQuery.graphql';
 import { createEntryPoint } from '../../utils/create_entrypoint';
 import JSResource from '../../utils/make_resource';
 
 const FeedEntryPoint = createEntryPoint({
   root: JSResource('ProductCardsContainerWrapper', () =>
-    import('../../components/products/ProductsContainerWrapper').then(
+    import('../../components/Products/ProductsContainerWrapper').then(
       (module) => {
         return module.default;
       }
