@@ -50,7 +50,6 @@ const CommunitiesCard = ({ fragmentRef }: Props) => {
       name={community.name}
       description={formattedAddress}
       imageBlob={imageBlob}
-      width={450}
       onClick={() => {
         console.log('clicked');
       }}

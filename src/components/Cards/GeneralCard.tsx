@@ -21,7 +21,7 @@ const GeneralCard = ({
   name,
   description,
   imageBlob,
-  width,
+  width = 350,
   height,
   imgHeight = 250,
   avatarBlob,
