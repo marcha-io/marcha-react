@@ -5,10 +5,8 @@ const fetchFromStorage = async (url: string, storage_name: string) => {
     .from(storage_name)
     .download(url);
 
-  console.log(blob);
-
   if (error != null) {
-    console.log(error);
+    console.error(error);
     return null;
   }
 

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<744beda48e9e68cd7400f63b78fff63f>>
+ * @generated SignedSource<<cad5ea9c1ff5899d1ff3fe478dc0d138>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -13,7 +13,7 @@ import { FragmentRefs } from "relay-runtime";
 export type CommunitiesCardFragmentQuery$data = {
   readonly address: string;
   readonly id: string;
-  readonly image: string;
+  readonly image: string | null | undefined;
   readonly name: string;
   readonly nodeId: string;
   readonly " $fragmentType": "CommunitiesCardFragmentQuery";
@@ -30,70 +30,45 @@ const node: ReaderFragment = {
   "name": "CommunitiesCardFragmentQuery",
   "selections": [
     {
-      "kind": "RequiredField",
-      "field": {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "name",
-        "storageKey": null
-      },
-      "action": "THROW",
-      "path": "name"
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "name",
+      "storageKey": null
     },
     {
-      "kind": "RequiredField",
-      "field": {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "address",
-        "storageKey": null
-      },
-      "action": "THROW",
-      "path": "address"
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "address",
+      "storageKey": null
     },
     {
-      "kind": "RequiredField",
-      "field": {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "image",
-        "storageKey": null
-      },
-      "action": "THROW",
-      "path": "image"
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "image",
+      "storageKey": null
     },
     {
-      "kind": "RequiredField",
-      "field": {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "id",
-        "storageKey": null
-      },
-      "action": "THROW",
-      "path": "id"
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "id",
+      "storageKey": null
     },
     {
-      "kind": "RequiredField",
-      "field": {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "nodeId",
-        "storageKey": null
-      },
-      "action": "THROW",
-      "path": "nodeId"
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "nodeId",
+      "storageKey": null
     }
   ],
   "type": "Communities",
   "abstractKey": null
 };
 
-(node as any).hash = "ce08f812931624530f3bf894c641bded";
+(node as any).hash = "1ad8154c18ac9b674356b9a434592b5d";
 
 export default node;

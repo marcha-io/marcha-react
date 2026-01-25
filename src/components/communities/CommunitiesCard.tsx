@@ -21,25 +21,40 @@ type Props = {
   hoverable?: boolean;
 };
 
+type Address = {
+  country: string;
+  city: string;
+  postcode: string;
+  address_line_1: string;
+  address_line_2: string;
+};
+
 const CommunitiesCard = ({ fragmentRef }: Props) => {
   const [imageBlob, setImageBlob] = useState<Blob>(new Blob());
 
   const community = useFragment(communitiesCardFragmentQuery, fragmentRef);
 
   useEffect(() => {
-    fetchFromStorage(community.image, 'communities-images').then((blob) =>
-      setImageBlob(blob ?? imageBlob)
-    );
+    if (community.image) {
+      fetchFromStorage(community.image, 'communities-images').then((blob) =>
+        setImageBlob(blob ?? imageBlob)
+      );
+    }
   }, [community]);
+
+  const address: Address = JSON.parse(community.address);
+  const formattedAddress = `${address.country}, ${address.city}, ${address.address_line_1}, ${address.address_line_2}, ${address.postcode}`;
 
   return (
     <GeneralCard
       name={community.name}
-      description={community.address}
+      description={formattedAddress}
       imageBlob={imageBlob}
+      width={450}
       onClick={() => {
         console.log('clicked');
       }}
+      hasAvatar={false}
     />
   );
 };
