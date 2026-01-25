@@ -3,8 +3,8 @@ import { useEffect, useState } from 'react';
 import { useFragment } from 'react-relay';
 import { useNavigate } from 'react-router-dom';
 
-import fetchFromStorage from '../../../utils/fetch_from_storage';
-import GeneralCard from '../GeneralCard';
+import fetchFromStorage from '../../utils/fetch_from_storage';
+import GeneralCard from '../Cards/GeneralCard';
 import { ProductCardFragmentQuery$key } from './__generated__/ProductCardFragmentQuery.graphql';
 
 type Props = {
