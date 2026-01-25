@@ -6,6 +6,7 @@ import {
   usePreloadedQuery,
 } from 'react-relay';
 
+import CommunitiesContainer from './CommunitiesContainer';
 import { CommunitiesContainerWrapperQuery } from './__generated__/CommunitiesContainerWrapperQuery.graphql';
 
 export const communitiesContainerWrapperQuery = graphql`
@@ -13,11 +14,7 @@ export const communitiesContainerWrapperQuery = graphql`
     communitiesCollection {
       edges {
         node {
-          name
-          description
-          image
-          id
-          nodeId
+          ...CommunitiesCardFragmentQuery
         }
       }
     }
@@ -42,9 +39,7 @@ const CommunitiesContainerWrapper: EntryPointComponent<
     props.queries.communitiesContainerWrapperQuery
   );
 
-  console.log(data);
-
-  return <></>;
+  return <CommunitiesContainer queryData={data} />;
 };
 
 export default CommunitiesContainerWrapper;

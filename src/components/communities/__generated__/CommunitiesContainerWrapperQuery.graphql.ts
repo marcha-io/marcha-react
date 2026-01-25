@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<2f4d8daa192856609fcc089a3e6f597b>>
+ * @generated SignedSource<<8ff225aa05498e441da2d100c821d3ac>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -9,16 +9,13 @@
 // @ts-nocheck
 
 import { ConcreteRequest, Query } from 'relay-runtime';
+import { FragmentRefs } from "relay-runtime";
 export type CommunitiesContainerWrapperQuery$variables = Record<PropertyKey, never>;
 export type CommunitiesContainerWrapperQuery$data = {
   readonly communitiesCollection: {
     readonly edges: ReadonlyArray<{
       readonly node: {
-        readonly description: string;
-        readonly id: string;
-        readonly image: string | null | undefined;
-        readonly name: string;
-        readonly nodeId: string;
+        readonly " $fragmentSpreads": FragmentRefs<"CommunitiesCardFragmentQuery">;
       };
     }>;
   } | null | undefined;
@@ -28,65 +25,43 @@ export type CommunitiesContainerWrapperQuery = {
   variables: CommunitiesContainerWrapperQuery$variables;
 };
 
-const node: ConcreteRequest = (function(){
-var v0 = [
-  {
-    "alias": null,
-    "args": null,
-    "concreteType": "CommunitiesConnection",
-    "kind": "LinkedField",
-    "name": "communitiesCollection",
-    "plural": false,
+const node: ConcreteRequest = {
+  "fragment": {
+    "argumentDefinitions": [],
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "CommunitiesContainerWrapperQuery",
     "selections": [
       {
         "alias": null,
         "args": null,
-        "concreteType": "CommunitiesEdge",
+        "concreteType": "CommunitiesConnection",
         "kind": "LinkedField",
-        "name": "edges",
-        "plural": true,
+        "name": "communitiesCollection",
+        "plural": false,
         "selections": [
           {
             "alias": null,
             "args": null,
-            "concreteType": "Communities",
+            "concreteType": "CommunitiesEdge",
             "kind": "LinkedField",
-            "name": "node",
-            "plural": false,
+            "name": "edges",
+            "plural": true,
             "selections": [
               {
                 "alias": null,
                 "args": null,
-                "kind": "ScalarField",
-                "name": "name",
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "description",
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "image",
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "id",
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "nodeId",
+                "concreteType": "Communities",
+                "kind": "LinkedField",
+                "name": "node",
+                "plural": false,
+                "selections": [
+                  {
+                    "args": null,
+                    "kind": "FragmentSpread",
+                    "name": "CommunitiesCardFragmentQuery"
+                  }
+                ],
                 "storageKey": null
               }
             ],
@@ -96,16 +71,6 @@ var v0 = [
         "storageKey": null
       }
     ],
-    "storageKey": null
-  }
-];
-return {
-  "fragment": {
-    "argumentDefinitions": [],
-    "kind": "Fragment",
-    "metadata": null,
-    "name": "CommunitiesContainerWrapperQuery",
-    "selections": (v0/*: any*/),
     "type": "Query",
     "abstractKey": null
   },
@@ -114,19 +79,87 @@ return {
     "argumentDefinitions": [],
     "kind": "Operation",
     "name": "CommunitiesContainerWrapperQuery",
-    "selections": (v0/*: any*/)
+    "selections": [
+      {
+        "alias": null,
+        "args": null,
+        "concreteType": "CommunitiesConnection",
+        "kind": "LinkedField",
+        "name": "communitiesCollection",
+        "plural": false,
+        "selections": [
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "CommunitiesEdge",
+            "kind": "LinkedField",
+            "name": "edges",
+            "plural": true,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "Communities",
+                "kind": "LinkedField",
+                "name": "node",
+                "plural": false,
+                "selections": [
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "name",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "address",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "image",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "id",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "nodeId",
+                    "storageKey": null
+                  }
+                ],
+                "storageKey": null
+              }
+            ],
+            "storageKey": null
+          }
+        ],
+        "storageKey": null
+      }
+    ]
   },
   "params": {
-    "cacheID": "dd12f63b12567093311ea8d8500f6ad5",
+    "cacheID": "435a026ab03ce53faefe643029571041",
     "id": null,
     "metadata": {},
     "name": "CommunitiesContainerWrapperQuery",
     "operationKind": "query",
-    "text": "query CommunitiesContainerWrapperQuery {\n  communitiesCollection {\n    edges {\n      node {\n        name\n        description\n        image\n        id\n        nodeId\n      }\n    }\n  }\n}\n"
+    "text": "query CommunitiesContainerWrapperQuery {\n  communitiesCollection {\n    edges {\n      node {\n        ...CommunitiesCardFragmentQuery\n        nodeId\n      }\n    }\n  }\n}\n\nfragment CommunitiesCardFragmentQuery on Communities {\n  name\n  address\n  image\n  id\n  nodeId\n}\n"
   }
 };
-})();
 
-(node as any).hash = "816f3fd4381abe3831a52e37d3247988";
+(node as any).hash = "ddd48dbbd496718860ec93240140e8f0";
 
 export default node;

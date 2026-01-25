@@ -37,9 +37,12 @@ const ProductCard = ({ fragmentRef, hoverable }: Props): React.ReactElement => {
     fetchFromStorage(product.image, 'product-images').then((blob) =>
       setImageBlob(blob ?? imageBlob)
     );
-    fetchFromStorage(product.user?.avatarUrl ?? '', 'avatars').then((blob) =>
-      setAvatarBlob(blob)
-    );
+
+    if (product.user?.avatarUrl) {
+      fetchFromStorage(product.user.avatarUrl, 'avatars').then((blob) =>
+        setAvatarBlob(blob)
+      );
+    }
   }, [product]);
 
   return (

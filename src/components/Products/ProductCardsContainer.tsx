@@ -14,8 +14,8 @@ const ProductCardsContainer = ({ data }: Props): React.ReactElement => {
   return (
     <Flex gap={12} wrap="wrap" justify="center">
       {edges?.length ? (
-        edges?.map((fragment) => (
-          <Suspense fallback={<Card loading={true} />}>
+        edges.map((fragment, i) => (
+          <Suspense key={i} fallback={<Card loading={true} />}>
             <ProductCard fragmentRef={fragment.node} />
           </Suspense>
         ))
