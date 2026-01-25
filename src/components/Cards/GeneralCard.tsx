@@ -6,6 +6,9 @@ type Props = {
   name: string;
   description: string;
   imageBlob: Blob;
+  width?: number;
+  height?: number;
+  imgHeight?: number;
   onClick: () => void;
   hasAvatar?: boolean;
   avatarBlob?: Blob | null;
@@ -18,6 +21,9 @@ const GeneralCard = ({
   name,
   description,
   imageBlob,
+  width = 300,
+  height = 350,
+  imgHeight = 250,
   avatarBlob,
   onClick,
   hoverable = true,
@@ -26,10 +32,10 @@ const GeneralCard = ({
   return (
     <Card
       hoverable={hoverable}
-      style={{ width: 300, height: 350 }}
+      style={{ width: width, height: height }}
       cover={
         <img
-          height={250}
+          height={imgHeight}
           alt={name}
           src={imageBlob ? URL.createObjectURL(imageBlob) : ''}
         />
