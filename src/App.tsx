@@ -8,7 +8,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Navbar from './components/navbar/Navbar';
 import environment from './lib/relay_environment';
 import { supabase } from './lib/supabase';
-import Communities from './views/communities/Communities';
+import CommunitiesFeed from './views/communities/CommunitiesFeed.entrypoint';
 import Feed from './views/feed/Feed.entrypoint';
 import Product from './views/feed/Product.entrypoint';
 import Home from './views/home/Home';
@@ -47,7 +47,7 @@ const App = (): React.ReactElement => {
             >
               <Routes>
                 <Route index element={<Home />} />
-                <Route path={Paths.Communities} element={<Communities />} />
+                <Route path={Paths.Communities} element={<CommunitiesFeed />} />
                 <Route path={Paths.Feed}>
                   <Route index element={<Feed />} />
                   <Route path=":product_id" element={<Product />} />
