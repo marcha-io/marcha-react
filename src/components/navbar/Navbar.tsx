@@ -1,10 +1,9 @@
 import { Col, Image, Menu, MenuProps, Row } from 'antd';
 import { Header } from 'antd/es/layout/layout';
-import React, { useContext, useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import React, { useContext, useMemo } from 'react';
+import { Link, useLocation, useParams } from 'react-router-dom';
 
 import { CommunityContext } from '../../App';
-import { supabase } from '../../lib/supabase';
 import { Paths } from '../../views/paths';
 import UserSignUpIcon from './UserSignUpIcon';
 
@@ -27,7 +26,7 @@ const loggedInMenu = (communityId: string): MenuProps['items'] => [
     type: 'divider',
   },
   {
-    key: communityId,
+    key: `/${communityId}`,
     label: (
       <Link rel="noopener noreferrer" to={communityId}>
         Home
@@ -35,7 +34,7 @@ const loggedInMenu = (communityId: string): MenuProps['items'] => [
     ),
   },
   {
-    key: Paths.Market,
+    key: `/${communityId}/${Paths.Market}`,
     label: (
       <Link rel="noopener noreferrer" to={`${communityId}/${Paths.Market}`}>
         Market
@@ -60,21 +59,34 @@ const loggedOutMenu: MenuProps['items'] = [
   },
 ];
 
+const getCommunityIdFromPath = (pathname: string) => {
+  const firstSlashIndex = pathname.indexOf('/');
+  if (firstSlashIndex == -1) {
+    return null;
+  }
+
+  const secondSlashIndex = pathname.substring(firstSlashIndex + 1).indexOf('/');
+  if (secondSlashIndex != -1) {
+    return pathname.substring(
+      firstSlashIndex + 1,
+      secondSlashIndex + (firstSlashIndex + 1)
+    );
+  }
+
+  return pathname.substring(firstSlashIndex + 1);
+};
+
 const Navbar = (): React.ReactElement => {
-  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
-
-  useEffect(() => {
-    supabase.auth.getUser().then(({ data }) => {
-      setIsUserLoggedIn(data.user != null);
-    });
-  }, [setIsUserLoggedIn]);
-
+  const pathname = useLocation().pathname;
   const communityContext = useContext(CommunityContext);
 
-  const menuItems =
-    isUserLoggedIn && communityContext?.communitySelected
-      ? loggedInMenu(communityContext.communitySelected)
+  const community_id = getCommunityIdFromPath(pathname);
+
+  const menuItems = useMemo(() => {
+    return communityContext.isUserLoggedIn && community_id
+      ? loggedInMenu(community_id)
       : loggedOutMenu;
+  }, [communityContext.isUserLoggedIn, community_id]);
 
   return (
     <Header
@@ -87,15 +99,13 @@ const Navbar = (): React.ReactElement => {
     >
       <Row>
         <Col span={20}>
-          <Menu
-            mode="horizontal"
-            selectedKeys={[useLocation().pathname]}
-            items={menuItems}
-          />
+          <Menu mode="horizontal" selectedKeys={[pathname]} items={menuItems} />
         </Col>
-        {isUserLoggedIn && (
+        {communityContext.isUserLoggedIn && (
           <Col offset={3} span={1}>
-            <UserSignUpIcon setIsUserLoggedIn={setIsUserLoggedIn} />
+            <UserSignUpIcon
+              setIsUserLoggedIn={communityContext.setIsUserLoggedIn}
+            />
           </Col>
         )}
       </Row>

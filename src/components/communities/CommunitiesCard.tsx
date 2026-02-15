@@ -34,7 +34,6 @@ type Address = {
 
 const CommunitiesCard = ({ fragmentRef }: Props) => {
   const [imageBlob, setImageBlob] = useState<Blob>(new Blob());
-  const communityContext = useContext(CommunityContext);
 
   const navigation = useNavigate();
 
@@ -56,10 +55,7 @@ const CommunitiesCard = ({ fragmentRef }: Props) => {
       name={community.name}
       description={formattedAddress}
       imageBlob={imageBlob}
-      onClick={() => {
-        communityContext?.setCommunitySelected(community.id);
-        navigation(`${community.id}`);
-      }}
+      onClick={() => navigation(`${community.id}`)}
       hasAvatar={false}
     />
   );

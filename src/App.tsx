@@ -1,12 +1,13 @@
 import { Layout, theme } from 'antd';
 import { Content, Footer } from 'antd/es/layout/layout';
 import Title from 'antd/es/typography/Title';
-import React, { createContext, useState } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
 import { RelayEnvironmentProvider } from 'react-relay';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import Navbar from './components/navbar/Navbar';
 import environment from './lib/relay_environment';
+import { supabase } from './lib/supabase';
 import CommunitiesFeed from './views/communities/CommunitiesFeed.entrypoint';
 import CommunitiesProductsFeed from './views/communities/CommunitiesProductsFeed.entrypoint';
 import Market from './views/market/Market.entrypoint';
@@ -14,29 +15,37 @@ import Product from './views/market/Product.entrypoint';
 import { Paths } from './views/paths';
 import SignIn from './views/sign_up/SignIn';
 
-type TCommunityContext = {
-  communitySelected: string | null;
-  setCommunitySelected: React.Dispatch<React.SetStateAction<string | null>>;
+export type TCommunityContext = {
+  isUserLoggedIn: boolean;
+  setIsUserLoggedIn: (val: boolean) => void;
 };
 
-export const CommunityContext = createContext<TCommunityContext | null>(null);
+export const CommunityContext = createContext<TCommunityContext>({
+  isUserLoggedIn: false,
+  setIsUserLoggedIn: () =>
+    console.error('CommunityContext has not been initiatited'),
+});
 
 const App = (): React.ReactElement => {
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
 
-  const [communitySelected, setCommunitySelected] = useState<null | string>(
-    null
-  );
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
+
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data }) => {
+      setIsUserLoggedIn(data.user != null);
+    });
+  }, [setIsUserLoggedIn]);
 
   return (
     <RelayEnvironmentProvider environment={environment}>
       <BrowserRouter>
         <CommunityContext.Provider
           value={{
-            communitySelected: communitySelected,
-            setCommunitySelected: setCommunitySelected,
+            isUserLoggedIn: isUserLoggedIn,
+            setIsUserLoggedIn: setIsUserLoggedIn,
           }}
         >
           <Layout style={{ minHeight: '100vh' }}>

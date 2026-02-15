@@ -1,10 +1,9 @@
 import graphql from 'babel-plugin-relay/macro';
 import { useEffect, useState } from 'react';
 import { useFragment } from 'react-relay';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 
 import fetchFromStorage from '../../utils/fetch_from_storage';
-import { Paths } from '../../views/paths';
 import GeneralCard from '../Cards/GeneralCard';
 import { ProductCardFragmentQuery$key } from './__generated__/ProductCardFragmentQuery.graphql';
 

@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import LogOutNavbar from './LogOutNavbar';
 
 const loggedInItems = (
-  setIsUserLoggedIn: React.Dispatch<React.SetStateAction<boolean>>
+  setIsUserLoggedIn: (val: boolean) => void
 ): MenuProps['items'] => {
   return [
     {
@@ -25,7 +25,7 @@ const loggedInItems = (
 };
 
 type Props = {
-  setIsUserLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsUserLoggedIn: (val: boolean) => void;
 };
 
 const UserSignUpIcon = ({ setIsUserLoggedIn }: Props): React.ReactElement => {

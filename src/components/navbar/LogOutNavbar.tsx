@@ -6,7 +6,7 @@ import { supabase } from '../../lib/supabase';
 import { Paths } from '../../views/paths';
 
 type Props = {
-  setIsUserLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsUserLoggedIn: (val: boolean) => void;
 };
 
 function LogOutNavbar({ setIsUserLoggedIn }: Props): React.ReactElement {
@@ -33,7 +33,7 @@ function LogOutNavbar({ setIsUserLoggedIn }: Props): React.ReactElement {
 
       invalidateRelayStore();
       setIsUserLoggedIn(false);
-      navigate(Paths.Main);
+      navigate(Paths.SignIn);
     });
   };
 

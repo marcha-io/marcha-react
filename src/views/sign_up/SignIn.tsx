@@ -9,9 +9,10 @@ import {
   notification,
 } from 'antd';
 import { Header } from 'antd/es/layout/layout';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { CommunityContext } from '../../App';
 import { invalidateRelayStore } from '../../lib/relay_environment';
 import { supabase } from '../../lib/supabase';
 import { Paths } from '../paths';
@@ -26,6 +27,7 @@ const SignIn = (): React.ReactElement => {
   const [isLoading, setIsLoading] = useState(false);
 
   const [api, contextHolder] = notification.useNotification();
+  const context = useContext(CommunityContext);
 
   const navigate = useNavigate();
 
@@ -48,6 +50,9 @@ const SignIn = (): React.ReactElement => {
     }
 
     api.success({ title: 'Sign in successful!' });
+
+    context.setIsUserLoggedIn(true);
+
     invalidateRelayStore();
     navigate(Paths.Main);
   };
