@@ -50,7 +50,7 @@ const ProductCard = ({ fragmentRef, hoverable }: Props): React.ReactElement => {
     <GeneralCard
       name={product.name}
       description={product.description}
-      onClick={() => navigation(`${Paths.Feed}/${product.id}`)}
+      onClick={() => navigation(`${product.id}`)}
       hoverable={hoverable}
       imageBlob={imageBlob}
       avatarBlob={avatarBlob}

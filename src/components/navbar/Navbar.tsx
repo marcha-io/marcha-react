@@ -1,12 +1,14 @@
 import { Col, Image, Menu, MenuProps, Row } from 'antd';
 import { Header } from 'antd/es/layout/layout';
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
+import { CommunityContext } from '../../App';
+import { supabase } from '../../lib/supabase';
 import { Paths } from '../../views/paths';
 import UserSignUpIcon from './UserSignUpIcon';
 
-const items: MenuProps['items'] = [
+const loggedInMenu = (communityId: string): MenuProps['items'] => [
   {
     key: Paths.Main,
     label: (
@@ -25,32 +27,55 @@ const items: MenuProps['items'] = [
     type: 'divider',
   },
   {
-    key: Paths.Communities,
+    key: communityId,
     label: (
-      <Link rel="noopener noreferrer" to={Paths.Communities}>
-        Communities
+      <Link rel="noopener noreferrer" to={communityId}>
+        Home
       </Link>
     ),
   },
   {
-    key: Paths.Feed,
+    key: Paths.Market,
     label: (
-      <Link rel="noopener noreferrer" to={Paths.Feed}>
-        Feed
+      <Link rel="noopener noreferrer" to={`${communityId}/${Paths.Market}`}>
+        Market
       </Link>
     ),
   },
 ];
 
-type Props = {
-  isUserLoggedIn: boolean;
-  setIsUserLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
-};
+const loggedOutMenu: MenuProps['items'] = [
+  {
+    key: Paths.Main,
+    label: (
+      <Link rel="noopener noreferrer" to={Paths.Main}>
+        <Image
+          src="/assets/marcha_logo.png"
+          preview={false}
+          height={50}
+          width={150}
+        />
+      </Link>
+    ),
+  },
+];
 
-const Navbar = ({
-  isUserLoggedIn,
-  setIsUserLoggedIn,
-}: Props): React.ReactElement => {
+const Navbar = (): React.ReactElement => {
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
+
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data }) => {
+      setIsUserLoggedIn(data.user != null);
+    });
+  }, [setIsUserLoggedIn]);
+
+  const communityContext = useContext(CommunityContext);
+
+  const menuItems =
+    isUserLoggedIn && communityContext?.communitySelected
+      ? loggedInMenu(communityContext.communitySelected)
+      : loggedOutMenu;
+
   return (
     <Header
       style={{
@@ -65,15 +90,14 @@ const Navbar = ({
           <Menu
             mode="horizontal"
             selectedKeys={[useLocation().pathname]}
-            items={items}
+            items={menuItems}
           />
         </Col>
-        <Col offset={3} span={1}>
-          <UserSignUpIcon
-            isUserLoggedIn={isUserLoggedIn}
-            setIsUserLoggedIn={setIsUserLoggedIn}
-          />
-        </Col>
+        {isUserLoggedIn && (
+          <Col offset={3} span={1}>
+            <UserSignUpIcon setIsUserLoggedIn={setIsUserLoggedIn} />
+          </Col>
+        )}
       </Row>
     </Header>
   );

@@ -1,6 +1,5 @@
 export enum Paths {
   Main = '/',
-  Feed = '/feed',
-  Communities = '/communities',
+  Market = 'market', //relative route
   SignIn = '/sign_in',
 }

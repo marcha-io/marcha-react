@@ -9,6 +9,9 @@ import {
 import CommunitiesContainerWrapperQuery from '../../components/communities/__generated__/CommunitiesContainerWrapperQuery.graphql';
 import { createEntryPoint } from '../../utils/create_entrypoint';
 import JSResource from '../../utils/make_resource';
+import { Paths } from '../paths';
+
+type Props = { isUserLoggedIn: boolean };
 
 const CommunitiesFeedEntryPoint = createEntryPoint({
   root: JSResource('CommunitiesContainerWrapper', () =>

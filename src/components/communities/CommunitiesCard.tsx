@@ -1,8 +1,9 @@
 import graphql from 'babel-plugin-relay/macro';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useFragment } from 'react-relay';
 import { useNavigate } from 'react-router-dom';
 
+import { CommunityContext } from '../../App';
 import fetchFromStorage from '../../utils/fetch_from_storage';
 import { Paths } from '../../views/paths';
 import GeneralCard from '../Cards/GeneralCard';
@@ -33,6 +34,8 @@ type Address = {
 
 const CommunitiesCard = ({ fragmentRef }: Props) => {
   const [imageBlob, setImageBlob] = useState<Blob>(new Blob());
+  const communityContext = useContext(CommunityContext);
+
   const navigation = useNavigate();
 
   const community = useFragment(communitiesCardFragmentQuery, fragmentRef);
@@ -53,7 +56,10 @@ const CommunitiesCard = ({ fragmentRef }: Props) => {
       name={community.name}
       description={formattedAddress}
       imageBlob={imageBlob}
-      onClick={() => navigation(`${Paths.Communities}/${community.id}`)}
+      onClick={() => {
+        communityContext?.setCommunitySelected(community.id);
+        navigation(`${community.id}`);
+      }}
       hasAvatar={false}
     />
   );

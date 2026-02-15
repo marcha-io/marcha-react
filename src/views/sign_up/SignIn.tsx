@@ -22,11 +22,7 @@ type TSignInForm = {
   remember?: boolean;
 };
 
-type Props = {
-  setIsUserLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
-};
-
-const SignIn = ({ setIsUserLoggedIn }: Props): React.ReactElement => {
+const SignIn = (): React.ReactElement => {
   const [isLoading, setIsLoading] = useState(false);
 
   const [api, contextHolder] = notification.useNotification();
@@ -53,7 +49,6 @@ const SignIn = ({ setIsUserLoggedIn }: Props): React.ReactElement => {
 
     api.success({ title: 'Sign in successful!' });
     invalidateRelayStore();
-    setIsUserLoggedIn(true);
     navigate(Paths.Main);
   };
 

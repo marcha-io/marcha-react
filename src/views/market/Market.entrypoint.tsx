@@ -30,7 +30,7 @@ const FeedEntryPoint = createEntryPoint({
   },
 });
 
-const Feed = (): React.ReactElement | null => {
+const Market = (): React.ReactElement | null => {
   const relayEnvironment = useRelayEnvironment();
 
   const environmentProvider = useMemo(
@@ -64,4 +64,4 @@ const Feed = (): React.ReactElement | null => {
   );
 };
 
-export default Feed;
+export default Market;

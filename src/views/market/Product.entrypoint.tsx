@@ -50,7 +50,7 @@ const ProductDetailPage = (): React.ReactElement | null => {
 
   const { product_id } = useParams();
   if (product_id == null) {
-    navigation(Paths.Feed);
+    navigation(Paths.Market);
     return <></>;
   }
 
