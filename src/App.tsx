@@ -29,19 +29,15 @@ const AppRoutes = (): React.ReactElement => {
               path={`${Paths.Portal}/:communityId/*`}
               element={<Portal />}
             />
-            {/* Redirect /sign_in to / when already logged in */}
             <Route
               path={Paths.SignIn}
               element={<Navigate to={Paths.Main} replace />}
             />
-            {/* Catch-all: redirect unknown paths to community picker */}
             <Route path="*" element={<Navigate to={Paths.Main} replace />} />
           </>
         ) : (
           <>
-            {/* Dedicated sign-in route */}
             <Route path={Paths.SignIn} element={<SignIn />} />
-            {/* Redirect everything else to sign-in */}
             <Route path="*" element={<Navigate to={Paths.SignIn} replace />} />
           </>
         )}

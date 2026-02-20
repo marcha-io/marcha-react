@@ -27,6 +27,7 @@ import {
 } from 'react-relay';
 import { useNavigate, useParams } from 'react-router-dom';
 
+import { getParseJsonAddress } from '../../utils/get_address';
 import { Paths } from '../../views/paths';
 import { DashboardComponentQuery } from './__generated__/DashboardComponentQuery.graphql';
 
@@ -90,19 +91,10 @@ const Dashboard: EntryPointComponent<
   const communityUser = data.communityUsersCollection?.edges[0]?.node;
   const communityName = communityUser?.community?.name ?? 'Your Community';
 
-  // Parse address
-  let addressDisplay = '';
-  try {
-    const addr = communityUser?.community?.address;
-    const parsed = typeof addr === 'string' ? JSON.parse(addr) : addr;
-    addressDisplay = parsed?.street
-      ? `${parsed.street}${parsed.city ? ', ' + parsed.city : ''}`
-      : String(addr ?? '');
-  } catch {
-    addressDisplay = String(communityUser?.community?.address ?? '');
-  }
+  const addressDisplay = getParseJsonAddress(
+    data?.communityUsersCollection?.edges[0]?.node?.community?.address
+  );
 
-  // Determine greeting based on time of day
   const hour = new Date().getHours();
   const greeting =
     hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening';
@@ -111,17 +103,6 @@ const Dashboard: EntryPointComponent<
 
   return (
     <div>
-      {/* Page Header */}
-      <div style={{ marginBottom: 24 }}>
-        <Typography.Title level={3} style={{ marginBottom: 4 }}>
-          Dashboard
-        </Typography.Title>
-        <Typography.Text type="secondary">
-          Welcome back, {firstName}
-        </Typography.Text>
-      </div>
-
-      {/* Welcome Banner */}
       <Card
         style={{
           background:
@@ -177,7 +158,6 @@ const Dashboard: EntryPointComponent<
         </Row>
       </Card>
 
-      {/* Stat Cards */}
       <Row gutter={[16, 16]} style={{ marginBottom: 24 }}>
         <Col xs={24} sm={12} md={6}>
           <Card
@@ -185,7 +165,7 @@ const Dashboard: EntryPointComponent<
             style={{ borderRadius: 12 }}
             onClick={() => navigate(`${basePath}/${Paths.ServiceCharges}`)}
           >
-            <Space direction="vertical" size={4}>
+            <Space vertical size={4}>
               <Space>
                 <DollarCircleOutlined
                   style={{ fontSize: 20, color: '#1890ff' }}
@@ -196,7 +176,7 @@ const Dashboard: EntryPointComponent<
                 value={0}
                 precision={2}
                 prefix="£"
-                valueStyle={{ fontSize: 28, fontWeight: 600 }}
+                style={{ fontSize: 28, fontWeight: 600 }}
               />
               <Typography.Text type="secondary" style={{ fontSize: 12 }}>
                 Next payment: TBD
@@ -210,15 +190,12 @@ const Dashboard: EntryPointComponent<
             style={{ borderRadius: 12 }}
             onClick={() => navigate(`${basePath}/${Paths.Maintenance}`)}
           >
-            <Space direction="vertical" size={4}>
+            <Space vertical size={4}>
               <Space>
                 <ToolOutlined style={{ fontSize: 20, color: '#F06543' }} />
                 <Tag color="orange">Active</Tag>
               </Space>
-              <Statistic
-                value={0}
-                valueStyle={{ fontSize: 28, fontWeight: 600 }}
-              />
+              <Statistic value={0} style={{ fontSize: 28, fontWeight: 600 }} />
               <Typography.Text type="secondary" style={{ fontSize: 12 }}>
                 Open maintenance requests
               </Typography.Text>
@@ -235,10 +212,7 @@ const Dashboard: EntryPointComponent<
               <Space>
                 <MessageOutlined style={{ fontSize: 20, color: '#722ed1' }} />
               </Space>
-              <Statistic
-                value={0}
-                valueStyle={{ fontSize: 28, fontWeight: 600 }}
-              />
+              <Statistic value={0} style={{ fontSize: 28, fontWeight: 600 }} />
               <Typography.Text type="secondary" style={{ fontSize: 12 }}>
                 Unread messages
               </Typography.Text>
@@ -256,10 +230,7 @@ const Dashboard: EntryPointComponent<
                 <FileTextOutlined style={{ fontSize: 20, color: '#52c41a' }} />
                 <Tag color="green">1 New</Tag>
               </Space>
-              <Statistic
-                value={0}
-                valueStyle={{ fontSize: 28, fontWeight: 600 }}
-              />
+              <Statistic value={0} style={{ fontSize: 28, fontWeight: 600 }} />
               <Typography.Text type="secondary" style={{ fontSize: 12 }}>
                 Documents available
               </Typography.Text>
@@ -268,11 +239,8 @@ const Dashboard: EntryPointComponent<
         </Col>
       </Row>
 
-      {/* Content Grid */}
       <Row gutter={[24, 24]}>
-        {/* Left Column */}
         <Col xs={24} lg={16}>
-          {/* Active Requests */}
           <Card
             title="Active Requests"
             extra={
@@ -291,7 +259,6 @@ const Dashboard: EntryPointComponent<
             />
           </Card>
 
-          {/* Community Updates */}
           <Card
             title="Community Updates"
             extra={
@@ -311,9 +278,7 @@ const Dashboard: EntryPointComponent<
           </Card>
         </Col>
 
-        {/* Right Column */}
         <Col xs={24} lg={8}>
-          {/* Recent Messages */}
           <Card
             title="Recent Messages"
             extra={
@@ -332,7 +297,6 @@ const Dashboard: EntryPointComponent<
             />
           </Card>
 
-          {/* Marketplace */}
           <Card
             title="Marketplace"
             extra={
@@ -351,7 +315,6 @@ const Dashboard: EntryPointComponent<
             />
           </Card>
 
-          {/* Upcoming Events */}
           <Card title="Upcoming Events" style={{ borderRadius: 12 }}>
             <List
               dataSource={[]}

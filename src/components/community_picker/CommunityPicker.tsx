@@ -9,12 +9,12 @@ import {
   usePreloadedQuery,
 } from 'react-relay';
 
-import CommunityCard from './CommunityCard';
+import CommunityCardContainer from './CommunityCardContainer';
 import { CommunityPickerComponentQuery } from './__generated__/CommunityPickerComponentQuery.graphql';
 
 const communityPickerComponentQuery = graphql`
   query CommunityPickerComponentQuery {
-    ...CommunityCard_query
+    ...CommunityCardContainer_query
     profilesCollection(first: 1) {
       edges {
         node {
@@ -97,7 +97,7 @@ const CommunityPicker: EntryPointComponent<
         </Typography.Text>
       </div>
       <Row gutter={[24, 24]}>
-        <CommunityCard fragmentRef={query} />
+        <CommunityCardContainer fragmentRef={query} />
         <Col xs={24} md={12}>
           <Card
             style={{

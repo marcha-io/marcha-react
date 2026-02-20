@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<3904dc0ec57c6f4ebbdfb3d81bb78396>>
+ * @generated SignedSource<<d7225879bb7d89b7300959c7b3cd50fc>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -19,7 +19,7 @@ export type CommunityPickerComponentQuery$data = {
       };
     }>;
   } | null | undefined;
-  readonly " $fragmentSpreads": FragmentRefs<"CommunityCard_query">;
+  readonly " $fragmentSpreads": FragmentRefs<"CommunityCardContainer_query">;
 };
 export type CommunityPickerComponentQuery = {
   response: CommunityPickerComponentQuery$data;
@@ -58,7 +58,7 @@ return {
       {
         "args": null,
         "kind": "FragmentSpread",
-        "name": "CommunityCard_query"
+        "name": "CommunityCardContainer_query"
       },
       {
         "alias": null,
@@ -247,16 +247,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "31403626351488965c196902c8604fbf",
+    "cacheID": "5dbb760b311872df22f5264210b3cf95",
     "id": null,
     "metadata": {},
     "name": "CommunityPickerComponentQuery",
     "operationKind": "query",
-    "text": "query CommunityPickerComponentQuery {\n  ...CommunityCard_query\n  profilesCollection(first: 1) {\n    edges {\n      node {\n        firstName\n        nodeId\n      }\n    }\n  }\n}\n\nfragment CommunityCard_query on Query {\n  communityUsersCollection(filter: {status: {eq: ACCEPTED}}) {\n    edges {\n      node {\n        communityId\n        status\n        community {\n          id\n          name\n          description\n          address\n          image\n          nodeId\n        }\n        nodeId\n      }\n    }\n  }\n}\n"
+    "text": "query CommunityPickerComponentQuery {\n  ...CommunityCardContainer_query\n  profilesCollection(first: 1) {\n    edges {\n      node {\n        firstName\n        nodeId\n      }\n    }\n  }\n}\n\nfragment CommunityCardContainer_query on Query {\n  communityUsersCollection(filter: {status: {eq: ACCEPTED}}) {\n    edges {\n      node {\n        ...CommunityCard_fragment\n        nodeId\n      }\n    }\n  }\n}\n\nfragment CommunityCard_fragment on CommunityUsers {\n  communityId\n  status\n  community {\n    id\n    name\n    description\n    address\n    image\n    nodeId\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "5fe47c4b6a7a5287ff05caecc1cae4a1";
+(node as any).hash = "a7b6a0c84acfabb4822131a88839d854";
 
 export default node;
