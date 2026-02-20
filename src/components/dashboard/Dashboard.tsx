@@ -208,7 +208,7 @@ const Dashboard: EntryPointComponent<
             style={{ borderRadius: 12 }}
             onClick={() => navigate(`${basePath}/${Paths.Messages}`)}
           >
-            <Space direction="vertical" size={4}>
+            <Space vertical size={4}>
               <Space>
                 <MessageOutlined style={{ fontSize: 20, color: '#722ed1' }} />
               </Space>
@@ -225,7 +225,7 @@ const Dashboard: EntryPointComponent<
             style={{ borderRadius: 12 }}
             onClick={() => navigate(`${basePath}/${Paths.Documents}`)}
           >
-            <Space direction="vertical" size={4}>
+            <Space vertical size={4}>
               <Space>
                 <FileTextOutlined style={{ fontSize: 20, color: '#52c41a' }} />
                 <Tag color="green">1 New</Tag>
