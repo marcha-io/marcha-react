@@ -2,15 +2,17 @@
 import graphql from 'babel-plugin-relay/macro';
 
 export default graphql`
-  query CommunityPickerQueryQuery {
-    profilesCollection(first: 1) {
+  query CommunityPickerQueryQuery($userId: UUIDFilter!) {
+    profilesCollection(filter: { id: $userId }, first: 1) {
       edges {
         node {
           firstName
         }
       }
     }
-    communityUsersCollection(filter: { status: { eq: ACCEPTED } }) {
+    communityUsersCollection(
+      filter: { userId: $userId, status: { eq: ACCEPTED } }
+    ) {
       edges {
         node {
           communityId

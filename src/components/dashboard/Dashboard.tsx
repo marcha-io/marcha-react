@@ -31,8 +31,11 @@ import { Paths } from '../../views/paths';
 import { DashboardComponentQuery } from './__generated__/DashboardComponentQuery.graphql';
 
 const dashboardComponentQuery = graphql`
-  query DashboardComponentQuery($communityId: BigIntFilter!) {
-    profilesCollection(first: 1) {
+  query DashboardComponentQuery(
+    $communityId: BigIntFilter!
+    $userId: UUIDFilter!
+  ) {
+    profilesCollection(filter: { id: $userId }, first: 1) {
       edges {
         node {
           firstName
@@ -42,7 +45,11 @@ const dashboardComponentQuery = graphql`
       }
     }
     communityUsersCollection(
-      filter: { communityId: $communityId, status: { eq: ACCEPTED } }
+      filter: {
+        communityId: $communityId
+        userId: $userId
+        status: { eq: ACCEPTED }
+      }
       first: 1
     ) {
       edges {

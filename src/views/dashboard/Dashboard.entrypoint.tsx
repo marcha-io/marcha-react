@@ -9,11 +9,13 @@ import {
 import { useParams } from 'react-router-dom';
 
 import DashboardComponentQuery from '../../components/dashboard/__generated__/DashboardComponentQuery.graphql';
+import { useAuth } from '../../contexts/AuthContext';
 import { createEntryPoint } from '../../utils/create_entrypoint';
 import JSResource from '../../utils/make_resource';
 
 type EntryPointParams = {
   communityId?: string;
+  userId?: string;
 };
 
 const DashboardEntryPoint = createEntryPoint({
@@ -29,6 +31,7 @@ const DashboardEntryPoint = createEntryPoint({
           parameters: DashboardComponentQuery,
           variables: {
             communityId: { eq: params.communityId ?? '' },
+            userId: { eq: params.userId ?? '' },
           },
         },
       },
@@ -38,6 +41,7 @@ const DashboardEntryPoint = createEntryPoint({
 
 const Dashboard = (): React.ReactElement | null => {
   const { communityId } = useParams<{ communityId: string }>();
+  const { userId } = useAuth();
   const relayEnvironment = useRelayEnvironment();
   const environmentProvider = useMemo(
     () => ({ getEnvironment: () => relayEnvironment }),
@@ -49,10 +53,10 @@ const Dashboard = (): React.ReactElement | null => {
   );
 
   useEffect(() => {
-    if (entryPointRef == null) {
-      loadEntryPoint({ communityId });
+    if (entryPointRef == null && userId) {
+      loadEntryPoint({ communityId, userId });
     }
-  }, [communityId]);
+  }, [communityId, userId]);
 
   if (!entryPointRef) return null;
 

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<769af703e54e1352b6e4c8a8bcc40f6f>>
+ * @generated SignedSource<<4e6a14edf2151ecd0f54fb882386007e>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -35,7 +35,13 @@ export type CommunityCard_query$key = {
 };
 
 const node: ReaderFragment = {
-  "argumentDefinitions": [],
+  "argumentDefinitions": [
+    {
+      "defaultValue": null,
+      "kind": "LocalArgument",
+      "name": "userId"
+    }
+  ],
   "kind": "Fragment",
   "metadata": null,
   "name": "CommunityCard_query",
@@ -44,13 +50,22 @@ const node: ReaderFragment = {
       "alias": null,
       "args": [
         {
-          "kind": "Literal",
-          "name": "filter",
-          "value": {
-            "status": {
-              "eq": "ACCEPTED"
+          "fields": [
+            {
+              "kind": "Literal",
+              "name": "status",
+              "value": {
+                "eq": "ACCEPTED"
+              }
+            },
+            {
+              "kind": "Variable",
+              "name": "userId",
+              "variableName": "userId"
             }
-          }
+          ],
+          "kind": "ObjectValue",
+          "name": "filter"
         }
       ],
       "concreteType": "CommunityUsersConnection",
@@ -141,13 +156,13 @@ const node: ReaderFragment = {
           "storageKey": null
         }
       ],
-      "storageKey": "communityUsersCollection(filter:{\"status\":{\"eq\":\"ACCEPTED\"}})"
+      "storageKey": null
     }
   ],
   "type": "Query",
   "abstractKey": null
 };
 
-(node as any).hash = "a07074671b1bd7005c41d60dd0ca43ab";
+(node as any).hash = "2e863810dcd5b64569d10815f87e9f0c";
 
 export default node;

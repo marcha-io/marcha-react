@@ -2,8 +2,8 @@
 import graphql from 'babel-plugin-relay/macro';
 
 export default graphql`
-  query DashboardQueryQuery($communityId: BigIntFilter!) {
-    profilesCollection(first: 1) {
+  query DashboardQueryQuery($communityId: BigIntFilter!, $userId: UUIDFilter!) {
+    profilesCollection(filter: { id: $userId }, first: 1) {
       edges {
         node {
           firstName
@@ -13,7 +13,11 @@ export default graphql`
       }
     }
     communityUsersCollection(
-      filter: { communityId: $communityId, status: { eq: ACCEPTED } }
+      filter: {
+        communityId: $communityId
+        userId: $userId
+        status: { eq: ACCEPTED }
+      }
       first: 1
     ) {
       edges {

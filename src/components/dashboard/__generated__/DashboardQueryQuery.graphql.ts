@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<af9ba20389d145204fcd567f4c74e4d2>>
+ * @generated SignedSource<<202b0a74af5226d0690ff1e68176f23f>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -20,8 +20,15 @@ export type BigIntFilter = {
   lte?: string | null | undefined;
   neq?: string | null | undefined;
 };
+export type UUIDFilter = {
+  eq?: string | null | undefined;
+  in?: ReadonlyArray<string> | null | undefined;
+  is?: FilterIs | null | undefined;
+  neq?: string | null | undefined;
+};
 export type DashboardQueryQuery$variables = {
   communityId: BigIntFilter;
+  userId: UUIDFilter;
 };
 export type DashboardQueryQuery$data = {
   readonly communityUsersCollection: {
@@ -59,6 +66,11 @@ var v0 = [
     "defaultValue": null,
     "kind": "LocalArgument",
     "name": "communityId"
+  },
+  {
+    "defaultValue": null,
+    "kind": "LocalArgument",
+    "name": "userId"
   }
 ],
 v1 = {
@@ -67,6 +79,17 @@ v1 = {
   "value": 1
 },
 v2 = [
+  {
+    "fields": [
+      {
+        "kind": "Variable",
+        "name": "id",
+        "variableName": "userId"
+      }
+    ],
+    "kind": "ObjectValue",
+    "name": "filter"
+  },
   (v1/*: any*/)
 ],
 v3 = {
@@ -104,6 +127,11 @@ v6 = [
         "value": {
           "eq": "ACCEPTED"
         }
+      },
+      {
+        "kind": "Variable",
+        "name": "userId",
+        "variableName": "userId"
       }
     ],
     "kind": "ObjectValue",
@@ -201,7 +229,7 @@ return {
             "storageKey": null
           }
         ],
-        "storageKey": "profilesCollection(first:1)"
+        "storageKey": null
       },
       {
         "alias": null,
@@ -298,7 +326,7 @@ return {
             "storageKey": null
           }
         ],
-        "storageKey": "profilesCollection(first:1)"
+        "storageKey": null
       },
       {
         "alias": null,
@@ -355,16 +383,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "b03781f506c3f69c6dc053192208caeb",
+    "cacheID": "d03889ac6efeeb4090942d5109608cf2",
     "id": null,
     "metadata": {},
     "name": "DashboardQueryQuery",
     "operationKind": "query",
-    "text": "query DashboardQueryQuery(\n  $communityId: BigIntFilter!\n) {\n  profilesCollection(first: 1) {\n    edges {\n      node {\n        firstName\n        lastName\n        avatarUrl\n        nodeId\n      }\n    }\n  }\n  communityUsersCollection(filter: {communityId: $communityId, status: {eq: ACCEPTED}}, first: 1) {\n    edges {\n      node {\n        communityId\n        community {\n          id\n          name\n          description\n          address\n          image\n          nodeId\n        }\n        nodeId\n      }\n    }\n  }\n}\n"
+    "text": "query DashboardQueryQuery(\n  $communityId: BigIntFilter!\n  $userId: UUIDFilter!\n) {\n  profilesCollection(filter: {id: $userId}, first: 1) {\n    edges {\n      node {\n        firstName\n        lastName\n        avatarUrl\n        nodeId\n      }\n    }\n  }\n  communityUsersCollection(filter: {communityId: $communityId, userId: $userId, status: {eq: ACCEPTED}}, first: 1) {\n    edges {\n      node {\n        communityId\n        community {\n          id\n          name\n          description\n          address\n          image\n          nodeId\n        }\n        nodeId\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "d9b67fbb066155ab9582fe55b8af01b2";
+(node as any).hash = "a481318630a7ec6a91f79c8bae4faa5c";
 
 export default node;

@@ -8,8 +8,13 @@ import {
 } from 'react-relay';
 
 import CommunityPickerComponentQuery from '../../components/community_picker/__generated__/CommunityPickerComponentQuery.graphql';
+import { useAuth } from '../../contexts/AuthContext';
 import { createEntryPoint } from '../../utils/create_entrypoint';
 import JSResource from '../../utils/make_resource';
+
+type EntryPointParams = {
+  userId?: string;
+};
 
 const CommunityPickerEntryPoint = createEntryPoint({
   root: JSResource('CommunityPicker', () =>
@@ -17,12 +22,14 @@ const CommunityPickerEntryPoint = createEntryPoint({
       (module) => module.default
     )
   ),
-  getPreloadProps() {
+  getPreloadProps(params: EntryPointParams) {
     return {
       queries: {
         communityPickerQuery: {
           parameters: CommunityPickerComponentQuery,
-          variables: {},
+          variables: {
+            userId: { eq: params.userId ?? '' },
+          },
         },
       },
     } as const;
@@ -30,6 +37,7 @@ const CommunityPickerEntryPoint = createEntryPoint({
 });
 
 const CommunityPicker = (): React.ReactElement | null => {
+  const { userId } = useAuth();
   const relayEnvironment = useRelayEnvironment();
   const environmentProvider = useMemo(
     () => ({ getEnvironment: () => relayEnvironment }),
@@ -41,10 +49,10 @@ const CommunityPicker = (): React.ReactElement | null => {
   );
 
   useEffect(() => {
-    if (entryPointRef == null) {
-      loadEntryPoint({});
+    if (entryPointRef == null && userId) {
+      loadEntryPoint({ userId });
     }
-  }, []);
+  }, [userId]);
 
   if (!entryPointRef) return null;
 

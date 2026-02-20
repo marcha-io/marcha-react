@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<7224b31ff034900375e8dbd5a6bc4f2c>>
+ * @generated SignedSource<<d0e03455b09d0bc1ebd1c498d512c461>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -10,7 +10,16 @@
 
 import { ConcreteRequest, Query } from 'relay-runtime';
 export type CommunityUserReviewStatus = "ACCEPTED" | "PENDING" | "REJECTED" | "%future added value";
-export type CommunityPickerQueryQuery$variables = Record<PropertyKey, never>;
+export type FilterIs = "NOT_NULL" | "NULL" | "%future added value";
+export type UUIDFilter = {
+  eq?: string | null | undefined;
+  in?: ReadonlyArray<string> | null | undefined;
+  is?: FilterIs | null | undefined;
+  neq?: string | null | undefined;
+};
+export type CommunityPickerQueryQuery$variables = {
+  userId: UUIDFilter;
+};
 export type CommunityPickerQueryQuery$data = {
   readonly communityUsersCollection: {
     readonly edges: ReadonlyArray<{
@@ -43,79 +52,106 @@ export type CommunityPickerQueryQuery = {
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
+    "defaultValue": null,
+    "kind": "LocalArgument",
+    "name": "userId"
+  }
+],
+v1 = [
+  {
+    "fields": [
+      {
+        "kind": "Variable",
+        "name": "id",
+        "variableName": "userId"
+      }
+    ],
+    "kind": "ObjectValue",
+    "name": "filter"
+  },
+  {
     "kind": "Literal",
     "name": "first",
     "value": 1
   }
 ],
-v1 = {
+v2 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "firstName",
   "storageKey": null
 },
-v2 = [
+v3 = [
   {
-    "kind": "Literal",
-    "name": "filter",
-    "value": {
-      "status": {
-        "eq": "ACCEPTED"
+    "fields": [
+      {
+        "kind": "Literal",
+        "name": "status",
+        "value": {
+          "eq": "ACCEPTED"
+        }
+      },
+      {
+        "kind": "Variable",
+        "name": "userId",
+        "variableName": "userId"
       }
-    }
+    ],
+    "kind": "ObjectValue",
+    "name": "filter"
   }
 ],
-v3 = {
+v4 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "communityId",
   "storageKey": null
 },
-v4 = {
+v5 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "status",
   "storageKey": null
 },
-v5 = {
+v6 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
 },
-v6 = {
+v7 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "name",
   "storageKey": null
 },
-v7 = {
+v8 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "description",
   "storageKey": null
 },
-v8 = {
+v9 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "address",
   "storageKey": null
 },
-v9 = {
+v10 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "image",
   "storageKey": null
 },
-v10 = {
+v11 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -124,14 +160,14 @@ v10 = {
 };
 return {
   "fragment": {
-    "argumentDefinitions": [],
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
     "name": "CommunityPickerQueryQuery",
     "selections": [
       {
         "alias": null,
-        "args": (v0/*: any*/),
+        "args": (v1/*: any*/),
         "concreteType": "ProfilesConnection",
         "kind": "LinkedField",
         "name": "profilesCollection",
@@ -153,7 +189,7 @@ return {
                 "name": "node",
                 "plural": false,
                 "selections": [
-                  (v1/*: any*/)
+                  (v2/*: any*/)
                 ],
                 "storageKey": null
               }
@@ -161,11 +197,11 @@ return {
             "storageKey": null
           }
         ],
-        "storageKey": "profilesCollection(first:1)"
+        "storageKey": null
       },
       {
         "alias": null,
-        "args": (v2/*: any*/),
+        "args": (v3/*: any*/),
         "concreteType": "CommunityUsersConnection",
         "kind": "LinkedField",
         "name": "communityUsersCollection",
@@ -187,8 +223,8 @@ return {
                 "name": "node",
                 "plural": false,
                 "selections": [
-                  (v3/*: any*/),
                   (v4/*: any*/),
+                  (v5/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -197,11 +233,11 @@ return {
                     "name": "community",
                     "plural": false,
                     "selections": [
-                      (v5/*: any*/),
                       (v6/*: any*/),
                       (v7/*: any*/),
                       (v8/*: any*/),
-                      (v9/*: any*/)
+                      (v9/*: any*/),
+                      (v10/*: any*/)
                     ],
                     "storageKey": null
                   }
@@ -212,7 +248,7 @@ return {
             "storageKey": null
           }
         ],
-        "storageKey": "communityUsersCollection(filter:{\"status\":{\"eq\":\"ACCEPTED\"}})"
+        "storageKey": null
       }
     ],
     "type": "Query",
@@ -220,13 +256,13 @@ return {
   },
   "kind": "Request",
   "operation": {
-    "argumentDefinitions": [],
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
     "name": "CommunityPickerQueryQuery",
     "selections": [
       {
         "alias": null,
-        "args": (v0/*: any*/),
+        "args": (v1/*: any*/),
         "concreteType": "ProfilesConnection",
         "kind": "LinkedField",
         "name": "profilesCollection",
@@ -248,8 +284,8 @@ return {
                 "name": "node",
                 "plural": false,
                 "selections": [
-                  (v1/*: any*/),
-                  (v10/*: any*/)
+                  (v2/*: any*/),
+                  (v11/*: any*/)
                 ],
                 "storageKey": null
               }
@@ -257,11 +293,11 @@ return {
             "storageKey": null
           }
         ],
-        "storageKey": "profilesCollection(first:1)"
+        "storageKey": null
       },
       {
         "alias": null,
-        "args": (v2/*: any*/),
+        "args": (v3/*: any*/),
         "concreteType": "CommunityUsersConnection",
         "kind": "LinkedField",
         "name": "communityUsersCollection",
@@ -283,8 +319,8 @@ return {
                 "name": "node",
                 "plural": false,
                 "selections": [
-                  (v3/*: any*/),
                   (v4/*: any*/),
+                  (v5/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -293,16 +329,16 @@ return {
                     "name": "community",
                     "plural": false,
                     "selections": [
-                      (v5/*: any*/),
                       (v6/*: any*/),
                       (v7/*: any*/),
                       (v8/*: any*/),
                       (v9/*: any*/),
-                      (v10/*: any*/)
+                      (v10/*: any*/),
+                      (v11/*: any*/)
                     ],
                     "storageKey": null
                   },
-                  (v10/*: any*/)
+                  (v11/*: any*/)
                 ],
                 "storageKey": null
               }
@@ -310,21 +346,21 @@ return {
             "storageKey": null
           }
         ],
-        "storageKey": "communityUsersCollection(filter:{\"status\":{\"eq\":\"ACCEPTED\"}})"
+        "storageKey": null
       }
     ]
   },
   "params": {
-    "cacheID": "60530d813598f81971f366c8c3a679a8",
+    "cacheID": "972326644ef3e8a85d8eee914797f6f1",
     "id": null,
     "metadata": {},
     "name": "CommunityPickerQueryQuery",
     "operationKind": "query",
-    "text": "query CommunityPickerQueryQuery {\n  profilesCollection(first: 1) {\n    edges {\n      node {\n        firstName\n        nodeId\n      }\n    }\n  }\n  communityUsersCollection(filter: {status: {eq: ACCEPTED}}) {\n    edges {\n      node {\n        communityId\n        status\n        community {\n          id\n          name\n          description\n          address\n          image\n          nodeId\n        }\n        nodeId\n      }\n    }\n  }\n}\n"
+    "text": "query CommunityPickerQueryQuery(\n  $userId: UUIDFilter!\n) {\n  profilesCollection(filter: {id: $userId}, first: 1) {\n    edges {\n      node {\n        firstName\n        nodeId\n      }\n    }\n  }\n  communityUsersCollection(filter: {userId: $userId, status: {eq: ACCEPTED}}) {\n    edges {\n      node {\n        communityId\n        status\n        community {\n          id\n          name\n          description\n          address\n          image\n          nodeId\n        }\n        nodeId\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "e6d114165dea9e4745b5ea50b120e1d0";
+(node as any).hash = "5afc0f090549c58a1dae85df4f2bd41c";
 
 export default node;

@@ -1,6 +1,6 @@
 // src/components/community_picker/CommunityPicker.tsx
 import { PlusOutlined } from '@ant-design/icons';
-import { Card, Col, Row, Typography } from 'antd';
+import { Avatar, Card, Col, Flex, Row, Space, Typography } from 'antd';
 import graphql from 'babel-plugin-relay/macro';
 import React from 'react';
 import {
@@ -13,9 +13,9 @@ import CommunityCard from './CommunityCard';
 import { CommunityPickerComponentQuery } from './__generated__/CommunityPickerComponentQuery.graphql';
 
 const communityPickerComponentQuery = graphql`
-  query CommunityPickerComponentQuery {
-    ...CommunityCard_query
-    profilesCollection(first: 1) {
+  query CommunityPickerComponentQuery($userId: UUIDFilter!) {
+    ...CommunityCard_query @arguments(userId: $userId)
+    profilesCollection(filter: { id: $userId }, first: 1) {
       edges {
         node {
           firstName
@@ -47,55 +47,51 @@ const CommunityPicker: EntryPointComponent<
     query.profilesCollection?.edges[0]?.node.firstName ?? 'User';
 
   return (
-    <div
+    <Flex
+      vertical
       style={{
         maxWidth: 900,
         margin: 'auto',
         padding: '40px 20px',
       }}
     >
-      <div style={{ marginBottom: 32 }}>
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: 12,
-            marginBottom: 16,
-          }}
-        >
-          <div
+      {/* Page header */}
+      <Space direction="vertical" size={8} style={{ marginBottom: 32 }}>
+        {/* Branding row */}
+        <Space align="center" size={12}>
+          <Avatar
+            shape="circle"
+            size={40}
             style={{
-              width: 40,
-              height: 40,
-              borderRadius: '50%',
-              background: '#52c41a',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: '#fff',
+              backgroundColor: '#F06543',
               fontWeight: 'bold',
               fontSize: 18,
             }}
           >
             M
-          </div>
-          <div>
+          </Avatar>
+          <Space direction="vertical" size={0}>
             <Typography.Text strong style={{ fontSize: 16 }}>
               Marcha
             </Typography.Text>
-            <br />
             <Typography.Text type="secondary" style={{ fontSize: 12 }}>
               Resident Portal
             </Typography.Text>
-          </div>
-        </div>
-        <Typography.Title level={2} style={{ marginBottom: 4 }}>
-          Welcome back, {firstName}
-        </Typography.Title>
-        <Typography.Text type="secondary">
-          Select a community to continue
-        </Typography.Text>
-      </div>
+          </Space>
+        </Space>
+
+        {/* Welcome heading */}
+        <Space direction="vertical" size={4}>
+          <Typography.Title level={2} style={{ marginBottom: 0 }}>
+            Welcome back, {firstName}
+          </Typography.Title>
+          <Typography.Text type="secondary">
+            Select a community to continue
+          </Typography.Text>
+        </Space>
+      </Space>
+
+      {/* Community cards grid */}
       <Row gutter={[24, 24]}>
         <CommunityCard fragmentRef={query} />
         <Col xs={24} md={12}>
@@ -103,28 +99,33 @@ const CommunityPicker: EntryPointComponent<
             style={{
               borderRadius: 12,
               border: '2px dashed #d9d9d9',
-              textAlign: 'center',
-              height: '100%',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
               cursor: 'pointer',
+              height: '100%',
             }}
             hoverable
           >
-            <PlusOutlined
-              style={{ fontSize: 32, color: '#bfbfbf', marginBottom: 12 }}
-            />
-            <Typography.Title level={5} style={{ color: '#595959' }}>
-              Join a Community
-            </Typography.Title>
-            <Typography.Text type="secondary">
-              Enter an invite code or request access to another property
-            </Typography.Text>
+            <Flex
+              vertical
+              align="center"
+              justify="center"
+              style={{ minHeight: 160 }}
+              gap={8}
+            >
+              <PlusOutlined style={{ fontSize: 32, color: '#bfbfbf' }} />
+              <Typography.Title
+                level={5}
+                style={{ color: '#595959', marginBottom: 0 }}
+              >
+                Join a Community
+              </Typography.Title>
+              <Typography.Text type="secondary" style={{ textAlign: 'center' }}>
+                Enter an invite code or request access to another property
+              </Typography.Text>
+            </Flex>
           </Card>
         </Col>
       </Row>
-    </div>
+    </Flex>
   );
 };
 
