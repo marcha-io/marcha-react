@@ -35,8 +35,6 @@ const CommunityCardContainer = ({ fragmentRef }: Props): React.ReactElement => {
     navigate(`${Paths.Portal}/${id}/${Paths.Dashboard}`);
   };
 
-  console.log(data);
-
   return (
     <>
       {data.communityUsersCollection?.edges.map(({ node }) => {
