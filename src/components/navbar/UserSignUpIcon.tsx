@@ -5,34 +5,24 @@ import { Link } from 'react-router-dom';
 
 import LogOutNavbar from './LogOutNavbar';
 
-const loggedInItems = (
-  setIsUserLoggedIn: (val: boolean) => void
-): MenuProps['items'] => {
-  return [
-    {
-      key: '1',
-      label: (
-        <Link rel="noopener noreferrer" to="/">
-          Dashboard
-        </Link>
-      ),
-    },
-    {
-      key: '2',
-      label: <LogOutNavbar setIsUserLoggedIn={setIsUserLoggedIn} />,
-    },
-  ];
-};
+const loggedInItems: MenuProps['items'] = [
+  {
+    key: '1',
+    label: (
+      <Link rel="noopener noreferrer" to="/">
+        Dashboard
+      </Link>
+    ),
+  },
+  {
+    key: '2',
+    label: <LogOutNavbar />,
+  },
+];
 
-type Props = {
-  setIsUserLoggedIn: (val: boolean) => void;
-};
-
-const UserSignUpIcon = ({ setIsUserLoggedIn }: Props): React.ReactElement => {
-  const items = loggedInItems(setIsUserLoggedIn);
-
+const UserSignUpIcon = (): React.ReactElement => {
   return (
-    <Dropdown menu={{ items }} placement="bottom">
+    <Dropdown menu={{ items: loggedInItems }} placement="bottom">
       <UserOutlined style={{ fontSize: 18 }} />
     </Dropdown>
   );

@@ -1,17 +1,15 @@
 import { notification } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
+import { useAuth } from '../../contexts/AuthContext';
 import { invalidateRelayStore } from '../../lib/relay_environment';
 import { supabase } from '../../lib/supabase';
 import { Paths } from '../../views/paths';
 
-type Props = {
-  setIsUserLoggedIn: (val: boolean) => void;
-};
-
-function LogOutNavbar({ setIsUserLoggedIn }: Props): React.ReactElement {
+function LogOutNavbar(): React.ReactElement {
   const [api, contextHolder] = notification.useNotification();
   const navigate = useNavigate();
+  const { setIsUserLoggedIn } = useAuth();
 
   const logOut = () => {
     supabase.auth.signOut().then(({ error }) => {

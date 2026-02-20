@@ -1,54 +1,64 @@
 // src/App.tsx
 import { Layout } from 'antd';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { RelayEnvironmentProvider } from 'react-relay';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 
+import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { CommunityProvider } from './contexts/CommunityContext';
 import environment from './lib/relay_environment';
-import { supabase } from './lib/supabase';
 import CommunityPicker from './views/community_picker/CommunityPicker.entrypoint';
 import { Paths } from './views/paths';
 import Portal from './views/portal/Portal.entrypoint';
 import SignIn from './views/sign_up/SignIn';
 
+/**
+ * Inner component that reads auth state and renders the appropriate routes.
+ * Separated from App so it can call useAuth() inside the AuthProvider tree.
+ */
+const AppRoutes = (): React.ReactElement => {
+  const { isUserLoggedIn } = useAuth();
+
+  return (
+    <Layout style={{ minHeight: '100vh' }}>
+      <Routes>
+        {isUserLoggedIn ? (
+          <>
+            <Route path={Paths.Main} element={<CommunityPicker />} />
+            <Route
+              path={`${Paths.Portal}/:communityId/*`}
+              element={<Portal />}
+            />
+            {/* Redirect /sign_in to / when already logged in */}
+            <Route
+              path={Paths.SignIn}
+              element={<Navigate to={Paths.Main} replace />}
+            />
+            {/* Catch-all: redirect unknown paths to community picker */}
+            <Route path="*" element={<Navigate to={Paths.Main} replace />} />
+          </>
+        ) : (
+          <>
+            {/* Dedicated sign-in route */}
+            <Route path={Paths.SignIn} element={<SignIn />} />
+            {/* Redirect everything else to sign-in */}
+            <Route path="*" element={<Navigate to={Paths.SignIn} replace />} />
+          </>
+        )}
+      </Routes>
+    </Layout>
+  );
+};
+
 const App = (): React.ReactElement => {
-  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
-
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setIsUserLoggedIn(!!session);
-    });
-
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setIsUserLoggedIn(!!session);
-    });
-
-    return () => subscription.unsubscribe();
-  }, []);
-
   return (
     <RelayEnvironmentProvider environment={environment}>
       <BrowserRouter>
-        <CommunityProvider>
-          <Layout style={{ minHeight: '100vh' }}>
-            <Routes>
-              {isUserLoggedIn ? (
-                <>
-                  <Route path={Paths.Main} element={<CommunityPicker />} />
-                  <Route
-                    path={`${Paths.Portal}/:communityId/*`}
-                    element={<Portal />}
-                  />
-                </>
-              ) : (
-                <Route path="*" element={<SignIn />} />
-              )}
-            </Routes>
-          </Layout>
-        </CommunityProvider>
+        <AuthProvider>
+          <CommunityProvider>
+            <AppRoutes />
+          </CommunityProvider>
+        </AuthProvider>
       </BrowserRouter>
     </RelayEnvironmentProvider>
   );

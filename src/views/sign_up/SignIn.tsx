@@ -12,6 +12,7 @@ import { Header } from 'antd/es/layout/layout';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { useAuth } from '../../contexts/AuthContext';
 import { invalidateRelayStore } from '../../lib/relay_environment';
 import { supabase } from '../../lib/supabase';
 import { Paths } from '../paths';
@@ -27,6 +28,7 @@ const SignIn = (): React.ReactElement => {
 
   const [api, contextHolder] = notification.useNotification();
 
+  const { setIsUserLoggedIn } = useAuth();
   const navigate = useNavigate();
 
   const onFinish = async (form: TSignInForm) => {
@@ -49,6 +51,8 @@ const SignIn = (): React.ReactElement => {
 
     api.success({ title: 'Sign in successful!' });
 
+    // Immediately flip the auth state so Routes re-render with logged-in views
+    setIsUserLoggedIn(true);
     invalidateRelayStore();
     navigate(Paths.Main);
   };
