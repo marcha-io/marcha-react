@@ -50,7 +50,7 @@ const CommunitiesProductsFeed = (): React.ReactElement | null => {
 
   const { community_id } = useParams();
   if (community_id == null) {
-    navigation(Paths.Communities);
+    navigation(Paths.Main);
     return <></>;
   }
 

@@ -1,9 +1,8 @@
 import graphql from 'babel-plugin-relay/macro';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useFragment } from 'react-relay';
 import { useNavigate } from 'react-router-dom';
 
-import { CommunityContext } from '../../App';
 import fetchFromStorage from '../../utils/fetch_from_storage';
 import { Paths } from '../../views/paths';
 import GeneralCard from '../Cards/GeneralCard';

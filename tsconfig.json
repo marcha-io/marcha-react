@@ -10,7 +10,6 @@
     "allowJs": false,
     "skipLibCheck": true,
     "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
@@ -20,10 +19,6 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx"
-    "include": [
-        "./**/*.ts",
-        "./**/*.tsx"
-    ],
   },
   "include": [
     "public",
