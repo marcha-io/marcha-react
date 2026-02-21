@@ -1,6 +1,7 @@
 {
   "name": "marcha-react",
   "version": "0.1.0",
+  "type": "module",
   "private": true,
   "dependencies": {
     "@ant-design/icons": "^6.1.0",
@@ -64,9 +65,10 @@
     "eslint-plugin-relay": "^1.8.3",
     "get-graphql-schema": "^2.1.2",
     "graphql": "^16.8.1",
+    "jiti": "^2.6.1",
     "prettier": "^3.2.5",
     "react-router-dom": "^6.30.2",
     "supabase": "^1.157.2",
-    "typescript-eslint": "^7.7.0"
+    "typescript-eslint": "^7.18.0"
   }
 }

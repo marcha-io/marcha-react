@@ -9,6 +9,9 @@ const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
+export const BRAND_COLOR = '#F65E44';
+export const BRAND_GRADIENT = `linear-gradient(145deg, #F65E44 0%, #D94530 100%)`;
+
 root.render(
   <React.StrictMode>
     <ConfigProvider

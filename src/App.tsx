@@ -12,10 +12,6 @@ import { Paths } from './views/paths';
 import Portal from './views/portal/Portal.entrypoint';
 import SignIn from './views/sign_up/SignIn';
 
-/**
- * Inner component that reads auth state and renders the appropriate routes.
- * Separated from App so it can call useAuth() inside the AuthProvider tree.
- */
 const AppRoutes = (): React.ReactElement => {
   const { isUserLoggedIn } = useAuth();
 

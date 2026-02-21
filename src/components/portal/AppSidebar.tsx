@@ -16,6 +16,7 @@ import { Avatar, Button, Divider, Layout, Menu, Space, Typography } from 'antd';
 import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
+import { BRAND_COLOR } from '../..';
 import { useAuth } from '../../contexts/AuthContext';
 import { useCommunity } from '../../contexts/CommunityContext';
 import { supabase } from '../../lib/supabase';
@@ -44,7 +45,6 @@ const AppSidebar = ({ communityId }: Props): React.ReactElement => {
     navigate(Paths.SignIn);
   };
 
-  // Determine the active menu key from the current path
   const pathSegments = location.pathname.split('/');
   const activeKey = pathSegments[pathSegments.length - 1] || Paths.Dashboard;
 
@@ -64,9 +64,7 @@ const AppSidebar = ({ communityId }: Props): React.ReactElement => {
         flexDirection: 'column',
       }}
     >
-      {/* Scrollable nav area */}
       <div style={{ flex: 1, overflow: 'auto' }}>
-        {/* Community Header */}
         <div
           style={{
             padding: '16px',
@@ -77,7 +75,7 @@ const AppSidebar = ({ communityId }: Props): React.ReactElement => {
           }}
         >
           <Avatar
-            style={{ backgroundColor: '#F06543', flexShrink: 0 }}
+            style={{ backgroundColor: BRAND_COLOR, flexShrink: 0 }}
             shape="square"
             size={40}
             icon={<HomeOutlined />}
