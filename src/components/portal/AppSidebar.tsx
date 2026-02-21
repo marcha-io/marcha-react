@@ -3,7 +3,6 @@ import {
   DashboardOutlined,
   DollarCircleOutlined,
   FileTextOutlined,
-  HomeOutlined,
   LogoutOutlined,
   MessageOutlined,
   ReadOutlined,
@@ -12,15 +11,15 @@ import {
   ToolOutlined,
   UserOutlined,
 } from '@ant-design/icons';
-import { Avatar, Button, Divider, Layout, Menu, Space, Typography } from 'antd';
+import { Button, Divider, Layout, Menu, Space, Typography } from 'antd';
 import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
-import { BRAND_COLOR } from '../..';
 import { useAuth } from '../../contexts/AuthContext';
 import { useCommunity } from '../../contexts/CommunityContext';
 import { supabase } from '../../lib/supabase';
 import { Paths } from '../../views/paths';
+import BuildingAvatar from '../Avatars/BuildingAvatar';
 
 const { Sider } = Layout;
 
@@ -31,7 +30,8 @@ type Props = {
 const AppSidebar = ({ communityId }: Props): React.ReactElement => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { setCommunityId } = useCommunity();
+
+  const { communityImg, setCommunityId } = useCommunity();
   const { setIsUserLoggedIn } = useAuth();
 
   const handleSwitchCommunity = () => {
@@ -74,12 +74,8 @@ const AppSidebar = ({ communityId }: Props): React.ReactElement => {
             gap: 12,
           }}
         >
-          <Avatar
-            style={{ backgroundColor: BRAND_COLOR, flexShrink: 0 }}
-            shape="square"
-            size={40}
-            icon={<HomeOutlined />}
-          />
+          <BuildingAvatar communityImg={communityImg} />
+
           <div style={{ flex: 1, minWidth: 0 }}>
             <Typography.Text strong style={{ display: 'block' }}>
               Community

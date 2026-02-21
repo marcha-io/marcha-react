@@ -26,12 +26,13 @@ type Props = {
 
 const CommunityCardContainer = ({ fragmentRef }: Props): React.ReactElement => {
   const data = useFragment(CommunityCardContainerFragment, fragmentRef);
-  const { setCommunityId } = useCommunity();
+  const { setCommunityId, setCommunityImg } = useCommunity();
 
   const navigate = useNavigate();
 
-  const handleSelectCommunity = (id: string) => {
+  const handleSelectCommunity = (id: string, imageBlob: Blob | null) => {
     setCommunityId(id);
+    setCommunityImg(imageBlob != null ? URL.createObjectURL(imageBlob) : null);
     navigate(`${Paths.Portal}/${id}/${Paths.Dashboard}`);
   };
 

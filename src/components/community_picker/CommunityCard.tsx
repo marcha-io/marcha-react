@@ -26,14 +26,14 @@ const CommunityCardFragment = graphql`
 
 type Props = {
   fragmentRef: CommunityCard_fragment$key;
-  handleSelectCommunity: (id: string) => void;
+  handleSelectCommunity: (id: string, imageBlob: Blob | null) => void;
 };
 
 const CommunityCard = ({
   fragmentRef,
   handleSelectCommunity,
 }: Props): React.ReactElement => {
-  const [imageBlob, setImageBlob] = useState<Blob>(new Blob());
+  const [imageBlob, setImageBlob] = useState<Blob | null>(null);
 
   const communityFragment = useFragment(CommunityCardFragment, fragmentRef);
 
@@ -42,7 +42,7 @@ const CommunityCard = ({
       fetchFromStorage(
         communityFragment?.community?.image,
         'communities-images'
-      ).then((blob) => setImageBlob(blob ?? imageBlob));
+      ).then((blob) => setImageBlob(blob));
     }
   }, [communityFragment]);
 
@@ -54,25 +54,18 @@ const CommunityCard = ({
     <Col xs={24} md={12} key={communityFragment?.communityId}>
       <Card
         hoverable
-        onClick={() => handleSelectCommunity(communityFragment?.communityId)}
+        onClick={() =>
+          handleSelectCommunity(communityFragment?.communityId, imageBlob)
+        }
         style={{ borderRadius: 12 }}
       >
         <Card.Meta
           avatar={
-            communityFragment?.community?.image ? (
-              <img
-                src={URL.createObjectURL(imageBlob)}
-                alt="community logo"
-                style={{
-                  width: 48,
-                  height: 48,
-                  borderRadius: 12,
-                  objectFit: 'cover',
-                }}
-              />
-            ) : (
-              <BuildingAvatar />
-            )
+            <BuildingAvatar
+              communityImg={
+                imageBlob != null ? URL.createObjectURL(imageBlob) : null
+              }
+            />
           }
           title={communityFragment?.community?.name}
           description={addressDisplay}

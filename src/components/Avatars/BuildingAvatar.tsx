@@ -3,20 +3,39 @@ import { Flex } from 'antd';
 
 import { BRAND_COLOR } from '../..';
 
-const BuildingAvatar = () => {
+type Props = {
+  communityImg?: string | null;
+};
+
+const BuildingAvatar = ({ communityImg = null }: Props) => {
   return (
-    <Flex
-      align="center"
-      justify="center"
-      style={{
-        width: 48,
-        height: 48,
-        borderRadius: 12,
-        background: BRAND_COLOR,
-      }}
-    >
-      <HomeOutlined style={{ fontSize: 24, color: '#fff' }} />
-    </Flex>
+    <>
+      {communityImg != null ? (
+        <img
+          src={communityImg}
+          alt="community logo"
+          style={{
+            width: 48,
+            height: 48,
+            borderRadius: 12,
+            objectFit: 'cover',
+          }}
+        />
+      ) : (
+        <Flex
+          align="center"
+          justify="center"
+          style={{
+            width: 48,
+            height: 48,
+            borderRadius: 12,
+            background: BRAND_COLOR,
+          }}
+        >
+          <HomeOutlined style={{ fontSize: 24, color: '#fff' }} />
+        </Flex>
+      )}
+    </>
   );
 };
 
