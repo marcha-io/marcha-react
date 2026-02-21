@@ -11,7 +11,7 @@ import {
   ToolOutlined,
   UserOutlined,
 } from '@ant-design/icons';
-import { Button, Divider, Layout, Menu, Space, Typography } from 'antd';
+import { Button, Divider, Flex, Layout, Menu, Space, Typography } from 'antd';
 import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
@@ -64,13 +64,12 @@ const AppSidebar = ({ communityId }: Props): React.ReactElement => {
         flexDirection: 'column',
       }}
     >
-      <div style={{ flex: 1, overflow: 'auto' }}>
-        <div
+      <Flex vertical style={{ overflow: 'auto' }}>
+        <Flex
+          align="center"
           style={{
             padding: '16px',
             borderBottom: '1px solid #f0f0f0',
-            display: 'flex',
-            alignItems: 'center',
             gap: 12,
           }}
         >
@@ -89,7 +88,7 @@ const AppSidebar = ({ communityId }: Props): React.ReactElement => {
             style={{ cursor: 'pointer', fontSize: 16, color: '#8c8c8c' }}
             title="Switch Community"
           />
-        </div>
+        </Flex>
 
         <div style={{ padding: '8px 0' }}>
           <Typography.Text
@@ -222,7 +221,7 @@ const AppSidebar = ({ communityId }: Props): React.ReactElement => {
             ]}
           />
         </div>
-      </div>
+      </Flex>
 
       <div
         style={{
