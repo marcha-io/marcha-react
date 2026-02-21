@@ -9,6 +9,7 @@ import {
   usePreloadedQuery,
 } from 'react-relay';
 
+import { BRAND_COLOR } from '../..';
 import CommunityCardContainer from './CommunityCardContainer';
 import { CommunityPickerComponentQuery } from './__generated__/CommunityPickerComponentQuery.graphql';
 
@@ -68,7 +69,7 @@ const CommunityPicker: EntryPointComponent<
               width: 40,
               height: 40,
               borderRadius: '50%',
-              background: '#52c41a',
+              background: BRAND_COLOR,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
