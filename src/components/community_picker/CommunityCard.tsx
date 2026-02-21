@@ -1,11 +1,13 @@
-import { HomeOutlined, MessageOutlined, ToolOutlined } from '@ant-design/icons';
+import { MessageOutlined, ToolOutlined } from '@ant-design/icons';
 import { Card, Col, Row, Statistic, Tag } from 'antd';
 import graphql from 'babel-plugin-relay/macro';
 import { useEffect, useState } from 'react';
 import { useFragment } from 'react-relay';
 
+import { BRAND_COLOR } from '../..';
 import fetchFromStorage from '../../utils/fetch_from_storage';
 import { getParseJsonAddress } from '../../utils/get_address';
+import BuildingAvatar from '../Avatars/BuildingAvatar';
 import { CommunityCard_fragment$key } from './__generated__/CommunityCard_fragment.graphql';
 
 const CommunityCardFragment = graphql`
@@ -69,19 +71,7 @@ const CommunityCard = ({
                 }}
               />
             ) : (
-              <div
-                style={{
-                  width: 48,
-                  height: 48,
-                  borderRadius: 12,
-                  background: '#F06543',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
-                <HomeOutlined style={{ fontSize: 24, color: '#fff' }} />
-              </div>
+              <BuildingAvatar />
             )
           }
           title={communityFragment?.community?.name}
@@ -90,7 +80,7 @@ const CommunityCard = ({
         <div style={{ marginTop: 16 }}>
           <Tag color="blue">{communityFragment?.status}</Tag>
         </div>
-        <Row gutter={16} style={{ marginTop: 24, textAlign: 'center' }}>
+        <Row gutter={8} style={{ marginTop: 24, textAlign: 'center' }}>
           <Col span={8}>
             <Statistic
               title="Open Requests"
@@ -111,7 +101,7 @@ const CommunityCard = ({
               value={0}
               precision={2}
               prefix="£"
-              style={{ color: '#F06543' }}
+              styles={{ content: { color: BRAND_COLOR } }}
             />
           </Col>
         </Row>

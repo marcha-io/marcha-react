@@ -1,6 +1,5 @@
-// src/components/community_picker/CommunityPicker.tsx
 import { PlusOutlined } from '@ant-design/icons';
-import { Card, Col, Row, Typography } from 'antd';
+import { Card, Col, Flex, Row, Typography } from 'antd';
 import graphql from 'babel-plugin-relay/macro';
 import React from 'react';
 import {
@@ -9,7 +8,7 @@ import {
   usePreloadedQuery,
 } from 'react-relay';
 
-import { BRAND_COLOR } from '../..';
+import MarchaAvatar from '../Avatars/MarchaAvatar';
 import CommunityCardContainer from './CommunityCardContainer';
 import { CommunityPickerComponentQuery } from './__generated__/CommunityPickerComponentQuery.graphql';
 
@@ -56,30 +55,13 @@ const CommunityPicker: EntryPointComponent<
       }}
     >
       <div style={{ marginBottom: 32 }}>
-        <div
+        <Flex
+          gap="small"
           style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: 12,
             marginBottom: 16,
           }}
         >
-          <div
-            style={{
-              width: 40,
-              height: 40,
-              borderRadius: '50%',
-              background: BRAND_COLOR,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: '#fff',
-              fontWeight: 'bold',
-              fontSize: 18,
-            }}
-          >
-            M
-          </div>
+          <MarchaAvatar />{' '}
           <div>
             <Typography.Text strong style={{ fontSize: 16 }}>
               Marcha
@@ -89,7 +71,7 @@ const CommunityPicker: EntryPointComponent<
               Resident Portal
             </Typography.Text>
           </div>
-        </div>
+        </Flex>
         <Typography.Title level={2} style={{ marginBottom: 4 }}>
           Welcome back, {firstName}
         </Typography.Title>
