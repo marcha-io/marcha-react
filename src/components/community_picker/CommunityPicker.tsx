@@ -51,6 +51,7 @@ const CommunityPicker: EntryPointComponent<
       style={{
         maxWidth: 900,
         margin: 'auto',
+        marginTop: 200,
         padding: '40px 20px',
       }}
     >
