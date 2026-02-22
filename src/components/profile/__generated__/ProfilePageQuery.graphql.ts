@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<e7504d2fce046fa72ecd1c8ccf33084b>>
+ * @generated SignedSource<<c316fddabc0f9ab809073c83d57d4a47>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -16,10 +16,10 @@ export type UUIDFilter = {
   is?: FilterIs | null | undefined;
   neq?: string | null | undefined;
 };
-export type ProfileQueryQuery$variables = {
+export type ProfilePageQuery$variables = {
   userId: UUIDFilter;
 };
-export type ProfileQueryQuery$data = {
+export type ProfilePageQuery$data = {
   readonly profilesCollection: {
     readonly edges: ReadonlyArray<{
       readonly node: {
@@ -35,9 +35,9 @@ export type ProfileQueryQuery$data = {
     }>;
   } | null | undefined;
 };
-export type ProfileQueryQuery = {
-  response: ProfileQueryQuery$data;
-  variables: ProfileQueryQuery$variables;
+export type ProfilePageQuery = {
+  response: ProfilePageQuery$data;
+  variables: ProfilePageQuery$variables;
 };
 
 const node: ConcreteRequest = (function(){
@@ -161,7 +161,7 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "ProfileQueryQuery",
+    "name": "ProfilePageQuery",
     "selections": (v1/*: any*/),
     "type": "Query",
     "abstractKey": null
@@ -170,20 +170,20 @@ return {
   "operation": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "ProfileQueryQuery",
+    "name": "ProfilePageQuery",
     "selections": (v1/*: any*/)
   },
   "params": {
-    "cacheID": "1fbee9adea003102b7998e8975a2f3ea",
+    "cacheID": "41f4541dcb6e8f67ff8b01d895a872ce",
     "id": null,
     "metadata": {},
-    "name": "ProfileQueryQuery",
+    "name": "ProfilePageQuery",
     "operationKind": "query",
-    "text": "query ProfileQueryQuery(\n  $userId: UUIDFilter!\n) {\n  profilesCollection(filter: {id: $userId}, first: 1) {\n    edges {\n      node {\n        id\n        nodeId\n        firstName\n        lastName\n        username\n        avatarUrl\n        description\n        onboarded\n      }\n    }\n  }\n}\n"
+    "text": "query ProfilePageQuery(\n  $userId: UUIDFilter!\n) {\n  profilesCollection(filter: {id: $userId}, first: 1) {\n    edges {\n      node {\n        id\n        nodeId\n        firstName\n        lastName\n        username\n        avatarUrl\n        description\n        onboarded\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "18b89cd2632bb725c0a6ab20d6151410";
+(node as any).hash = "e8a0aee3ff556ffe381053efec529bd1";
 
 export default node;

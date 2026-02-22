@@ -1,0 +1,19 @@
+{
+  "src": "./src/",
+  "language": "typescript",
+  "schema": "./data/schema.graphql",
+  "exclude": ["**/node_modules/**", "**/__mocks__/**", "**/__generated__/**"],
+  "schemaConfig": {
+    "nodeInterfaceIdField": "nodeId",
+    "nodeInterfaceIdVariableName": "nodeId"
+  },
+  "customScalarTypes": {
+    "UUID": "string",
+    "Datetime": "string",
+    "JSON": "string",
+    "BigInt": "string",
+    "BigFloat": "string",
+    "Cursor": "string",
+    "Opaque": "any"
+  }
+}

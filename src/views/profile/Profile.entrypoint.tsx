@@ -7,7 +7,7 @@ import {
   useRelayEnvironment,
 } from 'react-relay';
 
-import ProfileQueryQuery from '../../components/profile/__generated__/ProfileQueryQuery.graphql';
+import ProfilePageQuery from '../../components/profile/__generated__/ProfilePageQuery.graphql';
 import { useAuth } from '../../contexts/AuthContext';
 import { createEntryPoint } from '../../utils/create_entrypoint';
 import JSResource from '../../utils/make_resource';
@@ -26,7 +26,7 @@ const ProfileEntryPoint = createEntryPoint({
     return {
       queries: {
         profileQuery: {
-          parameters: ProfileQueryQuery,
+          parameters: ProfilePageQuery,
           variables: {
             userId: { eq: params.userId ?? '' },
           },
