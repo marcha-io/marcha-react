@@ -38,11 +38,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
             type={isEditing ? 'primary' : 'default'}
             icon={isEditing ? <CheckOutlined /> : <EditOutlined />}
             onClick={() => {
-              if (isEditing) {
-                form.submit();
-              } else {
-                setIsEditing(true);
-              }
+              isEditing ? form.submit() : setIsEditing(true);
             }}
             loading={isMutating}
             style={

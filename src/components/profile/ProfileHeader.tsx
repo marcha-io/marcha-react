@@ -9,7 +9,6 @@ const TEXT_SECONDARY = '#6B7280';
 type ProfileHeaderProps = {
   displayName: string;
   username: string | null;
-  description: string | null;
   avatarUrl: string;
   uploading: boolean;
   onAvatarUpload: (file: File) => void;
@@ -18,7 +17,6 @@ type ProfileHeaderProps = {
 const ProfileHeader: React.FC<ProfileHeaderProps> = ({
   displayName,
   username,
-  description,
   avatarUrl,
   uploading,
   onAvatarUpload,
@@ -83,19 +81,6 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
           style={{ fontSize: 14, marginTop: 4 }}
         >
           @{username}
-        </Typography.Text>
-      )}
-      {description && (
-        <Typography.Text
-          style={{
-            fontSize: 14,
-            color: TEXT_SECONDARY,
-            marginTop: 8,
-            maxWidth: 400,
-            textAlign: 'center',
-          }}
-        >
-          {description}
         </Typography.Text>
       )}
     </Flex>

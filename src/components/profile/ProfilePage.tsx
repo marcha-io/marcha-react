@@ -12,9 +12,9 @@ import { supabase } from '../../lib/supabase';
 import AccountInfo from './AccountInfo';
 import ProfileForm from './ProfileForm';
 import ProfileHeader from './ProfileHeader';
-import UpdateProfileMutation from './UpdateProfileMutation.graphql';
 import type { ProfilePageQuery } from './__generated__/ProfilePageQuery.graphql';
 import type { UpdateProfileMutationMutation } from './__generated__/UpdateProfileMutationMutation.graphql';
+import UpdateProfileMutation from './graphql/UpdateProfileMutation.graphql';
 
 const PROFILE_QUERY = graphql`
   query ProfilePageQuery($userId: UUIDFilter!) {
@@ -52,6 +52,7 @@ const ProfilePage: EntryPointComponent<
   );
 
   const profile = data.profilesCollection?.edges?.[0]?.node;
+
   const [uploading, setUploading] = useState(false);
   const [avatarUrl, setAvatarUrl] = useState(profile?.avatarUrl ?? '');
 
@@ -61,7 +62,9 @@ const ProfilePage: EntryPointComponent<
   const handleAvatarUpload = useCallback(
     async (file: File) => {
       if (!profile?.id) return;
+
       setUploading(true);
+
       try {
         const fileExt = file.name.split('.').pop();
         const filePath = `avatars/${profile.id}.${fileExt}`;
@@ -91,6 +94,7 @@ const ProfilePage: EntryPointComponent<
           },
         });
       } catch (err: unknown) {
+        console.log(err);
         const errorMessage =
           err instanceof Error ? err.message : 'Unknown error';
         message.error(`Upload failed: ${errorMessage}`);
@@ -144,11 +148,10 @@ const ProfilePage: EntryPointComponent<
     'Marcha User';
 
   return (
-    <div style={{ maxWidth: 800, margin: '0 auto', padding: '0 16px' }}>
+    <div style={{ margin: '0 auto', padding: '0 16px' }}>
       <ProfileHeader
         displayName={displayName}
         username={profile.username ?? null}
-        description={profile.description ?? null}
         avatarUrl={avatarUrl}
         uploading={uploading}
         onAvatarUpload={handleAvatarUpload}
@@ -165,7 +168,7 @@ const ProfilePage: EntryPointComponent<
         onSave={handleSave}
       />
 
-      <AccountInfo userId={profile.id} onboarded={profile.onboarded ?? null} />
+      <AccountInfo onboarded={profile.onboarded ?? null} />
 
       <div style={{ height: 32 }} />
     </div>

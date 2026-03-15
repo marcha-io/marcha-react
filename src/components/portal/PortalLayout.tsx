@@ -74,6 +74,8 @@ const PortalLayout = ({ communityId }: Props): React.ReactElement => {
     setDrawerOpen(false);
   };
 
+  // TODO: Make the phone sidebar the same as the desktop
+  //
   return (
     <Layout style={{ minHeight: '100vh' }}>
       <Header
