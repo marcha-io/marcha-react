@@ -29,7 +29,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     // Check existing session on mount
     supabase.auth.getSession().then(({ data: { session } }) => {
-      setIsUserLoggedIn(!!session);
+      setIsUserLoggedIn(session != null);
       setUserId(session?.user?.id ?? null);
     });
 

@@ -55,6 +55,7 @@ const ProfilePage: EntryPointComponent<
 
   const [uploading, setUploading] = useState(false);
   const [avatarUrl, setAvatarUrl] = useState(profile?.avatarUrl ?? '');
+  console.log(avatarUrl);
 
   const [commitMutation, isMutating] =
     useMutation<UpdateProfileMutationMutation>(UpdateProfileMutation);
@@ -66,18 +67,17 @@ const ProfilePage: EntryPointComponent<
       setUploading(true);
 
       try {
-        const fileExt = file.name.split('.').pop();
-        const filePath = `avatars/${profile.id}.${fileExt}`;
+        const filePath = `${profile.username}/${profile.id}.jpg`;
 
         const { error: uploadError } = await supabase.storage
-          .from('community-images')
-          .upload(filePath, file, { upsert: true });
+          .from('avatars')
+          .upload(filePath, file, { upsert: true, contentType: 'image/jpg' });
 
         if (uploadError) throw uploadError;
 
         const {
           data: { publicUrl },
-        } = supabase.storage.from('community-images').getPublicUrl(filePath);
+        } = supabase.storage.from('avatars').getPublicUrl(filePath);
 
         setAvatarUrl(publicUrl);
 
@@ -94,7 +94,6 @@ const ProfilePage: EntryPointComponent<
           },
         });
       } catch (err: unknown) {
-        console.log(err);
         const errorMessage =
           err instanceof Error ? err.message : 'Unknown error';
         message.error(`Upload failed: ${errorMessage}`);

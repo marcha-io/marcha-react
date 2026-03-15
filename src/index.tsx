@@ -10,6 +10,10 @@ const root = ReactDOM.createRoot(
 );
 
 export const BRAND_COLOR = '#F65E44';
+export const BRAND_DARK = '#D94530';
+
+export const BORDER = '#E5E7EB';
+
 export const BRAND_GRADIENT = `linear-gradient(145deg, #F65E44 0%, #D94530 100%)`;
 
 root.render(

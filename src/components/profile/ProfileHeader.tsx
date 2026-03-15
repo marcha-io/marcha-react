@@ -2,9 +2,7 @@ import { CameraOutlined, UserOutlined } from '@ant-design/icons';
 import { Avatar, Button, Card, Flex, Spin, Typography, Upload } from 'antd';
 import React from 'react';
 
-const BRAND_COLOR = '#F06543';
-const BRAND_DARK = '#D94530';
-const TEXT_SECONDARY = '#6B7280';
+import { BRAND_COLOR, BRAND_DARK } from '../..';
 
 type ProfileHeaderProps = {
   displayName: string;
@@ -49,11 +47,10 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
           }}
         />
         <Upload
-          accept="image/*"
+          accept="image/jpeg"
           showUploadList={false}
           beforeUpload={(file) => {
             onAvatarUpload(file);
-            return false;
           }}
         >
           <Button

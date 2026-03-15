@@ -1,7 +1,7 @@
 import { Card, Flex, Space, Typography } from 'antd';
 import React from 'react';
 
-const BORDER = '#E5E7EB';
+import { BORDER } from '../..';
 
 type AccountInfoProps = {
   onboarded: boolean;

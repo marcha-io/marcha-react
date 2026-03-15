@@ -1,9 +1,8 @@
-import { CheckOutlined, EditOutlined } from '@ant-design/icons';
-import { Button, Card, Col, Flex, Form, Input, Row, Typography } from 'antd';
+import { Card, Col, Flex, Form, Input, Row, Typography } from 'antd';
 import React, { useState } from 'react';
 
-const BRAND_COLOR = '#F06543';
-const BORDER = '#E5E7EB';
+import { BORDER } from '../..';
+import ProfileFormButtons from './ProfileFormButtons';
 
 type ProfileFormValues = {
   firstName: string;
@@ -34,21 +33,12 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
           <Typography.Title level={5} style={{ margin: 0 }}>
             Profile Details
           </Typography.Title>
-          <Button
-            type={isEditing ? 'primary' : 'default'}
-            icon={isEditing ? <CheckOutlined /> : <EditOutlined />}
-            onClick={() => {
-              isEditing ? form.submit() : setIsEditing(true);
-            }}
-            loading={isMutating}
-            style={
-              isEditing
-                ? { backgroundColor: BRAND_COLOR, borderColor: BRAND_COLOR }
-                : {}
-            }
-          >
-            {isEditing ? 'Save' : 'Edit'}
-          </Button>
+          <ProfileFormButtons
+            isEditing={isEditing}
+            setIsEditing={setIsEditing}
+            isMutating={isMutating}
+            form={form}
+          />
         </Flex>
       }
     >
@@ -129,30 +119,6 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
             style={{ borderRadius: 8 }}
           />
         </Form.Item>
-
-        {isEditing && (
-          <Flex justify="flex-end" gap={12} style={{ marginTop: 8 }}>
-            <Button
-              onClick={() => {
-                setIsEditing(false);
-                form.resetFields();
-              }}
-            >
-              Cancel
-            </Button>
-            <Button
-              type="primary"
-              htmlType="submit"
-              loading={isMutating}
-              style={{
-                backgroundColor: BRAND_COLOR,
-                borderColor: BRAND_COLOR,
-              }}
-            >
-              Save Changes
-            </Button>
-          </Flex>
-        )}
       </Form>
     </Card>
   );

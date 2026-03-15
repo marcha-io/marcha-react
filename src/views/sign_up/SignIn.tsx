@@ -76,7 +76,7 @@ const SignIn = (): React.ReactElement => {
               }}
             />
 
-            <Space direction="vertical" size={12}>
+            <Space vertical size={12}>
               <Typography.Title
                 level={2}
                 style={{ color: '#fff', margin: 0, lineHeight: 1.2 }}

@@ -48,6 +48,7 @@ const CommunityPicker = (): React.ReactElement | null => {
 
   if (!entryPointRef) return null;
 
+  // TODO: Fix spin to show tip
   return (
     <Suspense
       fallback={

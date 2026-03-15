@@ -38,9 +38,10 @@ const CommunityCardContainer = ({ fragmentRef }: Props): React.ReactElement => {
 
   return (
     <>
-      {data.communityUsersCollection?.edges.map(({ node }) => {
+      {data.communityUsersCollection?.edges.map(({ node }, i) => {
         return (
           <CommunityCard
+            key={i}
             fragmentRef={node}
             handleSelectCommunity={handleSelectCommunity}
           />
