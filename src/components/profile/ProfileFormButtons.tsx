@@ -40,9 +40,7 @@ const ProfileFormButtons = ({
     <Button
       type={'default'}
       icon={<EditOutlined />}
-      onClick={() => {
-        isEditing ? form.submit() : setIsEditing(true);
-      }}
+      onClick={() => setIsEditing(true)}
       loading={isMutating}
     >
       Edit
