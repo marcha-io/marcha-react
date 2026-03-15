@@ -25,9 +25,10 @@ const { Sider } = Layout;
 
 type Props = {
   communityId: string;
+  onNavigate?: () => void;
 };
 
-const AppSidebar = ({ communityId }: Props): React.ReactElement => {
+const AppSidebar = ({ communityId, onNavigate }: Props): React.ReactElement => {
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -37,12 +38,18 @@ const AppSidebar = ({ communityId }: Props): React.ReactElement => {
   const handleSwitchCommunity = () => {
     setCommunityId(null);
     navigate(Paths.Main);
+    onNavigate?.();
   };
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
     setIsUserLoggedIn(false);
     navigate(Paths.SignIn);
+    onNavigate?.();
+  };
+
+  const handleMenuClick = () => {
+    onNavigate?.();
   };
 
   const pathSegments = location.pathname.split('/');
@@ -108,6 +115,7 @@ const AppSidebar = ({ communityId }: Props): React.ReactElement => {
             mode="inline"
             selectedKeys={[activeKey]}
             style={{ borderRight: 0 }}
+            onClick={handleMenuClick}
             items={[
               {
                 key: Paths.Dashboard,
