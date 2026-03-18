@@ -38,6 +38,13 @@ The MVP focuses on the three core features that make Marcha immediately useful t
 - [ ] Receive notification when a new event is posted
 - [ ] Calendar view of upcoming events
 
+### Dashboard
+- [ ] Recent messages received
+- [ ] Upcoming Event
+- [ ] Open maintance requests
+- [ ] Market place preview
+- [ ] Community Announcements
+
 ---
 
 ## 📋 Full Roadmap
@@ -52,7 +59,7 @@ The following features represent the complete product vision, prioritized by cat
 - [ ] **Noticeboard** — view and search community announcements with rich text and attachments
 - [ ] **Messages** — direct messaging between residents and property manager; threaded conversations
 - [ ] **Notifications** — in-app notification centre with read/unread state and notification preferences
-- [ ] **Profile** — view and edit personal details, profile photo, contact preferences *(partially built)*
+- [X] **Profile** — view and edit personal details, profile photo
 - [ ] **Documents** — view and download lease agreement, building rules, insurance certificates, and other shared documents
 - [ ] **Subletting** — submit a subletting request; view approval status
 
@@ -159,7 +166,7 @@ The following features represent the complete product vision, prioritized by cat
 
 ### Authentication & Accounts
 
-- [ ] Email/password sign-up and sign-in *(built)*
+- [X] Email/password sign-up and sign-in
 - [ ] Google OAuth sign-in
 - [ ] Apple sign-in (required for iOS App Store)
 - [ ] Magic link / passwordless login
