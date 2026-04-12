@@ -47,9 +47,9 @@ describe('CreateListingForm', () => {
     expect(button.closest('button')).toHaveAttribute('type', 'submit');
   });
 
-  it('shows "Uploading image..." when uploading is true', () => {
+  it('shows "Uploading images..." when uploading is true', () => {
     renderWithAntd(<CreateListingForm {...defaultProps} uploading={true} />);
-    expect(screen.getByText('Uploading image...')).toBeInTheDocument();
+    expect(screen.getByText('Uploading images...')).toBeInTheDocument();
   });
 
   it('shows validation errors when submitting empty form', async () => {

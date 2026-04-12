@@ -6,7 +6,35 @@ import { MemoryRouter, useSearchParams } from 'react-router-dom';
 import { marchaTheme } from '../../../design';
 import MarketplaceFilters from '../MarketplaceFilters';
 
-// Helper to capture search params from inside the router context
+// ── Mocks ─────────────────────────────────────────────────────────────────────
+// CategoriesFilter uses useLazyLoadQuery internally and requires a Relay
+// environment. We mock it to avoid that dependency in filter-level unit tests.
+jest.mock('../marketplaceFilters/CategoriesFilter', () => {
+  return function MockCategoriesFilter({
+    setCategories,
+  }: {
+    setCategories: (v: string) => void;
+  }) {
+    return (
+      <select
+        data-testid="categories-select"
+        onChange={(e) => setCategories(e.target.value)}
+      >
+        <option value="">All Categories</option>
+        <option value="cat-1">Electronics</option>
+        <option value="cat-2">Furniture</option>
+      </select>
+    );
+  };
+});
+
+jest.mock('../marketplaceFilters/CategoriesFilterLoading', () => {
+  return function MockCategoriesFilterLoading() {
+    return <div data-testid="categories-loading" />;
+  };
+});
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
 let capturedSearchParams: URLSearchParams = new URLSearchParams();
 
 function SearchParamsCapture() {
@@ -15,33 +43,32 @@ function SearchParamsCapture() {
   return null;
 }
 
-const categories = [
-  { id: 'cat-1', name: 'Electronics' },
-  { id: 'cat-2', name: 'Furniture' },
-];
-
 function renderFilters(initialEntries: string[] = ['/']) {
   return render(
     <ConfigProvider theme={marchaTheme}>
       <MemoryRouter initialEntries={initialEntries}>
         <SearchParamsCapture />
-        <MarketplaceFilters categories={categories} />
+        <MarketplaceFilters />
       </MemoryRouter>
     </ConfigProvider>
   );
 }
 
+// ── Tests ─────────────────────────────────────────────────────────────────────
 describe('MarketplaceFilters', () => {
   beforeEach(() => {
     capturedSearchParams = new URLSearchParams();
   });
 
-  it('renders search input and category pill buttons', () => {
+  it('renders the search input', () => {
     renderFilters();
     expect(screen.getByPlaceholderText('Search items...')).toBeInTheDocument();
-    expect(screen.getByText('All')).toBeInTheDocument();
-    expect(screen.getByText('Electronics')).toBeInTheDocument();
-    expect(screen.getByText('Furniture')).toBeInTheDocument();
+  });
+
+  it('renders the categories and conditions filter controls', () => {
+    renderFilters();
+    expect(screen.getByTestId('categories-select')).toBeInTheDocument();
+    expect(screen.getByText('All Conditions')).toBeInTheDocument();
   });
 
   it('populates search input from URL params', () => {
@@ -50,37 +77,45 @@ describe('MarketplaceFilters', () => {
     expect(input).toHaveValue('bike');
   });
 
-  it('updates the q search param when typing in the search input', async () => {
+  it('updates the q search param after debounce when typing in the search input', async () => {
     renderFilters();
     const input = screen.getByPlaceholderText('Search items...');
     fireEvent.change(input, { target: { value: 'laptop' } });
-    await waitFor(() => {
-      expect(capturedSearchParams.get('q')).toBe('laptop');
-    });
+    await waitFor(
+      () => {
+        expect(capturedSearchParams.get('q')).toBe('laptop');
+      },
+      { timeout: 1000 }
+    );
   });
 
-  it('clears the cursor param when a filter changes', async () => {
+  it('clears the cursor param when the search input changes', async () => {
     renderFilters(['/?q=old&cursor=abc123']);
     const input = screen.getByPlaceholderText('Search items...');
     fireEvent.change(input, { target: { value: 'new' } });
-    await waitFor(() => {
-      expect(capturedSearchParams.get('cursor')).toBeNull();
-    });
+    await waitFor(
+      () => {
+        expect(capturedSearchParams.get('cursor')).toBeNull();
+      },
+      { timeout: 1000 }
+    );
   });
 
-  it('sets category param when a category pill is clicked', async () => {
+  it('sets the categories param when a category is selected', async () => {
     renderFilters();
-    fireEvent.click(screen.getByText('Electronics'));
+    const select = screen.getByTestId('categories-select');
+    fireEvent.change(select, { target: { value: 'cat-1' } });
     await waitFor(() => {
-      expect(capturedSearchParams.get('category')).toBe('cat-1');
+      expect(capturedSearchParams.get('categories')).toBe('cat-1');
     });
   });
 
-  it('clears category param when "All" pill is clicked', async () => {
-    renderFilters(['/?category=cat-1']);
-    fireEvent.click(screen.getByText('All'));
+  it('clears the categories param when the category selection is cleared', async () => {
+    renderFilters(['/?categories=cat-1']);
+    const select = screen.getByTestId('categories-select');
+    fireEvent.change(select, { target: { value: '' } });
     await waitFor(() => {
-      expect(capturedSearchParams.get('category')).toBeNull();
+      expect(capturedSearchParams.get('categories')).toBeNull();
     });
   });
 });

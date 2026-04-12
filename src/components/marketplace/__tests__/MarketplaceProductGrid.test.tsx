@@ -12,10 +12,12 @@ jest.mock('../../Products/ProductCard', () => {
 });
 
 describe('MarketplaceProductGrid', () => {
+  // Each edge now has `node` directly as a ProductCardFragmentQuery$key
+  // (productsCollection edges), not `node.product`.
   const mockEdges = [
-    { node: { product: { ' $fragmentSpreads': {}, name: 'Item 1' } } as any },
-    { node: { product: { ' $fragmentSpreads': {}, name: 'Item 2' } } as any },
-    { node: { product: { ' $fragmentSpreads': {}, name: 'Item 3' } } as any },
+    { node: { ' $fragmentSpreads': {}, id: '1' } as any },
+    { node: { ' $fragmentSpreads': {}, id: '2' } as any },
+    { node: { ' $fragmentSpreads': {}, id: '3' } as any },
   ];
 
   it('renders product cards when edges are provided', () => {

@@ -7,7 +7,6 @@ import { marchaTheme } from '../../../design';
 import MarketplaceContainer from '../MarketplaceContainer';
 
 // ── Mocks ────────────────────────────────────────────────────────────────────
-
 const mockLoadNext = jest.fn();
 const mockUsePaginationFragment = jest.fn();
 
@@ -15,22 +14,6 @@ jest.mock('react-relay', () => ({
   ...jest.requireActual('react-relay'),
   usePaginationFragment: (...args: any[]) => mockUsePaginationFragment(...args),
 }));
-
-jest.mock('../MarketplaceHero', () => {
-  return function MockHero({ onPostListing }: { onPostListing: () => void }) {
-    return (
-      <div data-testid="marketplace-hero">
-        <button onClick={onPostListing}>Post Listing</button>
-      </div>
-    );
-  };
-});
-
-jest.mock('../MarketplaceFilters', () => {
-  return function MockFilters() {
-    return <div data-testid="marketplace-filters" />;
-  };
-});
 
 jest.mock('../MarketplaceProductGrid', () => {
   return function MockGrid({
@@ -54,9 +37,7 @@ jest.mock('../../../hooks/useInfiniteScroll', () => ({
 }));
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
-
 const mockFragmentRef = {} as any;
-const mockCategories = [{ id: 'cat-1', name: 'Electronics' }];
 
 function renderContainer(
   hasNext = true,
@@ -81,12 +62,7 @@ function renderContainer(
         <Routes>
           <Route
             path="/portal/:communityId/market"
-            element={
-              <MarketplaceContainer
-                fragmentRef={mockFragmentRef}
-                categories={mockCategories}
-              />
-            }
+            element={<MarketplaceContainer fragmentRef={mockFragmentRef} />}
           />
         </Routes>
       </MemoryRouter>
@@ -95,16 +71,13 @@ function renderContainer(
 }
 
 // ── Tests ────────────────────────────────────────────────────────────────────
-
 describe('MarketplaceContainer', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
-  it('renders hero, filters, and grid sub-components', () => {
+  it('renders the product grid', () => {
     renderContainer();
-    expect(screen.getByTestId('marketplace-hero')).toBeInTheDocument();
-    expect(screen.getByTestId('marketplace-filters')).toBeInTheDocument();
     expect(screen.getByTestId('marketplace-grid')).toBeInTheDocument();
   });
 
@@ -152,12 +125,7 @@ describe('MarketplaceContainer', () => {
           <Routes>
             <Route
               path="/portal/:communityId/market"
-              element={
-                <MarketplaceContainer
-                  fragmentRef={mockFragmentRef}
-                  categories={mockCategories}
-                />
-              }
+              element={<MarketplaceContainer fragmentRef={mockFragmentRef} />}
             />
           </Routes>
         </MemoryRouter>
