@@ -8,7 +8,7 @@ import {
   usePreloadedQuery,
 } from 'react-relay';
 
-import { supabase } from '../../lib/supabase';
+import { supabase } from '../../utils/supabase';
 import AccountInfo from './AccountInfo';
 import ProfileForm from './ProfileForm';
 import ProfileHeader from './ProfileHeader';

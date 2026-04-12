@@ -6,7 +6,7 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { CommunityProvider } from './contexts/CommunityContext';
-import environment from './lib/relay_environment';
+import environment from './utils/relay_environment';
 import CommunityPicker from './views/community_picker/CommunityPicker.entrypoint';
 import { Paths } from './views/paths';
 import Portal from './views/portal/Portal.entrypoint';

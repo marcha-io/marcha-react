@@ -1,4 +1,4 @@
-import { supabase } from '../lib/supabase';
+import { supabase } from '../utils/supabase';
 
 const fetchFromStorage = async (url: string, storage_name: string) => {
   const { data: blob, error } = await supabase.storage

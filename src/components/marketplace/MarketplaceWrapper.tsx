@@ -23,15 +23,6 @@ export const marketplaceWrapperQuery = graphql`
         filter: $filter
         orderBy: $orderBy
       )
-    categoriesCollection {
-      edges {
-        node {
-          id
-          name
-          nodeId
-        }
-      }
-    }
   }
 `;
 
@@ -53,13 +44,7 @@ const MarketplaceWrapper: EntryPointComponent<
     props.queries.marketplaceQuery
   );
 
-  const categories =
-    data.categoriesCollection?.edges?.map((e) => ({
-      id: e.node.id,
-      name: e.node.name,
-    })) ?? [];
-
-  return <MarketplaceContainer fragmentRef={data} categories={categories} />;
+  return <MarketplaceContainer fragmentRef={data} />;
 };
 
 export default MarketplaceWrapper;

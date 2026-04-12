@@ -6,22 +6,14 @@ import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { NEUTRAL_500 } from '../../design';
 import { useInfiniteScroll } from '../../hooks/useInfiniteScroll';
 import { Paths } from '../../views/paths';
-import MarketplaceFilters from './MarketplaceFilters';
-import MarketplaceHero from './MarketplaceHero';
 import { marketplacePaginationFragment } from './MarketplacePaginationFragment';
 import MarketplaceProductGrid from './MarketplaceProductGrid';
 import type { MarketplacePaginationFragment$key } from './__generated__/MarketplacePaginationFragment.graphql';
 import type { MarketplacePaginationQuery } from './__generated__/MarketplacePaginationQuery.graphql';
 import { PAGE_SIZE } from './constants';
 
-type Category = {
-  id: string;
-  name: string;
-};
-
 type Props = {
   fragmentRef: MarketplacePaginationFragment$key;
-  categories: Category[];
 };
 
 /**
@@ -33,16 +25,18 @@ type Props = {
  * query variables — this component simply renders the pre-filtered results.
  *
  */
-const MarketplaceContainer: React.FC<Props> = ({ fragmentRef, categories }) => {
-  const { communityId } = useParams<{ communityId: string }>();
+const MarketplaceContainer: React.FC<Props> = ({ fragmentRef }: Props) => {
   const navigate = useNavigate();
+
+  const { communityId } = useParams<{ communityId: string }>();
   const [, setSearchParams] = useSearchParams();
-  const basePath = `/portal/${communityId}`;
 
   const { data, loadNext, hasNext, isLoadingNext } = usePaginationFragment<
     MarketplacePaginationQuery,
     MarketplacePaginationFragment$key
   >(marketplacePaginationFragment, fragmentRef);
+
+  const basePath = `/portal/${communityId}`;
 
   const edges = data.productsCollection?.edges ?? [];
 
@@ -69,32 +63,23 @@ const MarketplaceContainer: React.FC<Props> = ({ fragmentRef, categories }) => {
     setSearchParams,
   ]);
 
-  const sentinelRef = useInfiniteScroll(
-    handleLoadNext,
-    hasNext && !isLoadingNext
-  );
-
   const navigateToNewListing = useCallback(
     () => navigate(`${basePath}/${Paths.Market}/new`),
     [navigate, basePath]
   );
 
-  const navigateToMyListings = useCallback(
-    () => navigate(`${basePath}/${Paths.Market}/my-listings`),
-    [navigate, basePath]
+  const sentinelRef = useInfiniteScroll(
+    handleLoadNext,
+    hasNext && !isLoadingNext
   );
 
   return (
-    <Flex vertical>
-      <MarketplaceHero
-        onPostListing={navigateToNewListing}
-        onMyListings={navigateToMyListings}
-      />
-      <MarketplaceFilters categories={categories} />
+    <>
       <MarketplaceProductGrid
         edges={edges}
         onCreateListing={navigateToNewListing}
       />
+
       {hasNext && !isLoadingNext && (
         <div ref={sentinelRef} style={{ height: 1 }} />
       )}
@@ -106,7 +91,7 @@ const MarketplaceContainer: React.FC<Props> = ({ fragmentRef, categories }) => {
           </Typography.Text>
         </Flex>
       )}
-    </Flex>
+    </>
   );
 };
 

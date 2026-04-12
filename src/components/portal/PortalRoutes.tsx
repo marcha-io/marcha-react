@@ -9,6 +9,7 @@ import MyListings from '../../views/market/MyListings.entrypoint';
 import ProductDetail from '../../views/market/Product.entrypoint';
 import { Paths } from '../../views/paths';
 import Profile from '../../views/profile/Profile.entrypoint';
+import MarketplaceHeader from '../marketplace/MarketplaceHeader';
 
 /**
  * Shared route definitions used by both mobile and desktop layouts.
@@ -32,7 +33,6 @@ const PortalRoutes = () => (
     }}
   >
     <Routes>
-      {/* Redirect bare /portal/:communityId to dashboard */}
       <Route index element={<Navigate to={Paths.Dashboard} replace />} />
 
       <Route path={Paths.Dashboard} element={<Dashboard />} />
@@ -57,10 +57,12 @@ const PortalRoutes = () => (
         element={<div>Noticeboard - Coming Soon</div>}
       />
 
-      <Route path={Paths.Market} element={<Market />} />
-      <Route path={`${Paths.Market}/new`} element={<CreateListing />} />
-      <Route path={`${Paths.Market}/my-listings`} element={<MyListings />} />
-      <Route path={`${Paths.Market}/:product_id`} element={<ProductDetail />} />
+      <Route path={Paths.Market} element={<MarketplaceHeader />}>
+        <Route index element={<Market />} />
+        <Route path={'new'} element={<CreateListing />} />
+        <Route path={'my-listings'} element={<MyListings />} />
+        <Route path={':product_id'} element={<ProductDetail />} />
+      </Route>
 
       <Route
         path={Paths.Subletting}

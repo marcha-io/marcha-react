@@ -7,11 +7,10 @@ import {
 } from 'react-relay';
 import { useParams, useSearchParams } from 'react-router-dom';
 
-import MarketplaceWrapperQueryQuery from '../../components/marketplace/__generated__/MarketplaceWrapperQueryQuery.graphql';
-import type {
-  ProductConditionFilter,
-  ProductsFilter,
+import MarketplaceWrapperQueryQuery, {
+  ProductCondition,
 } from '../../components/marketplace/__generated__/MarketplaceWrapperQueryQuery.graphql';
+import type { ProductsFilter } from '../../components/marketplace/__generated__/MarketplaceWrapperQueryQuery.graphql';
 import { PAGE_SIZE } from '../../components/marketplace/constants';
 import { createEntryPoint } from '../../utils/create_entrypoint';
 import JSResource from '../../utils/make_resource';
@@ -19,8 +18,8 @@ import JSResource from '../../utils/make_resource';
 type EntryPointParams = {
   communityId?: string;
   q?: string;
-  category?: string;
-  condition?: string;
+  categories?: string;
+  conditions?: string;
   cursor?: string;
 };
 
@@ -31,33 +30,29 @@ const MarketplaceEntryPoint = createEntryPoint({
     )
   ),
   getPreloadProps(params: EntryPointParams) {
-    // Build the server-side ProductsFilter from URL params.
-    // All filtering is done by Supabase — no client-side filtering needed.
-    const filterClauses: ProductsFilter[] = [];
+    let filter: ProductsFilter = {
+      isPublic: { eq: true },
+    };
 
-    // Always show only active (public) listings in the browse view.
-    filterClauses.push({ isPublic: { eq: true } });
-
-    // Case-insensitive name search using pg_graphql ilike.
     if (params.q) {
-      filterClauses.push({ name: { ilike: `%${params.q}%` } });
+      filter = { ...filter, name: { ilike: `%${params.q}%` } };
     }
 
-    // Exact UUID match for category.
-    if (params.category) {
-      filterClauses.push({ categoryId: { eq: params.category } });
-    }
-
-    // Exact enum match for condition.
-    if (params.condition) {
-      const conditionFilter: ProductConditionFilter = {
-        eq: params.condition as ProductConditionFilter['eq'],
+    if (params.categories) {
+      filter = {
+        ...filter,
+        categoryId: {
+          in: params.categories.split(','),
+        },
       };
-      filterClauses.push({ condition: conditionFilter });
     }
 
-    const filter: ProductsFilter =
-      filterClauses.length === 1 ? filterClauses[0] : { and: filterClauses };
+    if (params.conditions) {
+      filter = {
+        ...filter,
+        condition: { in: params.conditions.split(',') as ProductCondition[] },
+      };
+    }
 
     return {
       queries: {
@@ -90,29 +85,33 @@ const Market = (): React.ReactElement | null => {
     MarketplaceEntryPoint
   );
 
-  // Extract filter + pagination params from URL
   const q = searchParams.get('q') ?? undefined;
-  const category = searchParams.get('category') ?? undefined;
-  const condition = searchParams.get('condition') ?? undefined;
+  const categories = searchParams.get('categories') ?? undefined;
+  const conditions = searchParams.get('conditions') ?? undefined;
   const cursor = searchParams.get('cursor') ?? undefined;
 
-  // Track previous filter values so we only reload when they actually change.
   const prevFiltersRef = useRef<string | null>(null);
 
   useEffect(() => {
     const currentFilters = JSON.stringify({
       communityId,
       q,
-      category,
-      condition,
+      categories,
+      conditions,
       cursor,
     });
 
     if (entryPointRef == null || prevFiltersRef.current !== currentFilters) {
       prevFiltersRef.current = currentFilters;
-      loadEntryPoint({ communityId, q, category, condition, cursor });
+      loadEntryPoint({
+        communityId,
+        q,
+        categories,
+        conditions,
+        cursor,
+      });
     }
-  }, [communityId, q, category, condition, cursor]);
+  }, [communityId, q, categories, conditions, cursor]);
 
   if (!entryPointRef) return null;
 

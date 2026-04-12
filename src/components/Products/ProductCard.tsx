@@ -9,13 +9,11 @@ import { useAuth } from '../../contexts/AuthContext';
 import {
   BRAND_PRIMARY,
   COLOR_SUCCESS,
-  COLOR_SUCCESS_BG,
   NEUTRAL_100,
   NEUTRAL_400,
   NEUTRAL_500,
   NEUTRAL_700,
   RADIUS_LG,
-  WHITE,
 } from '../../design';
 import fetchFromStorage from '../../utils/fetch_from_storage';
 import { AVATAR_DEFAULT } from '../marketplace/constants';
@@ -59,6 +57,7 @@ function getStatusTag(price: number): { label: string; color: string } {
   if (price === 0) {
     return { label: 'Free', color: 'success' };
   }
+
   return { label: 'Available', color: 'success' };
 }
 
@@ -80,14 +79,12 @@ const ProductCard = ({
     const imagePath =
       product.productImagesCollection?.edges?.[0]?.node?.imageUrl;
 
-    setImageLoading(true);
     if (imagePath) {
+      setImageLoading(true);
       fetchFromStorage(imagePath, 'product-images').then((blob) => {
         if (blob) setImageBlob(blob);
         setImageLoading(false);
       });
-    } else {
-      setImageLoading(false);
     }
   }, [product.productImagesCollection]);
 
@@ -165,7 +162,6 @@ const ProductCard = ({
           }}
         />
       ) : (
-        // Placeholder SVG when no product image is available
         <div
           style={{
             position: 'absolute',

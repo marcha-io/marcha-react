@@ -1,4 +1,3 @@
-import { ArrowLeftOutlined } from '@ant-design/icons';
 import { Button, Col, Empty, Flex, Row, Typography, message } from 'antd';
 import graphql from 'babel-plugin-relay/macro';
 import React, { useCallback, useState } from 'react';
@@ -138,15 +137,6 @@ const MyListingsPage: EntryPointComponent<
 
   return (
     <div>
-      <Button
-        type="text"
-        icon={<ArrowLeftOutlined />}
-        onClick={() => navigate(`${basePath}/${Paths.Market}`)}
-        style={{ marginBottom: 16, paddingLeft: 0 }}
-      >
-        Back to Marketplace
-      </Button>
-
       <Flex justify="space-between" align="center" style={{ marginBottom: 24 }}>
         <div>
           <Typography.Title level={3} style={{ margin: 0 }}>

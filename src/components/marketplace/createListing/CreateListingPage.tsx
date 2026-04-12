@@ -1,5 +1,4 @@
-import { ArrowLeftOutlined } from '@ant-design/icons';
-import { Button, Card, Col, Flex, Row, Typography, message } from 'antd';
+import { Card, Col, Row, Typography, message } from 'antd';
 import type { UploadFile } from 'antd/es/upload/interface';
 import graphql from 'babel-plugin-relay/macro';
 import React, { useCallback, useState } from 'react';
@@ -13,7 +12,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 import { useAuth } from '../../../contexts/AuthContext';
 import { RADIUS_LG } from '../../../design';
-import { supabase } from '../../../lib/supabase';
+import { supabase } from '../../../utils/supabase';
 import { Paths } from '../../../views/paths';
 import InsertProductCommunityMutation from '../graphql/InsertProductCommunityMutation.graphql';
 import InsertProductImagesMutation from '../graphql/InsertProductImagesMutation.graphql';
@@ -215,16 +214,7 @@ const CreateListingPage: EntryPointComponent<
   );
 
   return (
-    <Flex>
-      <Button
-        type="text"
-        icon={<ArrowLeftOutlined />}
-        onClick={() => navigate(`${basePath}/${Paths.Market}`)}
-        style={{ marginBottom: 16, paddingLeft: 0 }}
-      >
-        Back to Marketplace
-      </Button>
-
+    <div>
       <Typography.Title level={3}>Create a Listing</Typography.Title>
 
       <Row gutter={24}>
@@ -245,7 +235,7 @@ const CreateListingPage: EntryPointComponent<
           <ListingTips />
         </Col>
       </Row>
-    </Flex>
+    </div>
   );
 };
 

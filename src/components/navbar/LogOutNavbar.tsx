@@ -2,8 +2,8 @@ import { notification } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
 import { useAuth } from '../../contexts/AuthContext';
-import { invalidateRelayStore } from '../../lib/relay_environment';
-import { supabase } from '../../lib/supabase';
+import { invalidateRelayStore } from '../../utils/relay_environment';
+import { supabase } from '../../utils/supabase';
 import { Paths } from '../../views/paths';
 
 function LogOutNavbar(): React.ReactElement {

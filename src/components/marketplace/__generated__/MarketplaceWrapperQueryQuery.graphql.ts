@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<944810308c3b49018b70a7b6fd6030bb>>
+ * @generated SignedSource<<4a7cf767154204864377c05dd391fbce>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -110,15 +110,6 @@ export type MarketplaceWrapperQueryQuery$variables = {
   orderBy?: ReadonlyArray<ProductsOrderBy> | null | undefined;
 };
 export type MarketplaceWrapperQueryQuery$data = {
-  readonly categoriesCollection: {
-    readonly edges: ReadonlyArray<{
-      readonly node: {
-        readonly id: string;
-        readonly name: string;
-        readonly nodeId: string;
-      };
-    }>;
-  } | null | undefined;
   readonly " $fragmentSpreads": FragmentRefs<"MarketplacePaginationFragment">;
 };
 export type MarketplaceWrapperQueryQuery = {
@@ -159,64 +150,7 @@ v2 = {
   "name": "orderBy",
   "variableName": "orderBy"
 },
-v3 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "id",
-  "storageKey": null
-},
-v4 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "name",
-  "storageKey": null
-},
-v5 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "nodeId",
-  "storageKey": null
-},
-v6 = {
-  "alias": null,
-  "args": null,
-  "concreteType": "CategoriesConnection",
-  "kind": "LinkedField",
-  "name": "categoriesCollection",
-  "plural": false,
-  "selections": [
-    {
-      "alias": null,
-      "args": null,
-      "concreteType": "CategoriesEdge",
-      "kind": "LinkedField",
-      "name": "edges",
-      "plural": true,
-      "selections": [
-        {
-          "alias": null,
-          "args": null,
-          "concreteType": "Categories",
-          "kind": "LinkedField",
-          "name": "node",
-          "plural": false,
-          "selections": [
-            (v3/*: any*/),
-            (v4/*: any*/),
-            (v5/*: any*/)
-          ],
-          "storageKey": null
-        }
-      ],
-      "storageKey": null
-    }
-  ],
-  "storageKey": null
-},
-v7 = [
+v3 = [
   {
     "kind": "Variable",
     "name": "after",
@@ -229,7 +163,14 @@ v7 = [
     "variableName": "count"
   },
   (v2/*: any*/)
-];
+],
+v4 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "nodeId",
+  "storageKey": null
+};
 return {
   "fragment": {
     "argumentDefinitions": (v0/*: any*/),
@@ -254,8 +195,7 @@ return {
         ],
         "kind": "FragmentSpread",
         "name": "MarketplacePaginationFragment"
-      },
-      (v6/*: any*/)
+      }
     ],
     "type": "Query",
     "abstractKey": null
@@ -268,7 +208,7 @@ return {
     "selections": [
       {
         "alias": null,
-        "args": (v7/*: any*/),
+        "args": (v3/*: any*/),
         "concreteType": "ProductsConnection",
         "kind": "LinkedField",
         "name": "productsCollection",
@@ -290,7 +230,13 @@ return {
                 "name": "node",
                 "plural": false,
                 "selections": [
-                  (v4/*: any*/),
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "name",
+                    "storageKey": null
+                  },
                   {
                     "alias": null,
                     "args": null,
@@ -305,7 +251,13 @@ return {
                     "name": "price",
                     "storageKey": null
                   },
-                  (v3/*: any*/),
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "id",
+                    "storageKey": null
+                  },
                   {
                     "alias": null,
                     "args": null,
@@ -363,7 +315,7 @@ return {
                         "name": "lastName",
                         "storageKey": null
                       },
-                      (v5/*: any*/)
+                      (v4/*: any*/)
                     ],
                     "storageKey": null
                   },
@@ -413,7 +365,7 @@ return {
                                 "name": "imageUrl",
                                 "storageKey": null
                               },
-                              (v5/*: any*/)
+                              (v4/*: any*/)
                             ],
                             "storageKey": null
                           }
@@ -423,7 +375,7 @@ return {
                     ],
                     "storageKey": "productImagesCollection(first:1,orderBy:[{\"displayOrder\":\"AscNullsLast\"}])"
                   },
-                  (v5/*: any*/),
+                  (v4/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -474,7 +426,7 @@ return {
       },
       {
         "alias": null,
-        "args": (v7/*: any*/),
+        "args": (v3/*: any*/),
         "filters": [
           "filter",
           "orderBy"
@@ -483,21 +435,20 @@ return {
         "key": "Marketplace_productsCollection",
         "kind": "LinkedHandle",
         "name": "productsCollection"
-      },
-      (v6/*: any*/)
+      }
     ]
   },
   "params": {
-    "cacheID": "ddac4c5ab32cc9f559a9ed62eea32025",
+    "cacheID": "1ab8e90dd676f54d7ada7239a95ddc13",
     "id": null,
     "metadata": {},
     "name": "MarketplaceWrapperQueryQuery",
     "operationKind": "query",
-    "text": "query MarketplaceWrapperQueryQuery(\n  $count: Int\n  $cursor: Cursor\n  $filter: ProductsFilter\n  $orderBy: [ProductsOrderBy!]\n) {\n  ...MarketplacePaginationFragment_1FfpYs\n  categoriesCollection {\n    edges {\n      node {\n        id\n        name\n        nodeId\n      }\n    }\n  }\n}\n\nfragment MarketplacePaginationFragment_1FfpYs on Query {\n  productsCollection(first: $count, after: $cursor, filter: $filter, orderBy: $orderBy) {\n    edges {\n      node {\n        ...ProductCardFragmentQuery\n        nodeId\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n\nfragment ProductCardFragmentQuery on Products {\n  name\n  description\n  price\n  id\n  categoryId\n  condition\n  userId\n  user {\n    avatarUrl\n    username\n    firstName\n    lastName\n    nodeId\n  }\n  productImagesCollection(first: 1, orderBy: [{displayOrder: AscNullsLast}]) {\n    edges {\n      node {\n        imageUrl\n        nodeId\n      }\n    }\n  }\n}\n"
+    "text": "query MarketplaceWrapperQueryQuery(\n  $count: Int\n  $cursor: Cursor\n  $filter: ProductsFilter\n  $orderBy: [ProductsOrderBy!]\n) {\n  ...MarketplacePaginationFragment_1FfpYs\n}\n\nfragment MarketplacePaginationFragment_1FfpYs on Query {\n  productsCollection(first: $count, after: $cursor, filter: $filter, orderBy: $orderBy) {\n    edges {\n      node {\n        ...ProductCardFragmentQuery\n        nodeId\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n\nfragment ProductCardFragmentQuery on Products {\n  name\n  description\n  price\n  id\n  categoryId\n  condition\n  userId\n  user {\n    avatarUrl\n    username\n    firstName\n    lastName\n    nodeId\n  }\n  productImagesCollection(first: 1, orderBy: [{displayOrder: AscNullsLast}]) {\n    edges {\n      node {\n        imageUrl\n        nodeId\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "07ec4ef1200917b147573480c9b98c63";
+(node as any).hash = "2e8258465b0abe3b231380b7a68b41c2";
 
 export default node;

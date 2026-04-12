@@ -7,7 +7,7 @@ import {
 } from 'react-relay';
 import { useNavigate } from 'react-router';
 
-import { supabase } from '../../lib/supabase';
+import { supabase } from '../../utils/supabase';
 import { Paths } from '../../views/paths';
 import CommunitiesContainer from './CommunitiesContainer';
 import { CommunitiesContainerWrapperQuery } from './__generated__/CommunitiesContainerWrapperQuery.graphql';

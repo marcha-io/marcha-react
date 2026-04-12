@@ -1,4 +1,3 @@
-// src/views/paths.ts
 export enum Paths {
   Main = '/',
   SignIn = '/sign_in',
