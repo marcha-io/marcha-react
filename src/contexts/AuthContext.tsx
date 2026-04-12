@@ -7,7 +7,7 @@ import React, {
   useState,
 } from 'react';
 
-import { supabase } from '../lib/supabase';
+import { supabase } from '../utils/supabase';
 
 interface IAuthContext {
   isUserLoggedIn: boolean;

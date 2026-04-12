@@ -42,7 +42,6 @@ const environment = new Environment({
     {
       handle(field, _record, argValues) {
         if (field.name === 'node' && 'nodeId' in argValues) {
-          // If field is node(nodeId: $nodeId), look up the record by the value of $nodeId
           return argValues.nodeId;
         }
 

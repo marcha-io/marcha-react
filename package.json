@@ -68,7 +68,15 @@
     "jiti": "^2.6.1",
     "prettier": "^3.2.5",
     "react-router-dom": "^6.30.2",
+    "relay-test-utils": "^16.2.0",
     "supabase": "^1.157.2",
     "typescript-eslint": "^7.18.0"
+  },
+  "jest": {
+    "moduleNameMapper": {
+      "@rc-component/picker/locale/(.*)": "<rootDir>/node_modules/@rc-component/picker/lib/locale/$1",
+      "@rc-component/picker/generate/(.*)": "<rootDir>/node_modules/@rc-component/picker/lib/generate/$1",
+      "@rc-component/picker/interface": "<rootDir>/node_modules/@rc-component/picker/lib/interface"
+    }
   }
 }

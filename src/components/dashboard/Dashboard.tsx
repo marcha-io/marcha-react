@@ -1,4 +1,3 @@
-// src/components/dashboard/Dashboard.tsx
 import {
   DollarCircleOutlined,
   FileTextOutlined,
@@ -44,6 +43,7 @@ import {
 } from '../../design';
 import { getParseJsonAddress } from '../../utils/get_address';
 import { Paths } from '../../views/paths';
+import DashboardMarketplacePreview from './DashboardMarketplacePreview';
 import { DashboardComponentQuery } from './__generated__/DashboardComponentQuery.graphql';
 
 const dashboardComponentQuery = graphql`
@@ -74,6 +74,8 @@ const dashboardComponentQuery = graphql`
         }
       }
     }
+
+    ...DashboardMarketplacePreviewFragment
   }
 `;
 
@@ -293,6 +295,7 @@ const Dashboard: EntryPointComponent<
       </Row>
 
       <Row gutter={[24, 24]}>
+        {/* ── Left column: Active Requests + Community Updates ─────────── */}
         <Col xs={24} lg={16}>
           <Card
             title="Active Requests"
@@ -350,23 +353,13 @@ const Dashboard: EntryPointComponent<
             />
           </Card>
 
-          <Card
-            title="Marketplace"
-            extra={
-              <Typography.Link
-                onClick={() => navigate(`${basePath}/${Paths.Market}`)}
-              >
-                Browse
-              </Typography.Link>
+          <DashboardMarketplacePreview
+            fragmentRef={data}
+            onBrowse={() => navigate(`${basePath}/${Paths.Market}`)}
+            onNavigateToListing={(id) =>
+              navigate(`${basePath}/${Paths.Market}/${id}`)
             }
-            style={{ borderRadius: RADIUS_LG, marginBottom: 24 }}
-          >
-            <List
-              dataSource={[]}
-              locale={{ emptyText: 'No marketplace items yet' }}
-              renderItem={() => null}
-            />
-          </Card>
+          />
 
           <Card title="Upcoming Events" style={{ borderRadius: RADIUS_LG }}>
             <List

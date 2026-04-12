@@ -53,6 +53,7 @@ const CommunityPicker: EntryPointComponent<
         .community-picker-page {
           min-height: 100vh;
           display: flex;
+          align-items: center;
           justify-content: center;
           padding: 40px 20px;
           box-sizing: border-box;
@@ -72,7 +73,6 @@ const CommunityPicker: EntryPointComponent<
           style={{
             width: '100%',
             maxWidth: '900px',
-            marginTop: '11.5%',
           }}
         >
           <Flex vertical gap={0}>

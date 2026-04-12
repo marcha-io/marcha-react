@@ -1,13 +1,25 @@
 import { Content } from 'antd/es/layout/layout';
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 
 import { RADIUS_MD, WHITE } from '../../design';
 import Dashboard from '../../views/dashboard/Dashboard.entrypoint';
+import CreateListing from '../../views/market/CreateListing.entrypoint';
+import Market from '../../views/market/Market.entrypoint';
+import MyListings from '../../views/market/MyListings.entrypoint';
+import ProductDetail from '../../views/market/Product.entrypoint';
 import { Paths } from '../../views/paths';
 import Profile from '../../views/profile/Profile.entrypoint';
+import MarketplaceHeader from '../marketplace/MarketplaceHeader';
 
 /**
  * Shared route definitions used by both mobile and desktop layouts.
+ *
+ * All paths here are relative to the parent `/portal/:communityId/*` route.
+ * React Router v6 matches routes by specificity: static segments beat dynamic
+ * segments, so `market/new` always wins over `market/:product_id`.
+ *
+ * The index route redirects the bare `/portal/:communityId` URL to the
+ * dashboard so users always land on a meaningful page.
  */
 
 const PortalRoutes = () => (
@@ -21,6 +33,8 @@ const PortalRoutes = () => (
     }}
   >
     <Routes>
+      <Route index element={<Navigate to={Paths.Dashboard} replace />} />
+
       <Route path={Paths.Dashboard} element={<Dashboard />} />
       <Route
         path={Paths.Documents}
@@ -42,10 +56,14 @@ const PortalRoutes = () => (
         path={Paths.Community}
         element={<div>Noticeboard - Coming Soon</div>}
       />
-      <Route
-        path={Paths.Market}
-        element={<div>Marketplace - Coming Soon</div>}
-      />
+
+      <Route path={Paths.Market} element={<MarketplaceHeader />}>
+        <Route index element={<Market />} />
+        <Route path={'new'} element={<CreateListing />} />
+        <Route path={'my-listings'} element={<MyListings />} />
+        <Route path={':product_id'} element={<ProductDetail />} />
+      </Route>
+
       <Route
         path={Paths.Subletting}
         element={<div>Subletting - Coming Soon</div>}

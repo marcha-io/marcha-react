@@ -1,9 +1,34 @@
-"""A high precision floating point value represented as a string"""
-scalar BigFloat
+enum CommunityUserReviewStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
 
-"""
-Boolean expression comparing fields on type "BigFloat"
-"""
+enum FilterIs {
+  NULL
+  NOT_NULL
+}
+
+"""Defines a per-field sorting order"""
+enum OrderByDirection {
+  """Ascending order, nulls first"""
+  AscNullsFirst
+  """Ascending order, nulls last"""
+  AscNullsLast
+  """Descending order, nulls first"""
+  DescNullsFirst
+  """Descending order, nulls last"""
+  DescNullsLast
+}
+
+enum ProductCondition {
+  New
+  Like_new
+  Good
+  Used
+}
+
+"""Boolean expression comparing fields on type 'BigFloat"""
 input BigFloatFilter {
   eq: BigFloat
   gt: BigFloat
@@ -15,9 +40,7 @@ input BigFloatFilter {
   neq: BigFloat
 }
 
-"""
-Boolean expression comparing fields on type "BigFloatList"
-"""
+"""Boolean expression comparing fields on type 'BigFloatList"""
 input BigFloatListFilter {
   containedBy: [BigFloat!]
   contains: [BigFloat!]
@@ -26,12 +49,7 @@ input BigFloatListFilter {
   overlaps: [BigFloat!]
 }
 
-"""An arbitrary size integer represented as a string"""
-scalar BigInt
-
-"""
-Boolean expression comparing fields on type "BigInt"
-"""
+"""Boolean expression comparing fields on type 'BigInt"""
 input BigIntFilter {
   eq: BigInt
   gt: BigInt
@@ -43,9 +61,7 @@ input BigIntFilter {
   neq: BigInt
 }
 
-"""
-Boolean expression comparing fields on type "BigIntList"
-"""
+"""Boolean expression comparing fields on type 'BigIntList"""
 input BigIntListFilter {
   containedBy: [BigInt!]
   contains: [BigInt!]
@@ -54,17 +70,13 @@ input BigIntListFilter {
   overlaps: [BigInt!]
 }
 
-"""
-Boolean expression comparing fields on type "Boolean"
-"""
+"""Boolean expression comparing fields on type 'Boolean"""
 input BooleanFilter {
   eq: Boolean
   is: FilterIs
 }
 
-"""
-Boolean expression comparing fields on type "BooleanList"
-"""
+"""Boolean expression comparing fields on type 'BooleanList"""
 input BooleanListFilter {
   containedBy: [Boolean!]
   contains: [Boolean!]
@@ -73,73 +85,15 @@ input BooleanListFilter {
   overlaps: [Boolean!]
 }
 
-type Categories implements Node {
-  """Globally Unique Record Identifier"""
-  nodeId: ID!
-  id: UUID!
-  createdAt: Datetime!
-  name: String!
-  attributes: JSON
-  productsCollection(
-    """Query the first `n` records in the collection"""
-    first: Int
-
-    """Query the last `n` records in the collection"""
-    last: Int
-
-    """Query values in the collection before the provided cursor"""
-    before: Cursor
-
-    """Query values in the collection after the provided cursor"""
-    after: Cursor
-
-    """
-    Skip n values from the after cursor. Alternative to cursor pagination. Backward pagination not supported.
-    """
-    offset: Int
-
-    """Filters to apply to the results set when querying from the collection"""
-    filter: ProductsFilter
-
-    """Sort order to apply to the collection"""
-    orderBy: [ProductsOrderBy!]
-  ): ProductsConnection
-}
-
-type CategoriesConnection {
-  edges: [CategoriesEdge!]!
-  pageInfo: PageInfo!
-}
-
-type CategoriesDeleteResponse {
-  """Count of the records impacted by the mutation"""
-  affectedCount: Int!
-
-  """Array of records impacted by the mutation"""
-  records: [Categories!]!
-}
-
-type CategoriesEdge {
-  cursor: String!
-  node: Categories!
-}
-
 input CategoriesFilter {
   id: UUIDFilter
   createdAt: DatetimeFilter
   name: StringFilter
   nodeId: IDFilter
-
-  """
-  Returns true only if all its inner filters are true, otherwise returns false
-  """
+  """Returns true only if all its inner filters are true, otherwise returns false"""
   and: [CategoriesFilter!]
-
-  """
-  Returns true if at least one of its inner filters is true, otherwise returns false
-  """
+  """Returns true if at least one of its inner filters is true, otherwise returns false"""
   or: [CategoriesFilter!]
-
   """Negates a filter"""
   not: CategoriesFilter
 }
@@ -149,14 +103,6 @@ input CategoriesInsertInput {
   createdAt: Datetime
   name: String
   attributes: JSON
-}
-
-type CategoriesInsertResponse {
-  """Count of the records impacted by the mutation"""
-  affectedCount: Int!
-
-  """Array of records impacted by the mutation"""
-  records: [Categories!]!
 }
 
 input CategoriesOrderBy {
@@ -172,91 +118,6 @@ input CategoriesUpdateInput {
   attributes: JSON
 }
 
-type CategoriesUpdateResponse {
-  """Count of the records impacted by the mutation"""
-  affectedCount: Int!
-
-  """Array of records impacted by the mutation"""
-  records: [Categories!]!
-}
-
-type Communities implements Node {
-  """Globally Unique Record Identifier"""
-  nodeId: ID!
-  id: BigInt!
-  createdAt: Datetime!
-  name: String!
-  description: String!
-  address: JSON!
-  image: String
-  productsCommunitiesCollection(
-    """Query the first `n` records in the collection"""
-    first: Int
-
-    """Query the last `n` records in the collection"""
-    last: Int
-
-    """Query values in the collection before the provided cursor"""
-    before: Cursor
-
-    """Query values in the collection after the provided cursor"""
-    after: Cursor
-
-    """
-    Skip n values from the after cursor. Alternative to cursor pagination. Backward pagination not supported.
-    """
-    offset: Int
-
-    """Filters to apply to the results set when querying from the collection"""
-    filter: ProductsCommunitiesFilter
-
-    """Sort order to apply to the collection"""
-    orderBy: [ProductsCommunitiesOrderBy!]
-  ): ProductsCommunitiesConnection
-  communityUsersCollection(
-    """Query the first `n` records in the collection"""
-    first: Int
-
-    """Query the last `n` records in the collection"""
-    last: Int
-
-    """Query values in the collection before the provided cursor"""
-    before: Cursor
-
-    """Query values in the collection after the provided cursor"""
-    after: Cursor
-
-    """
-    Skip n values from the after cursor. Alternative to cursor pagination. Backward pagination not supported.
-    """
-    offset: Int
-
-    """Filters to apply to the results set when querying from the collection"""
-    filter: CommunityUsersFilter
-
-    """Sort order to apply to the collection"""
-    orderBy: [CommunityUsersOrderBy!]
-  ): CommunityUsersConnection
-}
-
-type CommunitiesConnection {
-  edges: [CommunitiesEdge!]!
-  pageInfo: PageInfo!
-}
-
-type CommunitiesDeleteResponse {
-  """Count of the records impacted by the mutation"""
-  affectedCount: Int!
-
-  """Array of records impacted by the mutation"""
-  records: [Communities!]!
-}
-
-type CommunitiesEdge {
-  cursor: String!
-  node: Communities!
-}
-
 input CommunitiesFilter {
   id: BigIntFilter
   createdAt: DatetimeFilter
@@ -264,17 +125,10 @@ input CommunitiesFilter {
   description: StringFilter
   image: StringFilter
   nodeId: IDFilter
-
-  """
-  Returns true only if all its inner filters are true, otherwise returns false
-  """
+  """Returns true only if all its inner filters are true, otherwise returns false"""
   and: [CommunitiesFilter!]
-
-  """
-  Returns true if at least one of its inner filters is true, otherwise returns false
-  """
+  """Returns true if at least one of its inner filters is true, otherwise returns false"""
   or: [CommunitiesFilter!]
-
   """Negates a filter"""
   not: CommunitiesFilter
 }
@@ -285,14 +139,6 @@ input CommunitiesInsertInput {
   description: String
   address: JSON
   image: String
-}
-
-type CommunitiesInsertResponse {
-  """Count of the records impacted by the mutation"""
-  affectedCount: Int!
-
-  """Array of records impacted by the mutation"""
-  records: [Communities!]!
 }
 
 input CommunitiesOrderBy {
@@ -311,28 +157,611 @@ input CommunitiesUpdateInput {
   image: String
 }
 
-type CommunitiesUpdateResponse {
-  """Count of the records impacted by the mutation"""
-  affectedCount: Int!
-
-  """Array of records impacted by the mutation"""
-  records: [Communities!]!
-}
-
-enum CommunityUserReviewStatus {
-  PENDING
-  ACCEPTED
-  REJECTED
-}
-
-"""
-Boolean expression comparing fields on type "CommunityUserReviewStatus"
-"""
+"""Boolean expression comparing fields on type 'CommunityUserReviewStatus"""
 input CommunityUserReviewStatusFilter {
   eq: CommunityUserReviewStatus
   in: [CommunityUserReviewStatus!]
   is: FilterIs
   neq: CommunityUserReviewStatus
+}
+
+input CommunityUsersFilter {
+  id: BigIntFilter
+  createdAt: DatetimeFilter
+  communityId: BigIntFilter
+  userId: UUIDFilter
+  status: CommunityUserReviewStatusFilter
+  nodeId: IDFilter
+  """Returns true only if all its inner filters are true, otherwise returns false"""
+  and: [CommunityUsersFilter!]
+  """Returns true if at least one of its inner filters is true, otherwise returns false"""
+  or: [CommunityUsersFilter!]
+  """Negates a filter"""
+  not: CommunityUsersFilter
+}
+
+input CommunityUsersInsertInput {
+  createdAt: Datetime
+  communityId: BigInt
+  userId: UUID
+  status: CommunityUserReviewStatus
+}
+
+input CommunityUsersOrderBy {
+  id: OrderByDirection
+  createdAt: OrderByDirection
+  communityId: OrderByDirection
+  userId: OrderByDirection
+  status: OrderByDirection
+}
+
+input CommunityUsersUpdateInput {
+  createdAt: Datetime
+  communityId: BigInt
+  userId: UUID
+  status: CommunityUserReviewStatus
+}
+
+"""Boolean expression comparing fields on type 'Date"""
+input DateFilter {
+  eq: Date
+  gt: Date
+  gte: Date
+  in: [Date!]
+  is: FilterIs
+  lt: Date
+  lte: Date
+  neq: Date
+}
+
+"""Boolean expression comparing fields on type 'DateList"""
+input DateListFilter {
+  containedBy: [Date!]
+  contains: [Date!]
+  eq: [Date!]
+  is: FilterIs
+  overlaps: [Date!]
+}
+
+"""Boolean expression comparing fields on type 'Datetime"""
+input DatetimeFilter {
+  eq: Datetime
+  gt: Datetime
+  gte: Datetime
+  in: [Datetime!]
+  is: FilterIs
+  lt: Datetime
+  lte: Datetime
+  neq: Datetime
+}
+
+"""Boolean expression comparing fields on type 'DatetimeList"""
+input DatetimeListFilter {
+  containedBy: [Datetime!]
+  contains: [Datetime!]
+  eq: [Datetime!]
+  is: FilterIs
+  overlaps: [Datetime!]
+}
+
+"""Boolean expression comparing fields on type 'Float"""
+input FloatFilter {
+  eq: Float
+  gt: Float
+  gte: Float
+  in: [Float!]
+  is: FilterIs
+  lt: Float
+  lte: Float
+  neq: Float
+}
+
+"""Boolean expression comparing fields on type 'FloatList"""
+input FloatListFilter {
+  containedBy: [Float!]
+  contains: [Float!]
+  eq: [Float!]
+  is: FilterIs
+  overlaps: [Float!]
+}
+
+"""Boolean expression comparing fields on type 'ID"""
+input IDFilter {
+  eq: ID
+}
+
+"""Boolean expression comparing fields on type 'Int"""
+input IntFilter {
+  eq: Int
+  gt: Int
+  gte: Int
+  in: [Int!]
+  is: FilterIs
+  lt: Int
+  lte: Int
+  neq: Int
+}
+
+"""Boolean expression comparing fields on type 'IntList"""
+input IntListFilter {
+  containedBy: [Int!]
+  contains: [Int!]
+  eq: [Int!]
+  is: FilterIs
+  overlaps: [Int!]
+}
+
+input LikesFilter {
+  id: BigIntFilter
+  userId: UUIDFilter
+  productId: BigIntFilter
+  createdAt: DatetimeFilter
+  nodeId: IDFilter
+  """Returns true only if all its inner filters are true, otherwise returns false"""
+  and: [LikesFilter!]
+  """Returns true if at least one of its inner filters is true, otherwise returns false"""
+  or: [LikesFilter!]
+  """Negates a filter"""
+  not: LikesFilter
+}
+
+input LikesInsertInput {
+  userId: UUID
+  productId: BigInt
+  createdAt: Datetime
+}
+
+input LikesOrderBy {
+  id: OrderByDirection
+  userId: OrderByDirection
+  productId: OrderByDirection
+  createdAt: OrderByDirection
+}
+
+input LikesUpdateInput {
+  userId: UUID
+  productId: BigInt
+  createdAt: Datetime
+}
+
+"""Boolean expression comparing fields on type 'Opaque"""
+input OpaqueFilter {
+  eq: Opaque
+  is: FilterIs
+}
+
+"""Boolean expression comparing fields on type 'ProductCondition"""
+input ProductConditionFilter {
+  eq: ProductCondition
+  in: [ProductCondition!]
+  is: FilterIs
+  neq: ProductCondition
+}
+
+input ProductImagesFilter {
+  id: BigIntFilter
+  createdAt: DatetimeFilter
+  productId: BigIntFilter
+  imageUrl: StringFilter
+  displayOrder: IntFilter
+  nodeId: IDFilter
+  """Returns true only if all its inner filters are true, otherwise returns false"""
+  and: [ProductImagesFilter!]
+  """Returns true if at least one of its inner filters is true, otherwise returns false"""
+  or: [ProductImagesFilter!]
+  """Negates a filter"""
+  not: ProductImagesFilter
+}
+
+input ProductImagesInsertInput {
+  createdAt: Datetime
+  productId: BigInt
+  imageUrl: String
+  displayOrder: Int
+}
+
+input ProductImagesOrderBy {
+  id: OrderByDirection
+  createdAt: OrderByDirection
+  productId: OrderByDirection
+  imageUrl: OrderByDirection
+  displayOrder: OrderByDirection
+}
+
+input ProductImagesUpdateInput {
+  createdAt: Datetime
+  productId: BigInt
+  imageUrl: String
+  displayOrder: Int
+}
+
+input ProductsCommunitiesFilter {
+  id: BigIntFilter
+  createdAt: DatetimeFilter
+  productId: BigIntFilter
+  communityId: BigIntFilter
+  nodeId: IDFilter
+  """Returns true only if all its inner filters are true, otherwise returns false"""
+  and: [ProductsCommunitiesFilter!]
+  """Returns true if at least one of its inner filters is true, otherwise returns false"""
+  or: [ProductsCommunitiesFilter!]
+  """Negates a filter"""
+  not: ProductsCommunitiesFilter
+}
+
+input ProductsCommunitiesInsertInput {
+  createdAt: Datetime
+  productId: BigInt
+  communityId: BigInt
+}
+
+input ProductsCommunitiesOrderBy {
+  id: OrderByDirection
+  createdAt: OrderByDirection
+  productId: OrderByDirection
+  communityId: OrderByDirection
+}
+
+input ProductsCommunitiesUpdateInput {
+  createdAt: Datetime
+  productId: BigInt
+  communityId: BigInt
+}
+
+input ProductsFilter {
+  id: BigIntFilter
+  createdAt: DatetimeFilter
+  name: StringFilter
+  price: FloatFilter
+  description: StringFilter
+  userId: UUIDFilter
+  categoryId: UUIDFilter
+  condition: ProductConditionFilter
+  isPublic: BooleanFilter
+  nodeId: IDFilter
+  """Returns true only if all its inner filters are true, otherwise returns false"""
+  and: [ProductsFilter!]
+  """Returns true if at least one of its inner filters is true, otherwise returns false"""
+  or: [ProductsFilter!]
+  """Negates a filter"""
+  not: ProductsFilter
+}
+
+input ProductsInsertInput {
+  createdAt: Datetime
+  name: String
+  price: Float
+  description: String
+  userId: UUID
+  categoryId: UUID
+  condition: ProductCondition
+  isPublic: Boolean
+}
+
+input ProductsOrderBy {
+  id: OrderByDirection
+  createdAt: OrderByDirection
+  name: OrderByDirection
+  price: OrderByDirection
+  description: OrderByDirection
+  userId: OrderByDirection
+  categoryId: OrderByDirection
+  condition: OrderByDirection
+  isPublic: OrderByDirection
+}
+
+input ProductsUpdateInput {
+  createdAt: Datetime
+  name: String
+  price: Float
+  description: String
+  userId: UUID
+  categoryId: UUID
+  condition: ProductCondition
+  isPublic: Boolean
+}
+
+input ProfileAddressesFilter {
+  id: BigIntFilter
+  createdAt: DatetimeFilter
+  addressLine1: StringFilter
+  addressLine2: StringFilter
+  city: StringFilter
+  state: StringFilter
+  postcode: StringFilter
+  country: StringFilter
+  userId: UUIDFilter
+  nodeId: IDFilter
+  """Returns true only if all its inner filters are true, otherwise returns false"""
+  and: [ProfileAddressesFilter!]
+  """Returns true if at least one of its inner filters is true, otherwise returns false"""
+  or: [ProfileAddressesFilter!]
+  """Negates a filter"""
+  not: ProfileAddressesFilter
+}
+
+input ProfileAddressesInsertInput {
+  createdAt: Datetime
+  addressLine1: String
+  addressLine2: String
+  city: String
+  state: String
+  postcode: String
+  country: String
+  userId: UUID
+}
+
+input ProfileAddressesOrderBy {
+  id: OrderByDirection
+  createdAt: OrderByDirection
+  addressLine1: OrderByDirection
+  addressLine2: OrderByDirection
+  city: OrderByDirection
+  state: OrderByDirection
+  postcode: OrderByDirection
+  country: OrderByDirection
+  userId: OrderByDirection
+}
+
+input ProfileAddressesUpdateInput {
+  createdAt: Datetime
+  addressLine1: String
+  addressLine2: String
+  city: String
+  state: String
+  postcode: String
+  country: String
+  userId: UUID
+}
+
+input ProfilesFilter {
+  id: UUIDFilter
+  updatedAt: DatetimeFilter
+  username: StringFilter
+  avatarUrl: StringFilter
+  firstName: StringFilter
+  lastName: StringFilter
+  description: StringFilter
+  onboarded: BooleanFilter
+  nodeId: IDFilter
+  """Returns true only if all its inner filters are true, otherwise returns false"""
+  and: [ProfilesFilter!]
+  """Returns true if at least one of its inner filters is true, otherwise returns false"""
+  or: [ProfilesFilter!]
+  """Negates a filter"""
+  not: ProfilesFilter
+}
+
+input ProfilesInsertInput {
+  id: UUID
+  updatedAt: Datetime
+  username: String
+  avatarUrl: String
+  firstName: String
+  lastName: String
+  description: String
+  onboarded: Boolean
+}
+
+input ProfilesOrderBy {
+  id: OrderByDirection
+  updatedAt: OrderByDirection
+  username: OrderByDirection
+  avatarUrl: OrderByDirection
+  firstName: OrderByDirection
+  lastName: OrderByDirection
+  description: OrderByDirection
+  onboarded: OrderByDirection
+}
+
+input ProfilesUpdateInput {
+  id: UUID
+  updatedAt: Datetime
+  username: String
+  avatarUrl: String
+  firstName: String
+  lastName: String
+  description: String
+  onboarded: Boolean
+}
+
+"""Boolean expression comparing fields on type 'String"""
+input StringFilter {
+  eq: String
+  gt: String
+  gte: String
+  ilike: String
+  in: [String!]
+  iregex: String
+  is: FilterIs
+  like: String
+  lt: String
+  lte: String
+  neq: String
+  regex: String
+  startsWith: String
+}
+
+"""Boolean expression comparing fields on type 'StringList"""
+input StringListFilter {
+  containedBy: [String!]
+  contains: [String!]
+  eq: [String!]
+  is: FilterIs
+  overlaps: [String!]
+}
+
+"""Boolean expression comparing fields on type 'Time"""
+input TimeFilter {
+  eq: Time
+  gt: Time
+  gte: Time
+  in: [Time!]
+  is: FilterIs
+  lt: Time
+  lte: Time
+  neq: Time
+}
+
+"""Boolean expression comparing fields on type 'TimeList"""
+input TimeListFilter {
+  containedBy: [Time!]
+  contains: [Time!]
+  eq: [Time!]
+  is: FilterIs
+  overlaps: [Time!]
+}
+
+"""Boolean expression comparing fields on type 'UUID"""
+input UUIDFilter {
+  eq: UUID
+  in: [UUID!]
+  is: FilterIs
+  neq: UUID
+}
+
+"""Boolean expression comparing fields on type 'UUIDList"""
+input UUIDListFilter {
+  containedBy: [UUID!]
+  contains: [UUID!]
+  eq: [UUID!]
+  is: FilterIs
+  overlaps: [UUID!]
+}
+
+interface Node {
+  """Retrieves a record by `ID`"""
+  nodeId: ID!
+}
+
+type Categories implements Node {
+  """Globally Unique Record Identifier"""
+  nodeId: ID!
+  id: UUID!
+  createdAt: Datetime!
+  name: String!
+  attributes: JSON
+  productsCollection(
+    """Query the first `n` records in the collection"""
+    first: Int
+    """Query the last `n` records in the collection"""
+    last: Int
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+    """Skip n values from the after cursor. Alternative to cursor pagination. Backward pagination not supported."""
+    offset: Int
+    """Filters to apply to the results set when querying from the collection"""
+    filter: ProductsFilter
+    """Sort order to apply to the collection"""
+    orderBy: [ProductsOrderBy!]
+  ): ProductsConnection
+}
+
+type CategoriesConnection {
+  edges: [CategoriesEdge!]!
+  pageInfo: PageInfo!
+}
+
+type CategoriesDeleteResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+  """Array of records impacted by the mutation"""
+  records: [Categories!]!
+}
+
+type CategoriesEdge {
+  cursor: String!
+  node: Categories!
+}
+
+type CategoriesInsertResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+  """Array of records impacted by the mutation"""
+  records: [Categories!]!
+}
+
+type CategoriesUpdateResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+  """Array of records impacted by the mutation"""
+  records: [Categories!]!
+}
+
+type Communities implements Node {
+  """Globally Unique Record Identifier"""
+  nodeId: ID!
+  id: BigInt!
+  createdAt: Datetime!
+  name: String!
+  description: String!
+  address: JSON!
+  image: String
+  productsCommunitiesCollection(
+    """Query the first `n` records in the collection"""
+    first: Int
+    """Query the last `n` records in the collection"""
+    last: Int
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+    """Skip n values from the after cursor. Alternative to cursor pagination. Backward pagination not supported."""
+    offset: Int
+    """Filters to apply to the results set when querying from the collection"""
+    filter: ProductsCommunitiesFilter
+    """Sort order to apply to the collection"""
+    orderBy: [ProductsCommunitiesOrderBy!]
+  ): ProductsCommunitiesConnection
+  communityUsersCollection(
+    """Query the first `n` records in the collection"""
+    first: Int
+    """Query the last `n` records in the collection"""
+    last: Int
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+    """Skip n values from the after cursor. Alternative to cursor pagination. Backward pagination not supported."""
+    offset: Int
+    """Filters to apply to the results set when querying from the collection"""
+    filter: CommunityUsersFilter
+    """Sort order to apply to the collection"""
+    orderBy: [CommunityUsersOrderBy!]
+  ): CommunityUsersConnection
+}
+
+type CommunitiesConnection {
+  edges: [CommunitiesEdge!]!
+  pageInfo: PageInfo!
+}
+
+type CommunitiesDeleteResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+  """Array of records impacted by the mutation"""
+  records: [Communities!]!
+}
+
+type CommunitiesEdge {
+  cursor: String!
+  node: Communities!
+}
+
+type CommunitiesInsertResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+  """Array of records impacted by the mutation"""
+  records: [Communities!]!
+}
+
+type CommunitiesUpdateResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+  """Array of records impacted by the mutation"""
+  records: [Communities!]!
 }
 
 type CommunityUsers implements Node {
@@ -355,7 +784,6 @@ type CommunityUsersConnection {
 type CommunityUsersDeleteResponse {
   """Count of the records impacted by the mutation"""
   affectedCount: Int!
-
   """Array of records impacted by the mutation"""
   records: [CommunityUsers!]!
 }
@@ -365,199 +793,27 @@ type CommunityUsersEdge {
   node: CommunityUsers!
 }
 
-input CommunityUsersFilter {
-  id: BigIntFilter
-  createdAt: DatetimeFilter
-  communityId: BigIntFilter
-  userId: UUIDFilter
-  status: CommunityUserReviewStatusFilter
-  nodeId: IDFilter
-
-  """
-  Returns true only if all its inner filters are true, otherwise returns false
-  """
-  and: [CommunityUsersFilter!]
-
-  """
-  Returns true if at least one of its inner filters is true, otherwise returns false
-  """
-  or: [CommunityUsersFilter!]
-
-  """Negates a filter"""
-  not: CommunityUsersFilter
-}
-
-input CommunityUsersInsertInput {
-  createdAt: Datetime
-  communityId: BigInt
-  userId: UUID
-  status: CommunityUserReviewStatus
-}
-
 type CommunityUsersInsertResponse {
   """Count of the records impacted by the mutation"""
   affectedCount: Int!
-
   """Array of records impacted by the mutation"""
   records: [CommunityUsers!]!
-}
-
-input CommunityUsersOrderBy {
-  id: OrderByDirection
-  createdAt: OrderByDirection
-  communityId: OrderByDirection
-  userId: OrderByDirection
-  status: OrderByDirection
-}
-
-input CommunityUsersUpdateInput {
-  createdAt: Datetime
-  communityId: BigInt
-  userId: UUID
-  status: CommunityUserReviewStatus
 }
 
 type CommunityUsersUpdateResponse {
   """Count of the records impacted by the mutation"""
   affectedCount: Int!
-
   """Array of records impacted by the mutation"""
   records: [CommunityUsers!]!
 }
-
-"""
-An opaque string using for tracking a position in results during pagination
-"""
-scalar Cursor
-
-"""A date without time information"""
-scalar Date
-
-"""
-Boolean expression comparing fields on type "Date"
-"""
-input DateFilter {
-  eq: Date
-  gt: Date
-  gte: Date
-  in: [Date!]
-  is: FilterIs
-  lt: Date
-  lte: Date
-  neq: Date
-}
-
-"""
-Boolean expression comparing fields on type "DateList"
-"""
-input DateListFilter {
-  containedBy: [Date!]
-  contains: [Date!]
-  eq: [Date!]
-  is: FilterIs
-  overlaps: [Date!]
-}
-
-"""A date and time"""
-scalar Datetime
-
-"""
-Boolean expression comparing fields on type "Datetime"
-"""
-input DatetimeFilter {
-  eq: Datetime
-  gt: Datetime
-  gte: Datetime
-  in: [Datetime!]
-  is: FilterIs
-  lt: Datetime
-  lte: Datetime
-  neq: Datetime
-}
-
-"""
-Boolean expression comparing fields on type "DatetimeList"
-"""
-input DatetimeListFilter {
-  containedBy: [Datetime!]
-  contains: [Datetime!]
-  eq: [Datetime!]
-  is: FilterIs
-  overlaps: [Datetime!]
-}
-
-enum FilterIs {
-  NULL
-  NOT_NULL
-}
-
-"""
-Boolean expression comparing fields on type "Float"
-"""
-input FloatFilter {
-  eq: Float
-  gt: Float
-  gte: Float
-  in: [Float!]
-  is: FilterIs
-  lt: Float
-  lte: Float
-  neq: Float
-}
-
-"""
-Boolean expression comparing fields on type "FloatList"
-"""
-input FloatListFilter {
-  containedBy: [Float!]
-  contains: [Float!]
-  eq: [Float!]
-  is: FilterIs
-  overlaps: [Float!]
-}
-
-"""
-Boolean expression comparing fields on type "ID"
-"""
-input IDFilter {
-  eq: ID
-}
-
-"""
-Boolean expression comparing fields on type "Int"
-"""
-input IntFilter {
-  eq: Int
-  gt: Int
-  gte: Int
-  in: [Int!]
-  is: FilterIs
-  lt: Int
-  lte: Int
-  neq: Int
-}
-
-"""
-Boolean expression comparing fields on type "IntList"
-"""
-input IntListFilter {
-  containedBy: [Int!]
-  contains: [Int!]
-  eq: [Int!]
-  is: FilterIs
-  overlaps: [Int!]
-}
-
-"""A Javascript Object Notation value serialized as a string"""
-scalar JSON
 
 type Likes implements Node {
   """Globally Unique Record Identifier"""
   nodeId: ID!
   id: BigInt!
-  userId: UUID
-  productId: BigInt
-  createdAt: Datetime
+  userId: UUID!
+  productId: BigInt!
+  createdAt: Datetime!
   product: Products
   user: Profiles
 }
@@ -570,7 +826,6 @@ type LikesConnection {
 type LikesDeleteResponse {
   """Count of the records impacted by the mutation"""
   affectedCount: Int!
-
   """Array of records impacted by the mutation"""
   records: [Likes!]!
 }
@@ -580,58 +835,16 @@ type LikesEdge {
   node: Likes!
 }
 
-input LikesFilter {
-  id: BigIntFilter
-  userId: UUIDFilter
-  productId: BigIntFilter
-  createdAt: DatetimeFilter
-  nodeId: IDFilter
-
-  """
-  Returns true only if all its inner filters are true, otherwise returns false
-  """
-  and: [LikesFilter!]
-
-  """
-  Returns true if at least one of its inner filters is true, otherwise returns false
-  """
-  or: [LikesFilter!]
-
-  """Negates a filter"""
-  not: LikesFilter
-}
-
-input LikesInsertInput {
-  userId: UUID
-  productId: BigInt
-  createdAt: Datetime
-}
-
 type LikesInsertResponse {
   """Count of the records impacted by the mutation"""
   affectedCount: Int!
-
   """Array of records impacted by the mutation"""
   records: [Likes!]!
-}
-
-input LikesOrderBy {
-  id: OrderByDirection
-  userId: OrderByDirection
-  productId: OrderByDirection
-  createdAt: OrderByDirection
-}
-
-input LikesUpdateInput {
-  userId: UUID
-  productId: BigInt
-  createdAt: Datetime
 }
 
 type LikesUpdateResponse {
   """Count of the records impacted by the mutation"""
   affectedCount: Int!
-
   """Array of records impacted by the mutation"""
   records: [Likes!]!
 }
@@ -642,273 +855,188 @@ type Mutation {
   deleteFromCategoriesCollection(
     """Restricts the mutation's impact to records matching the criteria"""
     filter: CategoriesFilter
-
-    """
-    The maximum number of records in the collection permitted to be affected
-    """
-    atMost: Int! = 1
+    """The maximum number of records in the collection permitted to be affected"""
+    atMost: Int!
   ): CategoriesDeleteResponse!
-
   """Deletes zero or more records from the `Communities` collection"""
   deleteFromCommunitiesCollection(
     """Restricts the mutation's impact to records matching the criteria"""
     filter: CommunitiesFilter
-
-    """
-    The maximum number of records in the collection permitted to be affected
-    """
-    atMost: Int! = 1
+    """The maximum number of records in the collection permitted to be affected"""
+    atMost: Int!
   ): CommunitiesDeleteResponse!
-
   """Deletes zero or more records from the `CommunityUsers` collection"""
   deleteFromCommunityUsersCollection(
     """Restricts the mutation's impact to records matching the criteria"""
     filter: CommunityUsersFilter
-
-    """
-    The maximum number of records in the collection permitted to be affected
-    """
-    atMost: Int! = 1
+    """The maximum number of records in the collection permitted to be affected"""
+    atMost: Int!
   ): CommunityUsersDeleteResponse!
-
   """Deletes zero or more records from the `Likes` collection"""
   deleteFromLikesCollection(
     """Restricts the mutation's impact to records matching the criteria"""
     filter: LikesFilter
-
-    """
-    The maximum number of records in the collection permitted to be affected
-    """
-    atMost: Int! = 1
+    """The maximum number of records in the collection permitted to be affected"""
+    atMost: Int!
   ): LikesDeleteResponse!
-
+  """Deletes zero or more records from the `ProductImages` collection"""
+  deleteFromProductImagesCollection(
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: ProductImagesFilter
+    """The maximum number of records in the collection permitted to be affected"""
+    atMost: Int!
+  ): ProductImagesDeleteResponse!
   """Deletes zero or more records from the `Products` collection"""
   deleteFromProductsCollection(
     """Restricts the mutation's impact to records matching the criteria"""
     filter: ProductsFilter
-
-    """
-    The maximum number of records in the collection permitted to be affected
-    """
-    atMost: Int! = 1
+    """The maximum number of records in the collection permitted to be affected"""
+    atMost: Int!
   ): ProductsDeleteResponse!
-
   """Deletes zero or more records from the `ProductsCommunities` collection"""
   deleteFromProductsCommunitiesCollection(
     """Restricts the mutation's impact to records matching the criteria"""
     filter: ProductsCommunitiesFilter
-
-    """
-    The maximum number of records in the collection permitted to be affected
-    """
-    atMost: Int! = 1
+    """The maximum number of records in the collection permitted to be affected"""
+    atMost: Int!
   ): ProductsCommunitiesDeleteResponse!
-
   """Deletes zero or more records from the `ProfileAddresses` collection"""
   deleteFromProfileAddressesCollection(
     """Restricts the mutation's impact to records matching the criteria"""
     filter: ProfileAddressesFilter
-
-    """
-    The maximum number of records in the collection permitted to be affected
-    """
-    atMost: Int! = 1
+    """The maximum number of records in the collection permitted to be affected"""
+    atMost: Int!
   ): ProfileAddressesDeleteResponse!
-
   """Deletes zero or more records from the `Profiles` collection"""
   deleteFromProfilesCollection(
     """Restricts the mutation's impact to records matching the criteria"""
     filter: ProfilesFilter
-
-    """
-    The maximum number of records in the collection permitted to be affected
-    """
-    atMost: Int! = 1
+    """The maximum number of records in the collection permitted to be affected"""
+    atMost: Int!
   ): ProfilesDeleteResponse!
-
   """Adds one or more `Categories` records to the collection"""
-  insertIntoCategoriesCollection(objects: [CategoriesInsertInput!]!): CategoriesInsertResponse
-
+  insertIntoCategoriesCollection(
+    objects: [CategoriesInsertInput!]!
+  ): CategoriesInsertResponse
   """Adds one or more `Communities` records to the collection"""
-  insertIntoCommunitiesCollection(objects: [CommunitiesInsertInput!]!): CommunitiesInsertResponse
-
+  insertIntoCommunitiesCollection(
+    objects: [CommunitiesInsertInput!]!
+  ): CommunitiesInsertResponse
   """Adds one or more `CommunityUsers` records to the collection"""
-  insertIntoCommunityUsersCollection(objects: [CommunityUsersInsertInput!]!): CommunityUsersInsertResponse
-
+  insertIntoCommunityUsersCollection(
+    objects: [CommunityUsersInsertInput!]!
+  ): CommunityUsersInsertResponse
   """Adds one or more `Likes` records to the collection"""
-  insertIntoLikesCollection(objects: [LikesInsertInput!]!): LikesInsertResponse
-
+  insertIntoLikesCollection(
+    objects: [LikesInsertInput!]!
+  ): LikesInsertResponse
+  """Adds one or more `ProductImages` records to the collection"""
+  insertIntoProductImagesCollection(
+    objects: [ProductImagesInsertInput!]!
+  ): ProductImagesInsertResponse
   """Adds one or more `Products` records to the collection"""
-  insertIntoProductsCollection(objects: [ProductsInsertInput!]!): ProductsInsertResponse
-
+  insertIntoProductsCollection(
+    objects: [ProductsInsertInput!]!
+  ): ProductsInsertResponse
   """Adds one or more `ProductsCommunities` records to the collection"""
-  insertIntoProductsCommunitiesCollection(objects: [ProductsCommunitiesInsertInput!]!): ProductsCommunitiesInsertResponse
-
+  insertIntoProductsCommunitiesCollection(
+    objects: [ProductsCommunitiesInsertInput!]!
+  ): ProductsCommunitiesInsertResponse
   """Adds one or more `ProfileAddresses` records to the collection"""
-  insertIntoProfileAddressesCollection(objects: [ProfileAddressesInsertInput!]!): ProfileAddressesInsertResponse
-
+  insertIntoProfileAddressesCollection(
+    objects: [ProfileAddressesInsertInput!]!
+  ): ProfileAddressesInsertResponse
   """Adds one or more `Profiles` records to the collection"""
-  insertIntoProfilesCollection(objects: [ProfilesInsertInput!]!): ProfilesInsertResponse
-
+  insertIntoProfilesCollection(
+    objects: [ProfilesInsertInput!]!
+  ): ProfilesInsertResponse
   """Updates zero or more records in the `Categories` collection"""
   updateCategoriesCollection(
-    """
-    Fields that are set will be updated for all records matching the `filter`
-    """
+    """Fields that are set will be updated for all records matching the `filter`"""
     set: CategoriesUpdateInput!
-
     """Restricts the mutation's impact to records matching the criteria"""
     filter: CategoriesFilter
-
-    """
-    The maximum number of records in the collection permitted to be affected
-    """
-    atMost: Int! = 1
+    """The maximum number of records in the collection permitted to be affected"""
+    atMost: Int!
   ): CategoriesUpdateResponse!
-
   """Updates zero or more records in the `Communities` collection"""
   updateCommunitiesCollection(
-    """
-    Fields that are set will be updated for all records matching the `filter`
-    """
+    """Fields that are set will be updated for all records matching the `filter`"""
     set: CommunitiesUpdateInput!
-
     """Restricts the mutation's impact to records matching the criteria"""
     filter: CommunitiesFilter
-
-    """
-    The maximum number of records in the collection permitted to be affected
-    """
-    atMost: Int! = 1
+    """The maximum number of records in the collection permitted to be affected"""
+    atMost: Int!
   ): CommunitiesUpdateResponse!
-
   """Updates zero or more records in the `CommunityUsers` collection"""
   updateCommunityUsersCollection(
-    """
-    Fields that are set will be updated for all records matching the `filter`
-    """
+    """Fields that are set will be updated for all records matching the `filter`"""
     set: CommunityUsersUpdateInput!
-
     """Restricts the mutation's impact to records matching the criteria"""
     filter: CommunityUsersFilter
-
-    """
-    The maximum number of records in the collection permitted to be affected
-    """
-    atMost: Int! = 1
+    """The maximum number of records in the collection permitted to be affected"""
+    atMost: Int!
   ): CommunityUsersUpdateResponse!
-
   """Updates zero or more records in the `Likes` collection"""
   updateLikesCollection(
-    """
-    Fields that are set will be updated for all records matching the `filter`
-    """
+    """Fields that are set will be updated for all records matching the `filter`"""
     set: LikesUpdateInput!
-
     """Restricts the mutation's impact to records matching the criteria"""
     filter: LikesFilter
-
-    """
-    The maximum number of records in the collection permitted to be affected
-    """
-    atMost: Int! = 1
+    """The maximum number of records in the collection permitted to be affected"""
+    atMost: Int!
   ): LikesUpdateResponse!
-
+  """Updates zero or more records in the `ProductImages` collection"""
+  updateProductImagesCollection(
+    """Fields that are set will be updated for all records matching the `filter`"""
+    set: ProductImagesUpdateInput!
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: ProductImagesFilter
+    """The maximum number of records in the collection permitted to be affected"""
+    atMost: Int!
+  ): ProductImagesUpdateResponse!
   """Updates zero or more records in the `Products` collection"""
   updateProductsCollection(
-    """
-    Fields that are set will be updated for all records matching the `filter`
-    """
+    """Fields that are set will be updated for all records matching the `filter`"""
     set: ProductsUpdateInput!
-
     """Restricts the mutation's impact to records matching the criteria"""
     filter: ProductsFilter
-
-    """
-    The maximum number of records in the collection permitted to be affected
-    """
-    atMost: Int! = 1
+    """The maximum number of records in the collection permitted to be affected"""
+    atMost: Int!
   ): ProductsUpdateResponse!
-
   """Updates zero or more records in the `ProductsCommunities` collection"""
   updateProductsCommunitiesCollection(
-    """
-    Fields that are set will be updated for all records matching the `filter`
-    """
+    """Fields that are set will be updated for all records matching the `filter`"""
     set: ProductsCommunitiesUpdateInput!
-
     """Restricts the mutation's impact to records matching the criteria"""
     filter: ProductsCommunitiesFilter
-
-    """
-    The maximum number of records in the collection permitted to be affected
-    """
-    atMost: Int! = 1
+    """The maximum number of records in the collection permitted to be affected"""
+    atMost: Int!
   ): ProductsCommunitiesUpdateResponse!
-
   """Updates zero or more records in the `ProfileAddresses` collection"""
   updateProfileAddressesCollection(
-    """
-    Fields that are set will be updated for all records matching the `filter`
-    """
+    """Fields that are set will be updated for all records matching the `filter`"""
     set: ProfileAddressesUpdateInput!
-
     """Restricts the mutation's impact to records matching the criteria"""
     filter: ProfileAddressesFilter
-
-    """
-    The maximum number of records in the collection permitted to be affected
-    """
-    atMost: Int! = 1
+    """The maximum number of records in the collection permitted to be affected"""
+    atMost: Int!
   ): ProfileAddressesUpdateResponse!
-
   """Updates zero or more records in the `Profiles` collection"""
   updateProfilesCollection(
-    """
-    Fields that are set will be updated for all records matching the `filter`
-    """
+    """Fields that are set will be updated for all records matching the `filter`"""
     set: ProfilesUpdateInput!
-
     """Restricts the mutation's impact to records matching the criteria"""
     filter: ProfilesFilter
-
-    """
-    The maximum number of records in the collection permitted to be affected
-    """
-    atMost: Int! = 1
+    """The maximum number of records in the collection permitted to be affected"""
+    atMost: Int!
   ): ProfilesUpdateResponse!
-  userHasProductAccess(pProductId: BigInt!): Boolean
-}
-
-interface Node {
-  """Retrieves a record by `ID`"""
-  nodeId: ID!
-}
-
-"""Any type not handled by the type system"""
-scalar Opaque
-
-"""
-Boolean expression comparing fields on type "Opaque"
-"""
-input OpaqueFilter {
-  eq: Opaque
-  is: FilterIs
-}
-
-"""Defines a per-field sorting order"""
-enum OrderByDirection {
-  """Ascending order, nulls first"""
-  AscNullsFirst
-
-  """Ascending order, nulls last"""
-  AscNullsLast
-
-  """Descending order, nulls first"""
-  DescNullsFirst
-
-  """Descending order, nulls last"""
-  DescNullsLast
+  userHasCommunityAccess(
+    pCommunityId: BigInt!
+  ): Boolean
+  userHasProductAccess(
+    pProductId: BigInt!
+  ): Boolean
 }
 
 type PageInfo {
@@ -918,21 +1046,46 @@ type PageInfo {
   startCursor: String
 }
 
-enum ProductCondition {
-  New
-  Like_new
-  Good
-  Used
+type ProductImages implements Node {
+  """Globally Unique Record Identifier"""
+  nodeId: ID!
+  id: BigInt!
+  createdAt: Datetime!
+  productId: BigInt!
+  imageUrl: String!
+  displayOrder: Int!
+  product: Products
 }
 
-"""
-Boolean expression comparing fields on type "ProductCondition"
-"""
-input ProductConditionFilter {
-  eq: ProductCondition
-  in: [ProductCondition!]
-  is: FilterIs
-  neq: ProductCondition
+type ProductImagesConnection {
+  edges: [ProductImagesEdge!]!
+  pageInfo: PageInfo!
+}
+
+type ProductImagesDeleteResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+  """Array of records impacted by the mutation"""
+  records: [ProductImages!]!
+}
+
+type ProductImagesEdge {
+  cursor: String!
+  node: ProductImages!
+}
+
+type ProductImagesInsertResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+  """Array of records impacted by the mutation"""
+  records: [ProductImages!]!
+}
+
+type ProductImagesUpdateResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+  """Array of records impacted by the mutation"""
+  records: [ProductImages!]!
 }
 
 type Products implements Node {
@@ -942,10 +1095,9 @@ type Products implements Node {
   createdAt: Datetime!
   name: String!
   price: Float!
-  image: String!
   description: String!
   userId: UUID!
-  categoryId: UUID
+  categoryId: UUID!
   condition: ProductCondition!
   isPublic: Boolean!
   category: Categories
@@ -953,51 +1105,51 @@ type Products implements Node {
   likesCollection(
     """Query the first `n` records in the collection"""
     first: Int
-
     """Query the last `n` records in the collection"""
     last: Int
-
     """Query values in the collection before the provided cursor"""
     before: Cursor
-
     """Query values in the collection after the provided cursor"""
     after: Cursor
-
-    """
-    Skip n values from the after cursor. Alternative to cursor pagination. Backward pagination not supported.
-    """
+    """Skip n values from the after cursor. Alternative to cursor pagination. Backward pagination not supported."""
     offset: Int
-
     """Filters to apply to the results set when querying from the collection"""
     filter: LikesFilter
-
     """Sort order to apply to the collection"""
     orderBy: [LikesOrderBy!]
   ): LikesConnection
   productsCommunitiesCollection(
     """Query the first `n` records in the collection"""
     first: Int
-
     """Query the last `n` records in the collection"""
     last: Int
-
     """Query values in the collection before the provided cursor"""
     before: Cursor
-
     """Query values in the collection after the provided cursor"""
     after: Cursor
-
-    """
-    Skip n values from the after cursor. Alternative to cursor pagination. Backward pagination not supported.
-    """
+    """Skip n values from the after cursor. Alternative to cursor pagination. Backward pagination not supported."""
     offset: Int
-
     """Filters to apply to the results set when querying from the collection"""
     filter: ProductsCommunitiesFilter
-
     """Sort order to apply to the collection"""
     orderBy: [ProductsCommunitiesOrderBy!]
   ): ProductsCommunitiesConnection
+  productImagesCollection(
+    """Query the first `n` records in the collection"""
+    first: Int
+    """Query the last `n` records in the collection"""
+    last: Int
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+    """Skip n values from the after cursor. Alternative to cursor pagination. Backward pagination not supported."""
+    offset: Int
+    """Filters to apply to the results set when querying from the collection"""
+    filter: ProductImagesFilter
+    """Sort order to apply to the collection"""
+    orderBy: [ProductImagesOrderBy!]
+  ): ProductImagesConnection
 }
 
 type ProductsCommunities implements Node {
@@ -1019,7 +1171,6 @@ type ProductsCommunitiesConnection {
 type ProductsCommunitiesDeleteResponse {
   """Count of the records impacted by the mutation"""
   affectedCount: Int!
-
   """Array of records impacted by the mutation"""
   records: [ProductsCommunities!]!
 }
@@ -1029,58 +1180,16 @@ type ProductsCommunitiesEdge {
   node: ProductsCommunities!
 }
 
-input ProductsCommunitiesFilter {
-  id: BigIntFilter
-  createdAt: DatetimeFilter
-  productId: BigIntFilter
-  communityId: BigIntFilter
-  nodeId: IDFilter
-
-  """
-  Returns true only if all its inner filters are true, otherwise returns false
-  """
-  and: [ProductsCommunitiesFilter!]
-
-  """
-  Returns true if at least one of its inner filters is true, otherwise returns false
-  """
-  or: [ProductsCommunitiesFilter!]
-
-  """Negates a filter"""
-  not: ProductsCommunitiesFilter
-}
-
-input ProductsCommunitiesInsertInput {
-  createdAt: Datetime
-  productId: BigInt
-  communityId: BigInt
-}
-
 type ProductsCommunitiesInsertResponse {
   """Count of the records impacted by the mutation"""
   affectedCount: Int!
-
   """Array of records impacted by the mutation"""
   records: [ProductsCommunities!]!
-}
-
-input ProductsCommunitiesOrderBy {
-  id: OrderByDirection
-  createdAt: OrderByDirection
-  productId: OrderByDirection
-  communityId: OrderByDirection
-}
-
-input ProductsCommunitiesUpdateInput {
-  createdAt: Datetime
-  productId: BigInt
-  communityId: BigInt
 }
 
 type ProductsCommunitiesUpdateResponse {
   """Count of the records impacted by the mutation"""
   affectedCount: Int!
-
   """Array of records impacted by the mutation"""
   records: [ProductsCommunities!]!
 }
@@ -1093,7 +1202,6 @@ type ProductsConnection {
 type ProductsDeleteResponse {
   """Count of the records impacted by the mutation"""
   affectedCount: Int!
-
   """Array of records impacted by the mutation"""
   records: [Products!]!
 }
@@ -1103,82 +1211,16 @@ type ProductsEdge {
   node: Products!
 }
 
-input ProductsFilter {
-  id: BigIntFilter
-  createdAt: DatetimeFilter
-  name: StringFilter
-  price: FloatFilter
-  image: StringFilter
-  description: StringFilter
-  userId: UUIDFilter
-  categoryId: UUIDFilter
-  condition: ProductConditionFilter
-  isPublic: BooleanFilter
-  nodeId: IDFilter
-
-  """
-  Returns true only if all its inner filters are true, otherwise returns false
-  """
-  and: [ProductsFilter!]
-
-  """
-  Returns true if at least one of its inner filters is true, otherwise returns false
-  """
-  or: [ProductsFilter!]
-
-  """Negates a filter"""
-  not: ProductsFilter
-}
-
-input ProductsInsertInput {
-  createdAt: Datetime
-  name: String
-  price: Float
-  image: String
-  description: String
-  userId: UUID
-  categoryId: UUID
-  condition: ProductCondition
-  isPublic: Boolean
-}
-
 type ProductsInsertResponse {
   """Count of the records impacted by the mutation"""
   affectedCount: Int!
-
   """Array of records impacted by the mutation"""
   records: [Products!]!
-}
-
-input ProductsOrderBy {
-  id: OrderByDirection
-  createdAt: OrderByDirection
-  name: OrderByDirection
-  price: OrderByDirection
-  image: OrderByDirection
-  description: OrderByDirection
-  userId: OrderByDirection
-  categoryId: OrderByDirection
-  condition: OrderByDirection
-  isPublic: OrderByDirection
-}
-
-input ProductsUpdateInput {
-  createdAt: Datetime
-  name: String
-  price: Float
-  image: String
-  description: String
-  userId: UUID
-  categoryId: UUID
-  condition: ProductCondition
-  isPublic: Boolean
 }
 
 type ProductsUpdateResponse {
   """Count of the records impacted by the mutation"""
   affectedCount: Int!
-
   """Array of records impacted by the mutation"""
   records: [Products!]!
 }
@@ -1206,7 +1248,6 @@ type ProfileAddressesConnection {
 type ProfileAddressesDeleteResponse {
   """Count of the records impacted by the mutation"""
   affectedCount: Int!
-
   """Array of records impacted by the mutation"""
   records: [ProfileAddresses!]!
 }
@@ -1216,78 +1257,16 @@ type ProfileAddressesEdge {
   node: ProfileAddresses!
 }
 
-input ProfileAddressesFilter {
-  id: BigIntFilter
-  createdAt: DatetimeFilter
-  addressLine1: StringFilter
-  addressLine2: StringFilter
-  city: StringFilter
-  state: StringFilter
-  postcode: StringFilter
-  country: StringFilter
-  userId: UUIDFilter
-  nodeId: IDFilter
-
-  """
-  Returns true only if all its inner filters are true, otherwise returns false
-  """
-  and: [ProfileAddressesFilter!]
-
-  """
-  Returns true if at least one of its inner filters is true, otherwise returns false
-  """
-  or: [ProfileAddressesFilter!]
-
-  """Negates a filter"""
-  not: ProfileAddressesFilter
-}
-
-input ProfileAddressesInsertInput {
-  createdAt: Datetime
-  addressLine1: String
-  addressLine2: String
-  city: String
-  state: String
-  postcode: String
-  country: String
-  userId: UUID
-}
-
 type ProfileAddressesInsertResponse {
   """Count of the records impacted by the mutation"""
   affectedCount: Int!
-
   """Array of records impacted by the mutation"""
   records: [ProfileAddresses!]!
-}
-
-input ProfileAddressesOrderBy {
-  id: OrderByDirection
-  createdAt: OrderByDirection
-  addressLine1: OrderByDirection
-  addressLine2: OrderByDirection
-  city: OrderByDirection
-  state: OrderByDirection
-  postcode: OrderByDirection
-  country: OrderByDirection
-  userId: OrderByDirection
-}
-
-input ProfileAddressesUpdateInput {
-  createdAt: Datetime
-  addressLine1: String
-  addressLine2: String
-  city: String
-  state: String
-  postcode: String
-  country: String
-  userId: UUID
 }
 
 type ProfileAddressesUpdateResponse {
   """Count of the records impacted by the mutation"""
   affectedCount: Int!
-
   """Array of records impacted by the mutation"""
   records: [ProfileAddresses!]!
 }
@@ -1306,73 +1285,64 @@ type Profiles implements Node {
   likesCollection(
     """Query the first `n` records in the collection"""
     first: Int
-
     """Query the last `n` records in the collection"""
     last: Int
-
     """Query values in the collection before the provided cursor"""
     before: Cursor
-
     """Query values in the collection after the provided cursor"""
     after: Cursor
-
-    """
-    Skip n values from the after cursor. Alternative to cursor pagination. Backward pagination not supported.
-    """
+    """Skip n values from the after cursor. Alternative to cursor pagination. Backward pagination not supported."""
     offset: Int
-
     """Filters to apply to the results set when querying from the collection"""
     filter: LikesFilter
-
     """Sort order to apply to the collection"""
     orderBy: [LikesOrderBy!]
   ): LikesConnection
-  communityUsers: CommunityUsers
+  communityUsersCollection(
+    """Query the first `n` records in the collection"""
+    first: Int
+    """Query the last `n` records in the collection"""
+    last: Int
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+    """Skip n values from the after cursor. Alternative to cursor pagination. Backward pagination not supported."""
+    offset: Int
+    """Filters to apply to the results set when querying from the collection"""
+    filter: CommunityUsersFilter
+    """Sort order to apply to the collection"""
+    orderBy: [CommunityUsersOrderBy!]
+  ): CommunityUsersConnection
   productsCollection(
     """Query the first `n` records in the collection"""
     first: Int
-
     """Query the last `n` records in the collection"""
     last: Int
-
     """Query values in the collection before the provided cursor"""
     before: Cursor
-
     """Query values in the collection after the provided cursor"""
     after: Cursor
-
-    """
-    Skip n values from the after cursor. Alternative to cursor pagination. Backward pagination not supported.
-    """
+    """Skip n values from the after cursor. Alternative to cursor pagination. Backward pagination not supported."""
     offset: Int
-
     """Filters to apply to the results set when querying from the collection"""
     filter: ProductsFilter
-
     """Sort order to apply to the collection"""
     orderBy: [ProductsOrderBy!]
   ): ProductsConnection
   profileAddressesCollection(
     """Query the first `n` records in the collection"""
     first: Int
-
     """Query the last `n` records in the collection"""
     last: Int
-
     """Query values in the collection before the provided cursor"""
     before: Cursor
-
     """Query values in the collection after the provided cursor"""
     after: Cursor
-
-    """
-    Skip n values from the after cursor. Alternative to cursor pagination. Backward pagination not supported.
-    """
+    """Skip n values from the after cursor. Alternative to cursor pagination. Backward pagination not supported."""
     offset: Int
-
     """Filters to apply to the results set when querying from the collection"""
     filter: ProfileAddressesFilter
-
     """Sort order to apply to the collection"""
     orderBy: [ProfileAddressesOrderBy!]
   ): ProfileAddressesConnection
@@ -1386,7 +1356,6 @@ type ProfilesConnection {
 type ProfilesDeleteResponse {
   """Count of the records impacted by the mutation"""
   affectedCount: Int!
-
   """Array of records impacted by the mutation"""
   records: [Profiles!]!
 }
@@ -1396,76 +1365,16 @@ type ProfilesEdge {
   node: Profiles!
 }
 
-input ProfilesFilter {
-  id: UUIDFilter
-  updatedAt: DatetimeFilter
-  username: StringFilter
-  avatarUrl: StringFilter
-  firstName: StringFilter
-  lastName: StringFilter
-  description: StringFilter
-  onboarded: BooleanFilter
-  nodeId: IDFilter
-
-  """
-  Returns true only if all its inner filters are true, otherwise returns false
-  """
-  and: [ProfilesFilter!]
-
-  """
-  Returns true if at least one of its inner filters is true, otherwise returns false
-  """
-  or: [ProfilesFilter!]
-
-  """Negates a filter"""
-  not: ProfilesFilter
-}
-
-input ProfilesInsertInput {
-  id: UUID
-  updatedAt: Datetime
-  username: String
-  avatarUrl: String
-  firstName: String
-  lastName: String
-  description: String
-  onboarded: Boolean
-}
-
 type ProfilesInsertResponse {
   """Count of the records impacted by the mutation"""
   affectedCount: Int!
-
   """Array of records impacted by the mutation"""
   records: [Profiles!]!
-}
-
-input ProfilesOrderBy {
-  id: OrderByDirection
-  updatedAt: OrderByDirection
-  username: OrderByDirection
-  avatarUrl: OrderByDirection
-  firstName: OrderByDirection
-  lastName: OrderByDirection
-  description: OrderByDirection
-  onboarded: OrderByDirection
-}
-
-input ProfilesUpdateInput {
-  id: UUID
-  updatedAt: Datetime
-  username: String
-  avatarUrl: String
-  firstName: String
-  lastName: String
-  description: String
-  onboarded: Boolean
 }
 
 type ProfilesUpdateResponse {
   """Count of the records impacted by the mutation"""
   affectedCount: Int!
-
   """Array of records impacted by the mutation"""
   records: [Profiles!]!
 }
@@ -1476,296 +1385,185 @@ type Query {
   categoriesCollection(
     """Query the first `n` records in the collection"""
     first: Int
-
     """Query the last `n` records in the collection"""
     last: Int
-
     """Query values in the collection before the provided cursor"""
     before: Cursor
-
     """Query values in the collection after the provided cursor"""
     after: Cursor
-
-    """
-    Skip n values from the after cursor. Alternative to cursor pagination. Backward pagination not supported.
-    """
+    """Skip n values from the after cursor. Alternative to cursor pagination. Backward pagination not supported."""
     offset: Int
-
     """Filters to apply to the results set when querying from the collection"""
     filter: CategoriesFilter
-
     """Sort order to apply to the collection"""
     orderBy: [CategoriesOrderBy!]
   ): CategoriesConnection
-
   """A pagable collection of type `Communities`"""
   communitiesCollection(
     """Query the first `n` records in the collection"""
     first: Int
-
     """Query the last `n` records in the collection"""
     last: Int
-
     """Query values in the collection before the provided cursor"""
     before: Cursor
-
     """Query values in the collection after the provided cursor"""
     after: Cursor
-
-    """
-    Skip n values from the after cursor. Alternative to cursor pagination. Backward pagination not supported.
-    """
+    """Skip n values from the after cursor. Alternative to cursor pagination. Backward pagination not supported."""
     offset: Int
-
     """Filters to apply to the results set when querying from the collection"""
     filter: CommunitiesFilter
-
     """Sort order to apply to the collection"""
     orderBy: [CommunitiesOrderBy!]
   ): CommunitiesConnection
-
   """A pagable collection of type `CommunityUsers`"""
   communityUsersCollection(
     """Query the first `n` records in the collection"""
     first: Int
-
     """Query the last `n` records in the collection"""
     last: Int
-
     """Query values in the collection before the provided cursor"""
     before: Cursor
-
     """Query values in the collection after the provided cursor"""
     after: Cursor
-
-    """
-    Skip n values from the after cursor. Alternative to cursor pagination. Backward pagination not supported.
-    """
+    """Skip n values from the after cursor. Alternative to cursor pagination. Backward pagination not supported."""
     offset: Int
-
     """Filters to apply to the results set when querying from the collection"""
     filter: CommunityUsersFilter
-
     """Sort order to apply to the collection"""
     orderBy: [CommunityUsersOrderBy!]
   ): CommunityUsersConnection
-
   """A pagable collection of type `Likes`"""
   likesCollection(
     """Query the first `n` records in the collection"""
     first: Int
-
     """Query the last `n` records in the collection"""
     last: Int
-
     """Query values in the collection before the provided cursor"""
     before: Cursor
-
     """Query values in the collection after the provided cursor"""
     after: Cursor
-
-    """
-    Skip n values from the after cursor. Alternative to cursor pagination. Backward pagination not supported.
-    """
+    """Skip n values from the after cursor. Alternative to cursor pagination. Backward pagination not supported."""
     offset: Int
-
     """Filters to apply to the results set when querying from the collection"""
     filter: LikesFilter
-
     """Sort order to apply to the collection"""
     orderBy: [LikesOrderBy!]
   ): LikesConnection
-
   """Retrieve a record by its `ID`"""
   node(
     """The record's `ID`"""
     nodeId: ID!
   ): Node
-
+  """A pagable collection of type `ProductImages`"""
+  productImagesCollection(
+    """Query the first `n` records in the collection"""
+    first: Int
+    """Query the last `n` records in the collection"""
+    last: Int
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+    """Skip n values from the after cursor. Alternative to cursor pagination. Backward pagination not supported."""
+    offset: Int
+    """Filters to apply to the results set when querying from the collection"""
+    filter: ProductImagesFilter
+    """Sort order to apply to the collection"""
+    orderBy: [ProductImagesOrderBy!]
+  ): ProductImagesConnection
   """A pagable collection of type `Products`"""
   productsCollection(
     """Query the first `n` records in the collection"""
     first: Int
-
     """Query the last `n` records in the collection"""
     last: Int
-
     """Query values in the collection before the provided cursor"""
     before: Cursor
-
     """Query values in the collection after the provided cursor"""
     after: Cursor
-
-    """
-    Skip n values from the after cursor. Alternative to cursor pagination. Backward pagination not supported.
-    """
+    """Skip n values from the after cursor. Alternative to cursor pagination. Backward pagination not supported."""
     offset: Int
-
     """Filters to apply to the results set when querying from the collection"""
     filter: ProductsFilter
-
     """Sort order to apply to the collection"""
     orderBy: [ProductsOrderBy!]
   ): ProductsConnection
-
   """A pagable collection of type `ProductsCommunities`"""
   productsCommunitiesCollection(
     """Query the first `n` records in the collection"""
     first: Int
-
     """Query the last `n` records in the collection"""
     last: Int
-
     """Query values in the collection before the provided cursor"""
     before: Cursor
-
     """Query values in the collection after the provided cursor"""
     after: Cursor
-
-    """
-    Skip n values from the after cursor. Alternative to cursor pagination. Backward pagination not supported.
-    """
+    """Skip n values from the after cursor. Alternative to cursor pagination. Backward pagination not supported."""
     offset: Int
-
     """Filters to apply to the results set when querying from the collection"""
     filter: ProductsCommunitiesFilter
-
     """Sort order to apply to the collection"""
     orderBy: [ProductsCommunitiesOrderBy!]
   ): ProductsCommunitiesConnection
-
   """A pagable collection of type `ProfileAddresses`"""
   profileAddressesCollection(
     """Query the first `n` records in the collection"""
     first: Int
-
     """Query the last `n` records in the collection"""
     last: Int
-
     """Query values in the collection before the provided cursor"""
     before: Cursor
-
     """Query values in the collection after the provided cursor"""
     after: Cursor
-
-    """
-    Skip n values from the after cursor. Alternative to cursor pagination. Backward pagination not supported.
-    """
+    """Skip n values from the after cursor. Alternative to cursor pagination. Backward pagination not supported."""
     offset: Int
-
     """Filters to apply to the results set when querying from the collection"""
     filter: ProfileAddressesFilter
-
     """Sort order to apply to the collection"""
     orderBy: [ProfileAddressesOrderBy!]
   ): ProfileAddressesConnection
-
   """A pagable collection of type `Profiles`"""
   profilesCollection(
     """Query the first `n` records in the collection"""
     first: Int
-
     """Query the last `n` records in the collection"""
     last: Int
-
     """Query values in the collection before the provided cursor"""
     before: Cursor
-
     """Query values in the collection after the provided cursor"""
     after: Cursor
-
-    """
-    Skip n values from the after cursor. Alternative to cursor pagination. Backward pagination not supported.
-    """
+    """Skip n values from the after cursor. Alternative to cursor pagination. Backward pagination not supported."""
     offset: Int
-
     """Filters to apply to the results set when querying from the collection"""
     filter: ProfilesFilter
-
     """Sort order to apply to the collection"""
     orderBy: [ProfilesOrderBy!]
   ): ProfilesConnection
 }
 
-"""
-Boolean expression comparing fields on type "String"
-"""
-input StringFilter {
-  eq: String
-  gt: String
-  gte: String
-  ilike: String
-  in: [String!]
-  iregex: String
-  is: FilterIs
-  like: String
-  lt: String
-  lte: String
-  neq: String
-  regex: String
-  startsWith: String
-}
+"""A high precision floating point value represented as a string"""
+scalar BigFloat
 
-"""
-Boolean expression comparing fields on type "StringList"
-"""
-input StringListFilter {
-  containedBy: [String!]
-  contains: [String!]
-  eq: [String!]
-  is: FilterIs
-  overlaps: [String!]
-}
+"""An arbitrary size integer represented as a string"""
+scalar BigInt
+
+"""An opaque string using for tracking a position in results during pagination"""
+scalar Cursor
+
+"""A date without time information"""
+scalar Date
+
+"""A date and time"""
+scalar Datetime
+
+"""A Javascript Object Notation value serialized as a string"""
+scalar JSON
+
+"""Any type not handled by the type system"""
+scalar Opaque
 
 """A time without date information"""
 scalar Time
 
-"""
-Boolean expression comparing fields on type "Time"
-"""
-input TimeFilter {
-  eq: Time
-  gt: Time
-  gte: Time
-  in: [Time!]
-  is: FilterIs
-  lt: Time
-  lte: Time
-  neq: Time
-}
-
-"""
-Boolean expression comparing fields on type "TimeList"
-"""
-input TimeListFilter {
-  containedBy: [Time!]
-  contains: [Time!]
-  eq: [Time!]
-  is: FilterIs
-  overlaps: [Time!]
-}
-
 """A universally unique identifier"""
 scalar UUID
-
-"""
-Boolean expression comparing fields on type "UUID"
-"""
-input UUIDFilter {
-  eq: UUID
-  in: [UUID!]
-  is: FilterIs
-  neq: UUID
-}
-
-"""
-Boolean expression comparing fields on type "UUIDList"
-"""
-input UUIDListFilter {
-  containedBy: [UUID!]
-  contains: [UUID!]
-  eq: [UUID!]
-  is: FilterIs
-  overlaps: [UUID!]
-}
-

@@ -23,8 +23,8 @@ import {
   RADIUS_XL,
   SHADOW_CARD,
 } from '../../design';
-import { invalidateRelayStore } from '../../lib/relay_environment';
-import { supabase } from '../../lib/supabase';
+import { invalidateRelayStore } from '../../utils/relay_environment';
+import { supabase } from '../../utils/supabase';
 import { Paths } from '../paths';
 
 type TSignInForm = {

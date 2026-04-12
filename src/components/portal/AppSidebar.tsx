@@ -18,7 +18,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { useCommunity } from '../../contexts/CommunityContext';
 import { BORDER_LIGHT, NEUTRAL_500, WHITE } from '../../design';
-import { supabase } from '../../lib/supabase';
+import { supabase } from '../../utils/supabase';
 import { Paths } from '../../views/paths';
 import BuildingAvatar from '../Avatars/BuildingAvatar';
 

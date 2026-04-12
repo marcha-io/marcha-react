@@ -20,6 +20,7 @@ export const BRAND_GRADIENT_SIMPLE =
 
 // ─── Semantic ───────────────────────────────────────────────────────────────
 export const COLOR_SUCCESS = '#52c41a';
+export const COLOR_SUCCESS_BG = '#f6ffed';
 export const COLOR_WARNING = '#faad14';
 export const COLOR_ERROR = '#ff4d4f';
 export const COLOR_INFO = '#1890ff';

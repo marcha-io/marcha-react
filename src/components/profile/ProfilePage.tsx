@@ -8,13 +8,13 @@ import {
   usePreloadedQuery,
 } from 'react-relay';
 
-import { supabase } from '../../lib/supabase';
+import { supabase } from '../../utils/supabase';
 import AccountInfo from './AccountInfo';
 import ProfileForm from './ProfileForm';
 import ProfileHeader from './ProfileHeader';
 import type { ProfilePageQuery } from './__generated__/ProfilePageQuery.graphql';
-import type { UpdateProfileMutationMutation } from './__generated__/UpdateProfileMutationMutation.graphql';
 import UpdateProfileMutation from './graphql/UpdateProfileMutation.graphql';
+import type { UpdateProfileMutationMutation } from './graphql/__generated__/UpdateProfileMutationMutation.graphql';
 
 const PROFILE_QUERY = graphql`
   query ProfilePageQuery($userId: UUIDFilter!) {
@@ -84,6 +84,7 @@ const ProfilePage: EntryPointComponent<
           variables: {
             set: { avatarUrl: publicUrl },
             filter: { id: { eq: profile.id } },
+            atMost: 1,
           },
           onCompleted: () => {
             message.success('Avatar updated');
@@ -120,6 +121,7 @@ const ProfilePage: EntryPointComponent<
             description: values.description || null,
           },
           filter: { id: { eq: profile.id } },
+          atMost: 1,
         },
         onCompleted: () => {
           message.success('Profile updated successfully');
