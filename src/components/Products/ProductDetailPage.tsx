@@ -1,4 +1,5 @@
-import { Col, Row, Space, Typography } from 'antd';
+import { ArrowLeftOutlined } from '@ant-design/icons';
+import { Button, Col, Row, Space, Typography } from 'antd';
 import graphql from 'babel-plugin-relay/macro';
 import { useEffect, useState } from 'react';
 import {
@@ -6,9 +7,10 @@ import {
   PreloadedQuery,
   usePreloadedQuery,
 } from 'react-relay';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import fetchFromStorage from '../../utils/fetch_from_storage';
+import { Paths } from '../../views/paths';
 import ProductActions from './ProductActions';
 import ProductImageCard from './ProductImageCard';
 import ProductInfo from './ProductInfo';
@@ -62,6 +64,8 @@ const ProductDetailPage: EntryPointComponent<
   Record<string, never>
 > = (props: Props): React.ReactElement => {
   const navigate = useNavigate();
+  const { communityId } = useParams<{ communityId: string }>();
+  const basePath = `/portal/${communityId}`;
 
   const [imageBlobs, setImageBlobs] = useState<Blob[]>([]);
   const [avatarBlob, setAvatarBlob] = useState<Blob | null>(null);
@@ -73,7 +77,6 @@ const ProductDetailPage: EntryPointComponent<
 
   const product = data?.productsCollection?.edges?.[0]?.node;
 
-  /* Fetch all product images from Supabase storage. */
   useEffect(() => {
     if (!product) return;
 
@@ -89,7 +92,6 @@ const ProductDetailPage: EntryPointComponent<
     }
   }, [product]);
 
-  /* Fetch the seller avatar from Supabase storage. */
   useEffect(() => {
     if (product?.user?.avatarUrl) {
       fetchFromStorage(product.user.avatarUrl, 'avatars').then((blob) =>
@@ -104,32 +106,42 @@ const ProductDetailPage: EntryPointComponent<
   }
 
   return (
-    <Row gutter={[32, 32]}>
-      <Col xs={24} md={12}>
-        <ProductImageCard name={product.name} imageBlobs={imageBlobs} />
-      </Col>
+    <div>
+      <Button
+        type="text"
+        icon={<ArrowLeftOutlined />}
+        onClick={() => navigate(`${basePath}/${Paths.Market}`)}
+        style={{ marginBottom: 16, paddingLeft: 0 }}
+      >
+        Back to Marketplace
+      </Button>
+      <Row gutter={[32, 32]}>
+        <Col xs={24} md={12}>
+          <ProductImageCard name={product.name} imageBlobs={imageBlobs} />
+        </Col>
 
-      <Col xs={24} md={12}>
-        <Space direction="vertical" size="large" style={{ width: '100%' }}>
-          <Title level={2} style={{ marginBottom: '8px' }}>
-            {product.name}
-          </Title>
+        <Col xs={24} md={12}>
+          <Space vertical size="large" style={{ width: '100%' }}>
+            <Title level={2} style={{ marginBottom: '8px' }}>
+              {product.name}
+            </Title>
 
-          <ProductActions />
+            <ProductActions />
 
-          <ProductInfo
-            price={product.price}
-            condition={product.condition ?? null}
-            description={product.description}
-          />
+            <ProductInfo
+              price={product.price}
+              condition={product.condition ?? null}
+              description={product.description}
+            />
 
-          <SellerInfoCard
-            username={product.user?.username ?? null}
-            avatarBlob={avatarBlob}
-          />
-        </Space>
-      </Col>
-    </Row>
+            <SellerInfoCard
+              username={product.user?.username ?? null}
+              avatarBlob={avatarBlob}
+            />
+          </Space>
+        </Col>
+      </Row>
+    </div>
   );
 };
 

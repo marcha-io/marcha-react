@@ -32,7 +32,6 @@ type Props = {
  * The Market entrypoint reads filter values from the URL and passes them as
  * query variables — this component simply renders the pre-filtered results.
  *
- * No client-side filtering logic exists here.
  */
 const MarketplaceContainer: React.FC<Props> = ({ fragmentRef, categories }) => {
   const { communityId } = useParams<{ communityId: string }>();
@@ -45,7 +44,6 @@ const MarketplaceContainer: React.FC<Props> = ({ fragmentRef, categories }) => {
     MarketplacePaginationFragment$key
   >(marketplacePaginationFragment, fragmentRef);
 
-  // Edges are already filtered server-side — no client-side filtering needed.
   const edges = data.productsCollection?.edges ?? [];
 
   const handleLoadNext = useCallback(() => {
@@ -92,18 +90,14 @@ const MarketplaceContainer: React.FC<Props> = ({ fragmentRef, categories }) => {
         onPostListing={navigateToNewListing}
         onMyListings={navigateToMyListings}
       />
-
       <MarketplaceFilters categories={categories} />
-
       <MarketplaceProductGrid
         edges={edges}
         onCreateListing={navigateToNewListing}
       />
-
       {hasNext && !isLoadingNext && (
         <div ref={sentinelRef} style={{ height: 1 }} />
       )}
-
       {isLoadingNext && (
         <Flex justify="center" align="center" style={{ marginTop: 24 }}>
           <Spin size="small" />
