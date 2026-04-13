@@ -12,7 +12,6 @@ import {
   COLOR_SUCCESS,
   NEUTRAL_100,
   NEUTRAL_400,
-  NEUTRAL_500,
   NEUTRAL_700,
   RADIUS_LG,
 } from '../../../design';

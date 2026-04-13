@@ -6,7 +6,7 @@ import {
   PreloadedQuery,
   usePreloadedQuery,
 } from 'react-relay';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import fetchFromStorage from '../../utils/fetch_from_storage';
 import ProductActions from './ProductActions';
@@ -62,7 +62,6 @@ const ProductDetailPage: EntryPointComponent<
   Record<string, never>
 > = (props: Props): React.ReactElement => {
   const navigate = useNavigate();
-  const { communityId } = useParams<{ communityId: string }>();
 
   const [imageBlobs, setImageBlobs] = useState<Blob[]>([]);
   const [avatarBlob, setAvatarBlob] = useState<Blob | null>(null);
