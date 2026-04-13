@@ -1,5 +1,7 @@
 import {
+  CalendarOutlined,
   DollarCircleOutlined,
+  EnvironmentOutlined,
   FileTextOutlined,
   HomeOutlined,
   MessageOutlined,
@@ -31,6 +33,7 @@ import {
   BRAND_PRIMARY,
   COLOR_INFO,
   COLOR_SUCCESS,
+  NEUTRAL_500,
   OVERLAY_BORDER,
   OVERLAY_LIGHT,
   OVERLAY_TEXT,
@@ -47,7 +50,10 @@ import DashboardMarketplacePreview from './DashboardMarketplacePreview';
 import { DashboardComponentQuery } from './__generated__/DashboardComponentQuery.graphql';
 
 const dashboardComponentQuery = graphql`
-  query DashboardComponentQuery($communityId: BigIntFilter!) {
+  query DashboardComponentQuery(
+    $communityId: BigIntFilter!
+    $upcomingFilter: DatetimeFilter!
+  ) {
     profilesCollection(first: 1) {
       edges {
         node {
@@ -74,8 +80,21 @@ const dashboardComponentQuery = graphql`
         }
       }
     }
-
     ...DashboardMarketplacePreviewFragment
+    eventsCollection(
+      filter: { communityId: $communityId, eventDate: $upcomingFilter }
+      orderBy: [{ eventDate: AscNullsLast }]
+      first: 5
+    ) {
+      edges {
+        node {
+          id
+          title
+          eventDate
+          location
+        }
+      }
+    }
   }
 `;
 
@@ -83,6 +102,17 @@ type Props = {
   queries: {
     dashboardQuery: PreloadedQuery<DashboardComponentQuery>;
   };
+};
+
+const formatEventDate = (iso: string): string => {
+  const d = new Date(iso);
+  return d.toLocaleDateString('en-GB', {
+    weekday: 'short',
+    day: 'numeric',
+    month: 'short',
+    hour: '2-digit',
+    minute: '2-digit',
+  });
 };
 
 const Dashboard: EntryPointComponent<
@@ -111,6 +141,8 @@ const Dashboard: EntryPointComponent<
   const addressDisplay = getParseJsonAddress(
     data?.communityUsersCollection?.edges[0]?.node?.community?.address
   );
+
+  const upcomingEvents = [...(data.eventsCollection?.edges ?? [])];
 
   const hour = new Date().getHours();
   const greeting =
@@ -361,11 +393,63 @@ const Dashboard: EntryPointComponent<
             }
           />
 
-          <Card title="Upcoming Events" style={{ borderRadius: RADIUS_LG }}>
+          <Card
+            title="Upcoming Events"
+            extra={
+              <Typography.Link
+                onClick={() => navigate(`${basePath}/${Paths.Events}`)}
+              >
+                View all
+              </Typography.Link>
+            }
+            style={{ borderRadius: RADIUS_LG }}
+          >
             <List
-              dataSource={[]}
+              dataSource={upcomingEvents}
               locale={{ emptyText: 'No upcoming events' }}
-              renderItem={() => null}
+              renderItem={(edge) => (
+                <List.Item
+                  key={edge.node.id}
+                  style={{ cursor: 'pointer', padding: '10px 0' }}
+                  onClick={() =>
+                    navigate(`${basePath}/${Paths.Events}/${edge.node.id}`)
+                  }
+                >
+                  <List.Item.Meta
+                    avatar={
+                      <CalendarOutlined
+                        style={{
+                          fontSize: 20,
+                          color: BRAND_PRIMARY,
+                          marginTop: 4,
+                        }}
+                      />
+                    }
+                    title={
+                      <Typography.Text strong ellipsis>
+                        {edge.node.title}
+                      </Typography.Text>
+                    }
+                    description={
+                      <Space size={4} direction="vertical">
+                        <Typography.Text
+                          style={{ fontSize: 12, color: NEUTRAL_500 }}
+                        >
+                          {formatEventDate(edge.node.eventDate)}
+                        </Typography.Text>
+                        {edge.node.location && (
+                          <Typography.Text
+                            style={{ fontSize: 12, color: NEUTRAL_500 }}
+                          >
+                            <EnvironmentOutlined style={{ marginRight: 4 }} />
+                            {edge.node.location}
+                          </Typography.Text>
+                        )}
+                      </Space>
+                    }
+                  />
+                </List.Item>
+              )}
             />
           </Card>
         </Col>

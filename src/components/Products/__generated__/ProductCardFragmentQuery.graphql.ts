@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<7676b95b78b89c4525f56db6cc35a03e>>
+ * @generated SignedSource<<17d1bf2b3003828ac4cd63109ca28b4b>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -9,11 +9,8 @@
 // @ts-nocheck
 
 import { Fragment, ReaderFragment } from 'relay-runtime';
-export type ProductCondition = "Good" | "Like_new" | "New" | "Used" | "%future added value";
 import { FragmentRefs } from "relay-runtime";
 export type ProductCardFragmentQuery$data = {
-  readonly categoryId: string;
-  readonly condition: ProductCondition;
   readonly description: string;
   readonly id: string;
   readonly name: string;
@@ -27,11 +24,8 @@ export type ProductCardFragmentQuery$data = {
   } | null | undefined;
   readonly user: {
     readonly avatarUrl: string | null | undefined;
-    readonly firstName: string | null | undefined;
-    readonly lastName: string | null | undefined;
     readonly username: string | null | undefined;
   } | null | undefined;
-  readonly userId: string;
   readonly " $fragmentType": "ProductCardFragmentQuery";
 };
 export type ProductCardFragmentQuery$key = {
@@ -71,66 +65,6 @@ const node: ReaderFragment = {
       "args": null,
       "kind": "ScalarField",
       "name": "id",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "categoryId",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "condition",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "userId",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "concreteType": "Profiles",
-      "kind": "LinkedField",
-      "name": "user",
-      "plural": false,
-      "selections": [
-        {
-          "alias": null,
-          "args": null,
-          "kind": "ScalarField",
-          "name": "avatarUrl",
-          "storageKey": null
-        },
-        {
-          "alias": null,
-          "args": null,
-          "kind": "ScalarField",
-          "name": "username",
-          "storageKey": null
-        },
-        {
-          "alias": null,
-          "args": null,
-          "kind": "ScalarField",
-          "name": "firstName",
-          "storageKey": null
-        },
-        {
-          "alias": null,
-          "args": null,
-          "kind": "ScalarField",
-          "name": "lastName",
-          "storageKey": null
-        }
-      ],
       "storageKey": null
     },
     {
@@ -187,12 +121,37 @@ const node: ReaderFragment = {
         }
       ],
       "storageKey": "productImagesCollection(first:1,orderBy:[{\"displayOrder\":\"AscNullsLast\"}])"
+    },
+    {
+      "alias": null,
+      "args": null,
+      "concreteType": "Profiles",
+      "kind": "LinkedField",
+      "name": "user",
+      "plural": false,
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "avatarUrl",
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "username",
+          "storageKey": null
+        }
+      ],
+      "storageKey": null
     }
   ],
   "type": "Products",
   "abstractKey": null
 };
 
-(node as any).hash = "4fbc45ddef2aaafd8250978c3fd589c0";
+(node as any).hash = "08122c576ca08993f97d404ad1b92875";
 
 export default node;

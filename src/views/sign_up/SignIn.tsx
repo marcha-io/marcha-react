@@ -14,7 +14,7 @@ import FeatureBullet from './FeatureBullet';
 import SignInCard from './SignInCard';
 
 const SignIn = (): React.ReactElement => {
-  const [_, contextHolder] = notification.useNotification();
+  const [, contextHolder] = notification.useNotification();
 
   return (
     <>

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<918f7c3bc53c3a4b740ea54dc5a736ba>>
+ * @generated SignedSource<<a5a7027e4d429c90541c16446732cf41>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -9,39 +9,45 @@
 // @ts-nocheck
 
 import { ConcreteRequest, Query } from 'relay-runtime';
-export type ProductCondition = "Good" | "Like_new" | "New" | "Used" | "%future added value";
-export type ProductDetailPageQuery$variables = {
-  id?: string | null | undefined;
+export type FilterIs = "NOT_NULL" | "NULL" | "%future added value";
+export type RsvpStatus = "attending" | "not_attending" | "%future added value";
+export type UUIDFilter = {
+  eq?: string | null | undefined;
+  in?: ReadonlyArray<string> | null | undefined;
+  is?: FilterIs | null | undefined;
+  neq?: string | null | undefined;
 };
-export type ProductDetailPageQuery$data = {
-  readonly productsCollection: {
+export type EventDetailPageWrapperQuery$variables = {
+  eventId: UUIDFilter;
+};
+export type EventDetailPageWrapperQuery$data = {
+  readonly eventsCollection: {
     readonly edges: ReadonlyArray<{
       readonly node: {
-        readonly condition: ProductCondition;
         readonly createdAt: string;
-        readonly description: string;
-        readonly id: string;
-        readonly name: string;
-        readonly price: number;
-        readonly productImagesCollection: {
+        readonly createdBy: string;
+        readonly description: string | null | undefined;
+        readonly eventDate: string;
+        readonly eventRsvpsCollection: {
           readonly edges: ReadonlyArray<{
             readonly node: {
-              readonly imageUrl: string;
+              readonly id: string;
+              readonly status: RsvpStatus;
+              readonly userId: string;
             };
           }>;
         } | null | undefined;
-        readonly user: {
-          readonly avatarUrl: string | null | undefined;
-          readonly id: string;
-          readonly username: string | null | undefined;
-        } | null | undefined;
+        readonly id: string;
+        readonly location: string | null | undefined;
+        readonly maxAttendees: number | null | undefined;
+        readonly title: string;
       };
     }>;
   } | null | undefined;
 };
-export type ProductDetailPageQuery = {
-  response: ProductDetailPageQuery$data;
-  variables: ProductDetailPageQuery$variables;
+export type EventDetailPageWrapperQuery = {
+  response: EventDetailPageWrapperQuery$data;
+  variables: EventDetailPageWrapperQuery$variables;
 };
 
 const node: ConcreteRequest = (function(){
@@ -49,26 +55,25 @@ var v0 = [
   {
     "defaultValue": null,
     "kind": "LocalArgument",
-    "name": "id"
+    "name": "eventId"
   }
 ],
 v1 = [
   {
     "fields": [
       {
-        "fields": [
-          {
-            "kind": "Variable",
-            "name": "eq",
-            "variableName": "id"
-          }
-        ],
-        "kind": "ObjectValue",
-        "name": "id"
+        "kind": "Variable",
+        "name": "id",
+        "variableName": "eventId"
       }
     ],
     "kind": "ObjectValue",
     "name": "filter"
+  },
+  {
+    "kind": "Literal",
+    "name": "first",
+    "value": 1
   }
 ],
 v2 = {
@@ -82,7 +87,7 @@ v3 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "name",
+  "name": "title",
   "storageKey": null
 },
 v4 = {
@@ -96,58 +101,49 @@ v5 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "price",
+  "name": "eventDate",
   "storageKey": null
 },
-v6 = [
-  {
-    "kind": "Literal",
-    "name": "first",
-    "value": 5
-  },
-  {
-    "kind": "Literal",
-    "name": "orderBy",
-    "value": [
-      {
-        "displayOrder": "AscNullsLast"
-      }
-    ]
-  }
-],
+v6 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "location",
+  "storageKey": null
+},
 v7 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "imageUrl",
+  "name": "maxAttendees",
   "storageKey": null
 },
 v8 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "createdAt",
+  "name": "createdBy",
   "storageKey": null
 },
 v9 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "condition",
+  "name": "createdAt",
   "storageKey": null
 },
 v10 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "username",
+  "name": "userId",
   "storageKey": null
 },
 v11 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "avatarUrl",
+  "name": "status",
   "storageKey": null
 },
 v12 = {
@@ -162,20 +158,20 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "ProductDetailPageQuery",
+    "name": "EventDetailPageWrapperQuery",
     "selections": [
       {
         "alias": null,
         "args": (v1/*: any*/),
-        "concreteType": "ProductsConnection",
+        "concreteType": "EventsConnection",
         "kind": "LinkedField",
-        "name": "productsCollection",
+        "name": "eventsCollection",
         "plural": false,
         "selections": [
           {
             "alias": null,
             "args": null,
-            "concreteType": "ProductsEdge",
+            "concreteType": "EventsEdge",
             "kind": "LinkedField",
             "name": "edges",
             "plural": true,
@@ -183,7 +179,7 @@ return {
               {
                 "alias": null,
                 "args": null,
-                "concreteType": "Products",
+                "concreteType": "Events",
                 "kind": "LinkedField",
                 "name": "node",
                 "plural": false,
@@ -192,18 +188,22 @@ return {
                   (v3/*: any*/),
                   (v4/*: any*/),
                   (v5/*: any*/),
+                  (v6/*: any*/),
+                  (v7/*: any*/),
+                  (v8/*: any*/),
+                  (v9/*: any*/),
                   {
                     "alias": null,
-                    "args": (v6/*: any*/),
-                    "concreteType": "ProductImagesConnection",
+                    "args": null,
+                    "concreteType": "EventRsvpsConnection",
                     "kind": "LinkedField",
-                    "name": "productImagesCollection",
+                    "name": "eventRsvpsCollection",
                     "plural": false,
                     "selections": [
                       {
                         "alias": null,
                         "args": null,
-                        "concreteType": "ProductImagesEdge",
+                        "concreteType": "EventRsvpsEdge",
                         "kind": "LinkedField",
                         "name": "edges",
                         "plural": true,
@@ -211,34 +211,20 @@ return {
                           {
                             "alias": null,
                             "args": null,
-                            "concreteType": "ProductImages",
+                            "concreteType": "EventRsvps",
                             "kind": "LinkedField",
                             "name": "node",
                             "plural": false,
                             "selections": [
-                              (v7/*: any*/)
+                              (v2/*: any*/),
+                              (v10/*: any*/),
+                              (v11/*: any*/)
                             ],
                             "storageKey": null
                           }
                         ],
                         "storageKey": null
                       }
-                    ],
-                    "storageKey": "productImagesCollection(first:5,orderBy:[{\"displayOrder\":\"AscNullsLast\"}])"
-                  },
-                  (v8/*: any*/),
-                  (v9/*: any*/),
-                  {
-                    "alias": null,
-                    "args": null,
-                    "concreteType": "Profiles",
-                    "kind": "LinkedField",
-                    "name": "user",
-                    "plural": false,
-                    "selections": [
-                      (v2/*: any*/),
-                      (v10/*: any*/),
-                      (v11/*: any*/)
                     ],
                     "storageKey": null
                   }
@@ -259,20 +245,20 @@ return {
   "operation": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "ProductDetailPageQuery",
+    "name": "EventDetailPageWrapperQuery",
     "selections": [
       {
         "alias": null,
         "args": (v1/*: any*/),
-        "concreteType": "ProductsConnection",
+        "concreteType": "EventsConnection",
         "kind": "LinkedField",
-        "name": "productsCollection",
+        "name": "eventsCollection",
         "plural": false,
         "selections": [
           {
             "alias": null,
             "args": null,
-            "concreteType": "ProductsEdge",
+            "concreteType": "EventsEdge",
             "kind": "LinkedField",
             "name": "edges",
             "plural": true,
@@ -280,7 +266,7 @@ return {
               {
                 "alias": null,
                 "args": null,
-                "concreteType": "Products",
+                "concreteType": "Events",
                 "kind": "LinkedField",
                 "name": "node",
                 "plural": false,
@@ -289,18 +275,22 @@ return {
                   (v3/*: any*/),
                   (v4/*: any*/),
                   (v5/*: any*/),
+                  (v6/*: any*/),
+                  (v7/*: any*/),
+                  (v8/*: any*/),
+                  (v9/*: any*/),
                   {
                     "alias": null,
-                    "args": (v6/*: any*/),
-                    "concreteType": "ProductImagesConnection",
+                    "args": null,
+                    "concreteType": "EventRsvpsConnection",
                     "kind": "LinkedField",
-                    "name": "productImagesCollection",
+                    "name": "eventRsvpsCollection",
                     "plural": false,
                     "selections": [
                       {
                         "alias": null,
                         "args": null,
-                        "concreteType": "ProductImagesEdge",
+                        "concreteType": "EventRsvpsEdge",
                         "kind": "LinkedField",
                         "name": "edges",
                         "plural": true,
@@ -308,12 +298,14 @@ return {
                           {
                             "alias": null,
                             "args": null,
-                            "concreteType": "ProductImages",
+                            "concreteType": "EventRsvps",
                             "kind": "LinkedField",
                             "name": "node",
                             "plural": false,
                             "selections": [
-                              (v7/*: any*/),
+                              (v2/*: any*/),
+                              (v10/*: any*/),
+                              (v11/*: any*/),
                               (v12/*: any*/)
                             ],
                             "storageKey": null
@@ -321,23 +313,6 @@ return {
                         ],
                         "storageKey": null
                       }
-                    ],
-                    "storageKey": "productImagesCollection(first:5,orderBy:[{\"displayOrder\":\"AscNullsLast\"}])"
-                  },
-                  (v8/*: any*/),
-                  (v9/*: any*/),
-                  {
-                    "alias": null,
-                    "args": null,
-                    "concreteType": "Profiles",
-                    "kind": "LinkedField",
-                    "name": "user",
-                    "plural": false,
-                    "selections": [
-                      (v2/*: any*/),
-                      (v10/*: any*/),
-                      (v11/*: any*/),
-                      (v12/*: any*/)
                     ],
                     "storageKey": null
                   },
@@ -354,16 +329,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "f0f8574efd0d7c4565c739bb81f8b1ee",
+    "cacheID": "44b89a946648791c5001f2c75674cddb",
     "id": null,
     "metadata": {},
-    "name": "ProductDetailPageQuery",
+    "name": "EventDetailPageWrapperQuery",
     "operationKind": "query",
-    "text": "query ProductDetailPageQuery(\n  $id: BigInt\n) {\n  productsCollection(filter: {id: {eq: $id}}) {\n    edges {\n      node {\n        id\n        name\n        description\n        price\n        productImagesCollection(first: 5, orderBy: [{displayOrder: AscNullsLast}]) {\n          edges {\n            node {\n              imageUrl\n              nodeId\n            }\n          }\n        }\n        createdAt\n        condition\n        user {\n          id\n          username\n          avatarUrl\n          nodeId\n        }\n        nodeId\n      }\n    }\n  }\n}\n"
+    "text": "query EventDetailPageWrapperQuery(\n  $eventId: UUIDFilter!\n) {\n  eventsCollection(filter: {id: $eventId}, first: 1) {\n    edges {\n      node {\n        id\n        title\n        description\n        eventDate\n        location\n        maxAttendees\n        createdBy\n        createdAt\n        eventRsvpsCollection {\n          edges {\n            node {\n              id\n              userId\n              status\n              nodeId\n            }\n          }\n        }\n        nodeId\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "f239404c72241dee6965fee9fd6b0efa";
+(node as any).hash = "f0ce05f6ce729bac4b4d93c003df081e";
 
 export default node;

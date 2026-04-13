@@ -1,4 +1,21 @@
-import { Col, Row, Space, Typography } from 'antd';
+import {
+  HeartOutlined,
+  ShareAltOutlined,
+  ShoppingCartOutlined,
+  UserOutlined,
+} from '@ant-design/icons';
+import {
+  Avatar,
+  Button,
+  Card,
+  Col,
+  Descriptions,
+  Image,
+  Row,
+  Space,
+  Tag,
+  Typography,
+} from 'antd';
 import graphql from 'babel-plugin-relay/macro';
 import { useEffect, useState } from 'react';
 import {
@@ -6,16 +23,12 @@ import {
   PreloadedQuery,
   usePreloadedQuery,
 } from 'react-relay';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import fetchFromStorage from '../../utils/fetch_from_storage';
-import ProductActions from './ProductActions';
-import ProductImageCard from './ProductImageCard';
-import ProductInfo from './ProductInfo';
-import SellerInfoCard from './SellerInfoCard';
 import { ProductDetailPageQuery } from './__generated__/ProductDetailPageQuery.graphql';
 
-const { Title } = Typography;
+const { Title, Paragraph } = Typography;
 
 const productDetailQuery = graphql`
   query ProductDetailPageQuery($id: BigInt) {
@@ -26,6 +39,16 @@ const productDetailQuery = graphql`
           name
           description
           price
+          productImagesCollection(
+            first: 5
+            orderBy: [{ displayOrder: AscNullsLast }]
+          ) {
+            edges {
+              node {
+                imageUrl
+              }
+            }
+          }
           createdAt
           condition
           user {
@@ -33,20 +56,13 @@ const productDetailQuery = graphql`
             username
             avatarUrl
           }
-          productImagesCollection(orderBy: [{ displayOrder: AscNullsLast }]) {
-            edges {
-              node {
-                id
-                imageUrl
-                displayOrder
-              }
-            }
-          }
         }
       }
     }
   }
 `;
+
+const AVATAR_DEFAULT = 'https://api.dicebear.com/7.x/miniavs/svg?seed=8';
 
 type Props = {
   queries: {
@@ -62,9 +78,8 @@ const ProductDetailPage: EntryPointComponent<
   Record<string, never>
 > = (props: Props): React.ReactElement => {
   const navigate = useNavigate();
-  const { communityId } = useParams<{ communityId: string }>();
 
-  const [imageBlobs, setImageBlobs] = useState<Blob[]>([]);
+  const [imageBlob, setImageBlob] = useState<Blob | null>(null);
   const [avatarBlob, setAvatarBlob] = useState<Blob | null>(null);
 
   const data = usePreloadedQuery<ProductDetailPageQuery>(
@@ -75,27 +90,19 @@ const ProductDetailPage: EntryPointComponent<
   const product = data?.productsCollection?.edges?.[0]?.node;
 
   useEffect(() => {
-    if (!product) return;
-
-    const imagePaths =
-      product.productImagesCollection?.edges?.map((e) => e.node.imageUrl) ?? [];
-
-    if (imagePaths.length > 0) {
-      Promise.all(
-        imagePaths.map((path) => fetchFromStorage(path, 'product-images'))
-      ).then((blobs) => {
-        setImageBlobs(blobs.filter((b): b is Blob => b != null));
-      });
-    }
-  }, [product]);
-
-  useEffect(() => {
-    if (product?.user?.avatarUrl) {
-      fetchFromStorage(product.user.avatarUrl, 'avatars').then((blob) =>
+    if (product) {
+      const firstImg =
+        product.productImagesCollection?.edges?.[0]?.node?.imageUrl;
+      if (firstImg) {
+        fetchFromStorage(firstImg, 'product-images').then((blob) =>
+          setImageBlob(blob)
+        );
+      }
+      fetchFromStorage(product.user?.avatarUrl ?? '', 'avatars').then((blob) =>
         setAvatarBlob(blob)
       );
     }
-  }, [product?.user?.avatarUrl]);
+  }, [product]);
 
   if (!product) {
     navigate('/feed');
@@ -103,34 +110,92 @@ const ProductDetailPage: EntryPointComponent<
   }
 
   return (
-    <div>
-      <Row gutter={[32, 32]}>
-        <Col xs={24} md={12}>
-          <ProductImageCard name={product.name} imageBlobs={imageBlobs} />
-        </Col>
+    <Row gutter={[32, 32]}>
+      {/* Product Image */}
+      <Col xs={24} md={12}>
+        <Card
+          classNames={{ body: 'product-detail-image' }}
+          styles={{ body: { padding: 0 } }}
+        >
+          <Image
+            alt={product.name}
+            src={imageBlob ? URL.createObjectURL(imageBlob) : ''}
+            style={{
+              width: '100%',
+            }}
+          />
+        </Card>
+      </Col>
 
-        <Col xs={24} md={12}>
-          <Space vertical size="large" style={{ width: '100%' }}>
+      {/* Product Details */}
+      <Col xs={24} md={12}>
+        <Space orientation="vertical" size="large" style={{ width: '100%' }}>
+          {/* Product Title and Price */}
+          <div>
             <Title level={2} style={{ marginBottom: '8px' }}>
               {product.name}
             </Title>
+          </div>
 
-            <ProductActions />
-
-            <ProductInfo
-              price={product.price}
-              condition={product.condition ?? null}
-              description={product.description}
-            />
-
-            <SellerInfoCard
-              username={product.user?.username ?? null}
-              avatarBlob={avatarBlob}
-            />
+          {/* Action Buttons */}
+          <Space size="middle" style={{ width: '100%' }}>
+            <Button
+              type="primary"
+              size="large"
+              icon={<ShoppingCartOutlined />}
+              style={{ flex: 1 }}
+            >
+              Add to Cart
+            </Button>
+            <Button size="large" icon={<HeartOutlined />}>
+              Save
+            </Button>
+            <Button size="large" icon={<ShareAltOutlined />}>
+              Share
+            </Button>
           </Space>
-        </Col>
-      </Row>
-    </div>
+
+          <Card title="Product Information">
+            <Descriptions column={2}>
+              <Descriptions.Item label="Price">
+                ${product.price}{' '}
+              </Descriptions.Item>
+
+              <Descriptions.Item label="Status">
+                <Tag color="green">{product.condition}</Tag>
+              </Descriptions.Item>
+            </Descriptions>
+          </Card>
+
+          {/* Description */}
+          <Card title="Description">
+            <Paragraph>{product.description}</Paragraph>
+          </Card>
+
+          {/* Seller Info */}
+          <Card title="Seller Information">
+            <Space size="middle">
+              <Avatar
+                size={64}
+                src={
+                  avatarBlob ? URL.createObjectURL(avatarBlob) : AVATAR_DEFAULT
+                }
+                icon={<UserOutlined />}
+              />
+              <div>
+                <Title level={5} style={{ marginBottom: '4px' }}>
+                  {product.user?.username || 'Anonymous'}
+                </Title>
+                <br />
+                <Button type="link" style={{ paddingLeft: 0 }}>
+                  View Seller Profile
+                </Button>
+              </div>
+            </Space>
+          </Card>
+        </Space>
+      </Col>
+    </Row>
   );
 };
 

@@ -1,4 +1,3 @@
-// src/views/dashboard/Dashboard.entrypoint.tsx
 import { Flex, Spin } from 'antd';
 import React, { Suspense, useEffect, useMemo } from 'react';
 import {
@@ -8,7 +7,7 @@ import {
 } from 'react-relay';
 import { useParams } from 'react-router-dom';
 
-import DashboardComponentQuery from '../../components/dashboard/__generated__/DashboardComponentQuery.graphql';
+import NoticeboardPageWrapperQuery from '../../components/noticeboard/__generated__/NoticeboardPageWrapperQuery.graphql';
 import { createEntryPoint } from '../../utils/create_entrypoint';
 import JSResource from '../../utils/make_resource';
 
@@ -16,20 +15,19 @@ type EntryPointParams = {
   communityId?: string;
 };
 
-const DashboardEntryPoint = createEntryPoint({
-  root: JSResource('Dashboard', () =>
-    import('../../components/dashboard/Dashboard').then(
+const NoticeboardEntryPoint = createEntryPoint({
+  root: JSResource('NoticeboardPageWrapper', () =>
+    import('../../components/noticeboard/NoticeboardPageWrapper').then(
       (module) => module.default
     )
   ),
   getPreloadProps(params: EntryPointParams) {
     return {
       queries: {
-        dashboardQuery: {
-          parameters: DashboardComponentQuery,
+        noticeboardQuery: {
+          parameters: NoticeboardPageWrapperQuery,
           variables: {
             communityId: { eq: params.communityId ?? '' },
-            upcomingFilter: { gte: new Date().toISOString() },
           },
         },
       },
@@ -37,22 +35,21 @@ const DashboardEntryPoint = createEntryPoint({
   },
 });
 
-const Dashboard = (): React.ReactElement | null => {
+const Noticeboard = (): React.ReactElement | null => {
   const { communityId } = useParams<{ communityId: string }>();
   const relayEnvironment = useRelayEnvironment();
   const environmentProvider = useMemo(
     () => ({ getEnvironment: () => relayEnvironment }),
     [relayEnvironment]
   );
+
   const [entryPointRef, loadEntryPoint] = useEntryPointLoader(
     environmentProvider,
-    DashboardEntryPoint
+    NoticeboardEntryPoint
   );
 
   useEffect(() => {
-    if (entryPointRef == null) {
-      loadEntryPoint({ communityId });
-    }
+    loadEntryPoint({ communityId });
   }, [communityId]);
 
   if (!entryPointRef) return null;
@@ -60,8 +57,8 @@ const Dashboard = (): React.ReactElement | null => {
   return (
     <Suspense
       fallback={
-        <Flex justify="center" align="center" style={{ height: '60vh' }}>
-          <Spin tip="Loading Dashboard..." size="large" />
+        <Flex justify="center" align="center" style={{ height: '40vh' }}>
+          <Spin tip="Loading Noticeboard..." size="large" />
         </Flex>
       }
     >
@@ -70,4 +67,4 @@ const Dashboard = (): React.ReactElement | null => {
   );
 };
 
-export default Dashboard;
+export default Noticeboard;

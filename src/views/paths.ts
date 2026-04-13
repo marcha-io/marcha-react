@@ -13,4 +13,7 @@ export enum Paths {
   Subletting = 'subletting',
   Profile = 'profile',
   Notifications = 'notifications',
+  Events = 'events',
+  EventDetail = 'events/:eventId',
+  Noticeboard = 'noticeboard',
 }

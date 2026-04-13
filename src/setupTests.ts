@@ -25,6 +25,7 @@ window.matchMedia = window.matchMedia || function matchMediaPolyfill(query: stri
 class MockIntersectionObserver implements IntersectionObserver {
   readonly root: Element | null = null;
   readonly rootMargin: string = '';
+  readonly scrollMargin: string = '';
   readonly thresholds: ReadonlyArray<number> = [];
   private callback: IntersectionObserverCallback;
 
