@@ -70,6 +70,7 @@
     "react-router-dom": "^6.30.2",
     "relay-test-utils": "^16.2.0",
     "supabase": "^1.157.2",
+    "typescript": "^6.0.2",
     "typescript-eslint": "^7.18.0"
   },
   "jest": {

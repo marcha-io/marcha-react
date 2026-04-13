@@ -1,5 +1,6 @@
 import {
   BellOutlined,
+  CalendarOutlined,
   DashboardOutlined,
   DollarCircleOutlined,
   FileTextOutlined,
@@ -170,6 +171,11 @@ const AppSidebar = ({ communityId, onNavigate }: Props): React.ReactElement => {
                 label: (
                   <Link to={`${basePath}/${Paths.Community}`}>Noticeboard</Link>
                 ),
+              },
+              {
+                key: Paths.Events,
+                icon: <CalendarOutlined />,
+                label: <Link to={`${basePath}/${Paths.Events}`}>Events</Link>,
               },
               {
                 key: Paths.Market,

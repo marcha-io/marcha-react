@@ -44,6 +44,7 @@ import {
 import { getParseJsonAddress } from '../../utils/get_address';
 import { Paths } from '../../views/paths';
 import DashboardMarketplacePreview from './DashboardMarketplacePreview';
+import DashboardUpcomingEvents from './DashboardUpcomingEvents';
 import { DashboardComponentQuery } from './__generated__/DashboardComponentQuery.graphql';
 
 const dashboardComponentQuery = graphql`
@@ -76,6 +77,7 @@ const dashboardComponentQuery = graphql`
     }
 
     ...DashboardMarketplacePreviewFragment
+    ...DashboardUpcomingEventsFragment
   }
 `;
 
@@ -361,13 +363,13 @@ const Dashboard: EntryPointComponent<
             }
           />
 
-          <Card title="Upcoming Events" style={{ borderRadius: RADIUS_LG }}>
-            <List
-              dataSource={[]}
-              locale={{ emptyText: 'No upcoming events' }}
-              renderItem={() => null}
-            />
-          </Card>
+          <DashboardUpcomingEvents
+            fragmentRef={data}
+            onBrowse={() => navigate(`${basePath}/${Paths.Events}`)}
+            onNavigateToEvent={(id) =>
+              navigate(`${basePath}/${Paths.Events}/${id}`)
+            }
+          />
         </Col>
       </Row>
     </div>
