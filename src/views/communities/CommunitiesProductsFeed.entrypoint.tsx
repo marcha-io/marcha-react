@@ -5,7 +5,7 @@ import {
   useEntryPointLoader,
   useRelayEnvironment,
 } from 'react-relay';
-import { useNavigate, useNavigation, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import CommunitiesProductsContainerWrapperQuery from '../../components/communities/products/__generated__/CommunitiesProductsContainerWrapperQuery.graphql';
 import { createEntryPoint } from '../../utils/create_entrypoint';
