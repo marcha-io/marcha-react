@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<74591075271d0f1a2937a9245a82f65a>>
+ * @generated SignedSource<<6ade39c29e766825dd72c7160bf67592>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -11,6 +11,7 @@
 import { Fragment, ReaderFragment } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
 export type EventCardFragment$data = {
+  readonly createdBy: string;
   readonly description: string | null | undefined;
   readonly eventDate: string;
   readonly eventRsvpsCollection: {
@@ -24,6 +25,12 @@ export type EventCardFragment$data = {
   readonly imageUrl: string | null | undefined;
   readonly location: string | null | undefined;
   readonly maxAttendees: number | null | undefined;
+  readonly pinned: boolean;
+  readonly profiles: {
+    readonly avatarUrl: string | null | undefined;
+    readonly firstName: string | null | undefined;
+    readonly lastName: string | null | undefined;
+  } | null | undefined;
   readonly title: string;
   readonly " $fragmentType": "EventCardFragment";
 };
@@ -91,6 +98,52 @@ return {
     },
     {
       "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "pinned",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "createdBy",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "concreteType": "Profiles",
+      "kind": "LinkedField",
+      "name": "profiles",
+      "plural": false,
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "firstName",
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "lastName",
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "avatarUrl",
+          "storageKey": null
+        }
+      ],
+      "storageKey": null
+    },
+    {
+      "alias": null,
       "args": [
         {
           "kind": "Literal",
@@ -139,6 +192,6 @@ return {
 };
 })();
 
-(node as any).hash = "192c8ec07efca39c5dde992b3e51761b";
+(node as any).hash = "9bb240894725a0badf7b8bd18b4184f2";
 
 export default node;

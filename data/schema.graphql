@@ -367,6 +367,21 @@ type CommunitiesUpdateResponse {
   records: [Communities!]!
 }
 
+enum CommunityRole {
+  member
+  admin
+}
+
+"""
+Boolean expression comparing fields on type "CommunityRole"
+"""
+input CommunityRoleFilter {
+  eq: CommunityRole
+  in: [CommunityRole!]
+  is: FilterIs
+  neq: CommunityRole
+}
+
 enum CommunityUserReviewStatus {
   PENDING
   ACCEPTED
@@ -391,6 +406,7 @@ type CommunityUsers implements Node {
   communityId: BigInt!
   userId: UUID!
   status: CommunityUserReviewStatus!
+  role: CommunityRole!
   community: Communities
   user: Profiles
 }
@@ -419,6 +435,7 @@ input CommunityUsersFilter {
   communityId: BigIntFilter
   userId: UUIDFilter
   status: CommunityUserReviewStatusFilter
+  role: CommunityRoleFilter
   nodeId: IDFilter
 
   """
@@ -440,6 +457,7 @@ input CommunityUsersInsertInput {
   communityId: BigInt
   userId: UUID
   status: CommunityUserReviewStatus
+  role: CommunityRole
 }
 
 type CommunityUsersInsertResponse {
@@ -456,6 +474,7 @@ input CommunityUsersOrderBy {
   communityId: OrderByDirection
   userId: OrderByDirection
   status: OrderByDirection
+  role: OrderByDirection
 }
 
 input CommunityUsersUpdateInput {
@@ -463,6 +482,7 @@ input CommunityUsersUpdateInput {
   communityId: BigInt
   userId: UUID
   status: CommunityUserReviewStatus
+  role: CommunityRole
 }
 
 type CommunityUsersUpdateResponse {
@@ -639,7 +659,9 @@ type Events implements Node {
   maxAttendees: Int
   createdAt: Datetime!
   updatedAt: Datetime!
+  pinned: Boolean!
   community: Communities
+  profiles: Profiles
   eventRsvpsCollection(
     """Query the first `n` records in the collection"""
     first: Int
@@ -696,6 +718,7 @@ input EventsFilter {
   maxAttendees: IntFilter
   createdAt: DatetimeFilter
   updatedAt: DatetimeFilter
+  pinned: BooleanFilter
   nodeId: IDFilter
 
   """
@@ -724,6 +747,7 @@ input EventsInsertInput {
   maxAttendees: Int
   createdAt: Datetime
   updatedAt: Datetime
+  pinned: Boolean
 }
 
 type EventsInsertResponse {
@@ -746,6 +770,7 @@ input EventsOrderBy {
   maxAttendees: OrderByDirection
   createdAt: OrderByDirection
   updatedAt: OrderByDirection
+  pinned: OrderByDirection
 }
 
 input EventsUpdateInput {
@@ -760,6 +785,7 @@ input EventsUpdateInput {
   maxAttendees: Int
   createdAt: Datetime
   updatedAt: Datetime
+  pinned: Boolean
 }
 
 type EventsUpdateResponse {
@@ -1302,6 +1328,7 @@ type Notices implements Node {
   createdAt: Datetime!
   updatedAt: Datetime!
   community: Communities
+  profiles: Profiles
 }
 
 type NoticesConnection {
@@ -2018,6 +2045,54 @@ type Profiles implements Node {
     """Sort order to apply to the collection"""
     orderBy: [ProfileAddressesOrderBy!]
   ): ProfileAddressesConnection
+  eventsCollection(
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """
+    Skip n values from the after cursor. Alternative to cursor pagination. Backward pagination not supported.
+    """
+    offset: Int
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: EventsFilter
+
+    """Sort order to apply to the collection"""
+    orderBy: [EventsOrderBy!]
+  ): EventsConnection
+  noticesCollection(
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """
+    Skip n values from the after cursor. Alternative to cursor pagination. Backward pagination not supported.
+    """
+    offset: Int
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: NoticesFilter
+
+    """Sort order to apply to the collection"""
+    orderBy: [NoticesOrderBy!]
+  ): NoticesConnection
 }
 
 type ProfilesConnection {
@@ -2530,4 +2605,3 @@ input UUIDListFilter {
   is: FilterIs
   overlaps: [UUID!]
 }
-

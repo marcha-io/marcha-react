@@ -1,9 +1,19 @@
-import { DatePicker, Form, Input, InputNumber, Modal, message } from 'antd';
+import {
+  DatePicker,
+  Form,
+  Input,
+  InputNumber,
+  Modal,
+  Switch,
+  Tooltip,
+  message,
+} from 'antd';
 import React, { useCallback, useState } from 'react';
 import { useMutation } from 'react-relay';
 import { useParams } from 'react-router-dom';
 
 import { useAuth } from '../../contexts/AuthContext';
+import { useIsAdmin } from '../../hooks/useIsAdmin';
 import InsertEventMutation from './graphql/InsertEventMutation.graphql';
 import type { InsertEventMutation as InsertEventMutationType } from './graphql/__generated__/InsertEventMutation.graphql';
 
@@ -16,6 +26,7 @@ const CreateEventModal: React.FC<Props> = ({ open, onClose }) => {
   const [form] = Form.useForm();
   const { communityId } = useParams<{ communityId: string }>();
   const { userId } = useAuth();
+  const isAdmin = useIsAdmin(communityId);
   const [loading, setLoading] = useState(false);
 
   const [commitInsert] =
@@ -36,6 +47,7 @@ const CreateEventModal: React.FC<Props> = ({ open, onClose }) => {
                 location: values.location ?? null,
                 imageUrl: values.imageUrl ?? null,
                 maxAttendees: values.maxAttendees ?? null,
+                pinned: values.pinned ?? false,
                 createdBy: userId,
                 communityId: communityId,
               },
@@ -103,6 +115,18 @@ const CreateEventModal: React.FC<Props> = ({ open, onClose }) => {
             style={{ width: '100%' }}
           />
         </Form.Item>
+        {isAdmin && (
+          <Form.Item
+            name="pinned"
+            label="Pin this event"
+            valuePropName="checked"
+            initialValue={false}
+          >
+            <Tooltip title="Pinned events appear at the top of the events page">
+              <Switch />
+            </Tooltip>
+          </Form.Item>
+        )}
       </Form>
     </Modal>
   );

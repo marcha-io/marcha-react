@@ -2,10 +2,29 @@ import {
   ArrowLeftOutlined,
   CalendarOutlined,
   CheckCircleOutlined,
+  DeleteOutlined,
+  EditOutlined,
   EnvironmentOutlined,
   TeamOutlined,
+  UserOutlined,
 } from '@ant-design/icons';
-import { Button, Card, Flex, Space, Tag, Typography, message } from 'antd';
+import {
+  Avatar,
+  Button,
+  Card,
+  DatePicker,
+  Flex,
+  Form,
+  Input,
+  InputNumber,
+  Modal,
+  Popconfirm,
+  Space,
+  Tag,
+  Typography,
+  message,
+} from 'antd';
+import dayjs from 'dayjs';
 import React, { useCallback, useState } from 'react';
 import { useMutation } from 'react-relay';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -19,12 +38,16 @@ import {
 } from '../../design';
 import { Paths } from '../../views/paths';
 import type { EventDetailPageWrapperQuery$data } from './__generated__/EventDetailPageWrapperQuery.graphql';
+import DeleteEventMutation from './graphql/DeleteEventMutation.graphql';
 import {
   deleteRsvpMutation,
   insertRsvpMutation,
 } from './graphql/RsvpMutations.graphql';
+import UpdateEventMutation from './graphql/UpdateEventMutation.graphql';
+import type { DeleteEventMutation as DeleteEventMutationType } from './graphql/__generated__/DeleteEventMutation.graphql';
 import type { RsvpMutationsDeleteMutation } from './graphql/__generated__/RsvpMutationsDeleteMutation.graphql';
 import type { RsvpMutationsInsertMutation } from './graphql/__generated__/RsvpMutationsInsertMutation.graphql';
+import type { UpdateEventMutation as UpdateEventMutationType } from './graphql/__generated__/UpdateEventMutation.graphql';
 
 type Props = {
   data: EventDetailPageWrapperQuery$data;
@@ -52,6 +75,23 @@ const EventDetailPage: React.FC<Props> = ({ data }) => {
   const currentRsvp = data.currentUserRsvp?.edges?.[0]?.node;
   const [isAttending, setIsAttending] = useState(currentRsvp != null);
   const [rsvpLoading, setRsvpLoading] = useState(false);
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [editLoading, setEditLoading] = useState(false);
+  const [editForm] = Form.useForm();
+
+  const isOwner = userId != null && event?.createdBy === userId;
+  const authorProfile = (event as Record<string, unknown> | undefined)
+    ?.profiles as
+    | {
+        firstName: string | null;
+        lastName: string | null;
+        avatarUrl: string | null;
+      }
+    | null
+    | undefined;
+  const authorName = authorProfile
+    ? `${authorProfile.firstName ?? ''} ${authorProfile.lastName ?? ''}`.trim()
+    : '';
 
   const attendees = event?.eventRsvpsCollection?.edges ?? [];
   const attendeeCount =
@@ -61,6 +101,62 @@ const EventDetailPage: React.FC<Props> = ({ data }) => {
     useMutation<RsvpMutationsInsertMutation>(insertRsvpMutation);
   const [commitDeleteRsvp] =
     useMutation<RsvpMutationsDeleteMutation>(deleteRsvpMutation);
+  const [commitUpdateEvent] =
+    useMutation<UpdateEventMutationType>(UpdateEventMutation);
+  const [commitDeleteEvent] =
+    useMutation<DeleteEventMutationType>(DeleteEventMutation);
+
+  const handleDelete = useCallback(() => {
+    if (!event) return;
+    commitDeleteEvent({
+      variables: {
+        filter: { id: { eq: event.id } },
+        atMost: 1,
+      },
+      onCompleted: () => {
+        message.success('Event deleted');
+        navigate(`${basePath}/${Paths.Events}`);
+      },
+      onError: (error) => {
+        message.error(`Failed to delete event: ${error.message}`);
+      },
+    });
+  }, [event, commitDeleteEvent, navigate, basePath]);
+
+  const handleEditSubmit = useCallback(() => {
+    if (!event) return;
+    editForm
+      .validateFields()
+      .then((values) => {
+        setEditLoading(true);
+        commitUpdateEvent({
+          variables: {
+            set: {
+              title: values.title,
+              description: values.description ?? null,
+              eventDate: values.eventDate.toISOString(),
+              location: values.location ?? null,
+              imageUrl: values.imageUrl ?? null,
+              maxAttendees: values.maxAttendees ?? null,
+            },
+            filter: { id: { eq: event.id } },
+            atMost: 1,
+          },
+          onCompleted: () => {
+            message.success('Event updated!');
+            setEditLoading(false);
+            setEditModalOpen(false);
+          },
+          onError: (error) => {
+            message.error(`Failed to update event: ${error.message}`);
+            setEditLoading(false);
+          },
+        });
+      })
+      .catch(() => {
+        /* validation failed */
+      });
+  }, [event, editForm, commitUpdateEvent]);
 
   const handleRsvp = useCallback(() => {
     if (!event || !userId) return;
@@ -161,6 +257,18 @@ const EventDetailPage: React.FC<Props> = ({ data }) => {
               <Typography.Title level={3} style={{ margin: 0 }}>
                 {event.title}
               </Typography.Title>
+              {authorName && (
+                <Space size={6} style={{ marginTop: 4 }}>
+                  <Avatar
+                    src={authorProfile?.avatarUrl}
+                    icon={<UserOutlined />}
+                    size={20}
+                  />
+                  <Typography.Text style={{ fontSize: 13, color: NEUTRAL_500 }}>
+                    {authorName}
+                  </Typography.Text>
+                </Space>
+              )}
             </div>
             {isUpcoming && (
               <Button
@@ -215,8 +323,85 @@ const EventDetailPage: React.FC<Props> = ({ data }) => {
               </Typography.Paragraph>
             </div>
           )}
+
+          {isOwner && (
+            <Flex gap={8} style={{ marginTop: 8 }}>
+              <Button
+                icon={<EditOutlined />}
+                onClick={() => {
+                  editForm.setFieldsValue({
+                    title: event.title,
+                    description: event.description,
+                    eventDate: dayjs(event.eventDate),
+                    location: event.location,
+                    imageUrl: event.imageUrl,
+                    maxAttendees: event.maxAttendees,
+                  });
+                  setEditModalOpen(true);
+                }}
+              >
+                Edit
+              </Button>
+              <Popconfirm
+                title="Delete this event?"
+                description="This action cannot be undone."
+                onConfirm={handleDelete}
+                okText="Delete"
+                okButtonProps={{ danger: true }}
+              >
+                <Button danger icon={<DeleteOutlined />}>
+                  Delete
+                </Button>
+              </Popconfirm>
+            </Flex>
+          )}
         </Space>
       </Card>
+
+      <Modal
+        title="Edit Event"
+        open={editModalOpen}
+        onOk={handleEditSubmit}
+        onCancel={() => setEditModalOpen(false)}
+        confirmLoading={editLoading}
+        okText="Save Changes"
+        destroyOnClose
+      >
+        <Form form={editForm} layout="vertical" preserve={false}>
+          <Form.Item
+            name="title"
+            label="Event Title"
+            rules={[{ required: true, message: 'Please enter an event title' }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item name="description" label="Description">
+            <Input.TextArea rows={3} />
+          </Form.Item>
+          <Form.Item
+            name="eventDate"
+            label="Date & Time"
+            rules={[
+              { required: true, message: 'Please select a date and time' },
+            ]}
+          >
+            <DatePicker
+              showTime
+              format="DD/MM/YYYY HH:mm"
+              style={{ width: '100%' }}
+            />
+          </Form.Item>
+          <Form.Item name="location" label="Location">
+            <Input />
+          </Form.Item>
+          <Form.Item name="imageUrl" label="Image URL">
+            <Input />
+          </Form.Item>
+          <Form.Item name="maxAttendees" label="Max Attendees">
+            <InputNumber min={1} style={{ width: '100%' }} />
+          </Form.Item>
+        </Form>
+      </Modal>
     </div>
   );
 };

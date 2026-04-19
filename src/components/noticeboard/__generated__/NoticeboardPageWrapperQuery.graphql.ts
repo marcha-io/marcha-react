@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<54bf33eb4f16aedd3caeed9914e1ebe9>>
+ * @generated SignedSource<<5b70cc892d4f28c5393465ba5e793afb>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -143,6 +143,13 @@ v4 = {
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
+},
+v5 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "nodeId",
+  "storageKey": null
 };
 return {
   "fragment": {
@@ -271,10 +278,37 @@ return {
                   {
                     "alias": null,
                     "args": null,
-                    "kind": "ScalarField",
-                    "name": "nodeId",
+                    "concreteType": "Profiles",
+                    "kind": "LinkedField",
+                    "name": "profiles",
+                    "plural": false,
+                    "selections": [
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "firstName",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "lastName",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "avatarUrl",
+                        "storageKey": null
+                      },
+                      (v5/*: any*/)
+                    ],
                     "storageKey": null
-                  }
+                  },
+                  (v5/*: any*/)
                 ],
                 "storageKey": null
               }
@@ -287,12 +321,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "ed02e654696ce158bbbf3aaa73db26d9",
+    "cacheID": "0cb3a0cb553f1b27904d1f09728f9cb0",
     "id": null,
     "metadata": {},
     "name": "NoticeboardPageWrapperQuery",
     "operationKind": "query",
-    "text": "query NoticeboardPageWrapperQuery(\n  $filter: NoticesFilter\n  $orderBy: [NoticesOrderBy!]\n  $first: Int\n) {\n  noticesCollection(filter: $filter, orderBy: $orderBy, first: $first) {\n    edges {\n      node {\n        id\n        ...NoticeCardFragment\n        nodeId\n      }\n    }\n  }\n}\n\nfragment NoticeCardFragment on Notices {\n  id\n  title\n  body\n  pinned\n  createdAt\n  createdBy\n}\n"
+    "text": "query NoticeboardPageWrapperQuery(\n  $filter: NoticesFilter\n  $orderBy: [NoticesOrderBy!]\n  $first: Int\n) {\n  noticesCollection(filter: $filter, orderBy: $orderBy, first: $first) {\n    edges {\n      node {\n        id\n        ...NoticeCardFragment\n        nodeId\n      }\n    }\n  }\n}\n\nfragment NoticeCardFragment on Notices {\n  id\n  title\n  body\n  pinned\n  createdAt\n  createdBy\n  profiles {\n    firstName\n    lastName\n    avatarUrl\n    nodeId\n  }\n}\n"
   }
 };
 })();

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<0e38bd43af6b849379134046a36c3810>>
+ * @generated SignedSource<<d4b8a45aa0017bc6ff70e9cc9d6bf08b>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -19,6 +19,7 @@ export type EventsInsertInput = {
   imageUrl?: string | null | undefined;
   location?: string | null | undefined;
   maxAttendees?: number | null | undefined;
+  pinned?: boolean | null | undefined;
   title?: string | null | undefined;
   updatedAt?: string | null | undefined;
 };

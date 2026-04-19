@@ -1,9 +1,11 @@
 import {
   CalendarOutlined,
   EnvironmentOutlined,
+  PushpinOutlined,
   TeamOutlined,
+  UserOutlined,
 } from '@ant-design/icons';
-import { Card, Space, Tag, Typography } from 'antd';
+import { Avatar, Card, Space, Tag, Typography } from 'antd';
 import graphql from 'babel-plugin-relay/macro';
 import React from 'react';
 import { useFragment } from 'react-relay';
@@ -25,6 +27,13 @@ export const eventCardFragment = graphql`
     location
     imageUrl
     maxAttendees
+    pinned
+    createdBy
+    profiles {
+      firstName
+      lastName
+      avatarUrl
+    }
     eventRsvpsCollection(filter: { status: { eq: attending } }) {
       edges {
         node {
@@ -59,6 +68,9 @@ const EventCard: React.FC<Props> = ({ fragmentRef, onClick }) => {
   const event = useFragment(eventCardFragment, fragmentRef);
   const attendeeCount = event.eventRsvpsCollection?.edges?.length ?? 0;
   const upcoming = isUpcoming(event.eventDate);
+  const authorName = event.profiles
+    ? `${event.profiles.firstName ?? ''} ${event.profiles.lastName ?? ''}`.trim()
+    : '';
 
   return (
     <Card
@@ -97,11 +109,16 @@ const EventCard: React.FC<Props> = ({ fragmentRef, onClick }) => {
       }
     >
       <Space direction="vertical" size={8} style={{ width: '100%' }}>
-        <Space size={4}>
+        <Space size={4} wrap>
           {upcoming ? (
             <Tag color="green">Upcoming</Tag>
           ) : (
             <Tag color="default">Past</Tag>
+          )}
+          {event.pinned && (
+            <Tag icon={<PushpinOutlined />} color="orange">
+              Pinned
+            </Tag>
           )}
         </Space>
         <Typography.Title
@@ -137,6 +154,19 @@ const EventCard: React.FC<Props> = ({ fragmentRef, onClick }) => {
             {event.maxAttendees != null && ` / ${event.maxAttendees} max`}
           </Typography.Text>
         </Space>
+        {authorName && (
+          <Space size={6}>
+            <Avatar
+              src={event.profiles?.avatarUrl}
+              icon={<UserOutlined />}
+              size={18}
+              style={{ flexShrink: 0 }}
+            />
+            <Typography.Text style={{ fontSize: 12, color: NEUTRAL_500 }}>
+              {authorName}
+            </Typography.Text>
+          </Space>
+        )}
       </Space>
     </Card>
   );

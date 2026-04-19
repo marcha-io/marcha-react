@@ -1,21 +1,29 @@
-import { Form, Input, Modal, Switch, message } from 'antd';
+import { Form, Input, Modal, Switch, Tooltip, message } from 'antd';
 import React, { useCallback, useState } from 'react';
 import { useMutation } from 'react-relay';
 import { useParams } from 'react-router-dom';
 
 import { useAuth } from '../../contexts/AuthContext';
+import { useIsAdmin } from '../../hooks/useIsAdmin';
 import InsertNoticeMutation from './graphql/InsertNoticeMutation.graphql';
 import type { InsertNoticeMutation as InsertNoticeMutationType } from './graphql/__generated__/InsertNoticeMutation.graphql';
 
 type Props = {
   open: boolean;
   onClose: () => void;
+  isAdmin?: boolean;
 };
 
-const CreateNoticeModal: React.FC<Props> = ({ open, onClose }) => {
+const CreateNoticeModal: React.FC<Props> = ({
+  open,
+  onClose,
+  isAdmin: isAdminProp,
+}) => {
   const [form] = Form.useForm();
   const { communityId } = useParams<{ communityId: string }>();
   const { userId } = useAuth();
+  const isAdminHook = useIsAdmin(communityId);
+  const isAdmin = isAdminProp ?? isAdminHook;
   const [loading, setLoading] = useState(false);
 
   const [commitInsert] =
@@ -80,14 +88,18 @@ const CreateNoticeModal: React.FC<Props> = ({ open, onClose }) => {
         >
           <Input.TextArea rows={5} placeholder="Write your notice here..." />
         </Form.Item>
-        <Form.Item
-          name="pinned"
-          label="Pin this notice"
-          valuePropName="checked"
-          initialValue={false}
-        >
-          <Switch />
-        </Form.Item>
+        {isAdmin && (
+          <Form.Item
+            name="pinned"
+            label="Pin this notice"
+            valuePropName="checked"
+            initialValue={false}
+          >
+            <Tooltip title="Pinned notices appear at the top of the noticeboard">
+              <Switch />
+            </Tooltip>
+          </Form.Item>
+        )}
       </Form>
     </Modal>
   );

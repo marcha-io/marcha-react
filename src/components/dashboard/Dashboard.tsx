@@ -44,6 +44,7 @@ import {
 import { getParseJsonAddress } from '../../utils/get_address';
 import { Paths } from '../../views/paths';
 import DashboardMarketplacePreview from './DashboardMarketplacePreview';
+import DashboardNotifications from './DashboardNotifications';
 import DashboardUpcomingEvents from './DashboardUpcomingEvents';
 import { DashboardComponentQuery } from './__generated__/DashboardComponentQuery.graphql';
 
@@ -78,6 +79,7 @@ const dashboardComponentQuery = graphql`
 
     ...DashboardMarketplacePreviewFragment
     ...DashboardUpcomingEventsFragment
+    ...DashboardNotificationsFragment
   }
 `;
 
@@ -354,6 +356,11 @@ const Dashboard: EntryPointComponent<
               renderItem={() => null}
             />
           </Card>
+
+          <DashboardNotifications
+            fragmentRef={data}
+            onBrowse={() => navigate(`${basePath}/${Paths.Community}`)}
+          />
 
           <DashboardMarketplacePreview
             fragmentRef={data}

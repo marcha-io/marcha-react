@@ -26,6 +26,12 @@ export const eventDetailPageWrapperQuery = graphql`
           maxAttendees
           createdAt
           createdBy
+          pinned
+          profiles {
+            firstName
+            lastName
+            avatarUrl
+          }
           eventRsvpsCollection(filter: { status: { eq: attending } }) {
             edges {
               node {

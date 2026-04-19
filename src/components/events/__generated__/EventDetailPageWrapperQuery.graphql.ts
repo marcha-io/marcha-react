@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<d63dc597ffe0760f0f1f8c5fdfcb89c3>>
+ * @generated SignedSource<<a43b5b278f3311de7ba61eaa7645cf45>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -25,6 +25,7 @@ export type EventsFilter = {
   nodeId?: IDFilter | null | undefined;
   not?: EventsFilter | null | undefined;
   or?: ReadonlyArray<EventsFilter> | null | undefined;
+  pinned?: BooleanFilter | null | undefined;
   title?: StringFilter | null | undefined;
   updatedAt?: DatetimeFilter | null | undefined;
 };
@@ -79,6 +80,10 @@ export type IntFilter = {
   lte?: number | null | undefined;
   neq?: number | null | undefined;
 };
+export type BooleanFilter = {
+  eq?: boolean | null | undefined;
+  is?: FilterIs | null | undefined;
+};
 export type IDFilter = {
   eq?: string | null | undefined;
 };
@@ -132,6 +137,12 @@ export type EventDetailPageWrapperQuery$data = {
         readonly imageUrl: string | null | undefined;
         readonly location: string | null | undefined;
         readonly maxAttendees: number | null | undefined;
+        readonly pinned: boolean;
+        readonly profiles: {
+          readonly avatarUrl: string | null | undefined;
+          readonly firstName: string | null | undefined;
+          readonly lastName: string | null | undefined;
+        } | null | undefined;
         readonly title: string;
       };
     }>;
@@ -231,7 +242,35 @@ v11 = {
   "name": "createdBy",
   "storageKey": null
 },
-v12 = [
+v12 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "pinned",
+  "storageKey": null
+},
+v13 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "firstName",
+  "storageKey": null
+},
+v14 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "lastName",
+  "storageKey": null
+},
+v15 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "avatarUrl",
+  "storageKey": null
+},
+v16 = [
   {
     "kind": "Literal",
     "name": "filter",
@@ -242,21 +281,21 @@ v12 = [
     }
   }
 ],
-v13 = {
+v17 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "userId",
   "storageKey": null
 },
-v14 = {
+v18 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "status",
   "storageKey": null
 },
-v15 = [
+v19 = [
   {
     "kind": "Variable",
     "name": "filter",
@@ -264,7 +303,7 @@ v15 = [
   },
   (v1/*: any*/)
 ],
-v16 = {
+v20 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -311,9 +350,24 @@ return {
                   (v9/*: any*/),
                   (v10/*: any*/),
                   (v11/*: any*/),
+                  (v12/*: any*/),
                   {
                     "alias": null,
-                    "args": (v12/*: any*/),
+                    "args": null,
+                    "concreteType": "Profiles",
+                    "kind": "LinkedField",
+                    "name": "profiles",
+                    "plural": false,
+                    "selections": [
+                      (v13/*: any*/),
+                      (v14/*: any*/),
+                      (v15/*: any*/)
+                    ],
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": (v16/*: any*/),
                     "concreteType": "EventRsvpsConnection",
                     "kind": "LinkedField",
                     "name": "eventRsvpsCollection",
@@ -336,8 +390,8 @@ return {
                             "plural": false,
                             "selections": [
                               (v3/*: any*/),
-                              (v13/*: any*/),
-                              (v14/*: any*/)
+                              (v17/*: any*/),
+                              (v18/*: any*/)
                             ],
                             "storageKey": null
                           }
@@ -358,7 +412,7 @@ return {
       },
       {
         "alias": "currentUserRsvp",
-        "args": (v15/*: any*/),
+        "args": (v19/*: any*/),
         "concreteType": "EventRsvpsConnection",
         "kind": "LinkedField",
         "name": "eventRsvpsCollection",
@@ -381,7 +435,7 @@ return {
                 "plural": false,
                 "selections": [
                   (v3/*: any*/),
-                  (v14/*: any*/)
+                  (v18/*: any*/)
                 ],
                 "storageKey": null
               }
@@ -434,9 +488,25 @@ return {
                   (v9/*: any*/),
                   (v10/*: any*/),
                   (v11/*: any*/),
+                  (v12/*: any*/),
                   {
                     "alias": null,
-                    "args": (v12/*: any*/),
+                    "args": null,
+                    "concreteType": "Profiles",
+                    "kind": "LinkedField",
+                    "name": "profiles",
+                    "plural": false,
+                    "selections": [
+                      (v13/*: any*/),
+                      (v14/*: any*/),
+                      (v15/*: any*/),
+                      (v20/*: any*/)
+                    ],
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": (v16/*: any*/),
                     "concreteType": "EventRsvpsConnection",
                     "kind": "LinkedField",
                     "name": "eventRsvpsCollection",
@@ -459,9 +529,9 @@ return {
                             "plural": false,
                             "selections": [
                               (v3/*: any*/),
-                              (v13/*: any*/),
-                              (v14/*: any*/),
-                              (v16/*: any*/)
+                              (v17/*: any*/),
+                              (v18/*: any*/),
+                              (v20/*: any*/)
                             ],
                             "storageKey": null
                           }
@@ -471,7 +541,7 @@ return {
                     ],
                     "storageKey": "eventRsvpsCollection(filter:{\"status\":{\"eq\":\"attending\"}})"
                   },
-                  (v16/*: any*/)
+                  (v20/*: any*/)
                 ],
                 "storageKey": null
               }
@@ -483,7 +553,7 @@ return {
       },
       {
         "alias": "currentUserRsvp",
-        "args": (v15/*: any*/),
+        "args": (v19/*: any*/),
         "concreteType": "EventRsvpsConnection",
         "kind": "LinkedField",
         "name": "eventRsvpsCollection",
@@ -506,8 +576,8 @@ return {
                 "plural": false,
                 "selections": [
                   (v3/*: any*/),
-                  (v14/*: any*/),
-                  (v16/*: any*/)
+                  (v18/*: any*/),
+                  (v20/*: any*/)
                 ],
                 "storageKey": null
               }
@@ -520,16 +590,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "348e0bb67edae35542c5724104255c60",
+    "cacheID": "b796fb7ff5576dbc0b3164b01f34f9ca",
     "id": null,
     "metadata": {},
     "name": "EventDetailPageWrapperQuery",
     "operationKind": "query",
-    "text": "query EventDetailPageWrapperQuery(\n  $eventFilter: EventsFilter\n  $rsvpFilter: EventRsvpsFilter\n) {\n  eventsCollection(filter: $eventFilter, first: 1) {\n    edges {\n      node {\n        id\n        title\n        description\n        eventDate\n        location\n        imageUrl\n        maxAttendees\n        createdAt\n        createdBy\n        eventRsvpsCollection(filter: {status: {eq: attending}}) {\n          edges {\n            node {\n              id\n              userId\n              status\n              nodeId\n            }\n          }\n        }\n        nodeId\n      }\n    }\n  }\n  currentUserRsvp: eventRsvpsCollection(filter: $rsvpFilter, first: 1) {\n    edges {\n      node {\n        id\n        status\n        nodeId\n      }\n    }\n  }\n}\n"
+    "text": "query EventDetailPageWrapperQuery(\n  $eventFilter: EventsFilter\n  $rsvpFilter: EventRsvpsFilter\n) {\n  eventsCollection(filter: $eventFilter, first: 1) {\n    edges {\n      node {\n        id\n        title\n        description\n        eventDate\n        location\n        imageUrl\n        maxAttendees\n        createdAt\n        createdBy\n        pinned\n        profiles {\n          firstName\n          lastName\n          avatarUrl\n          nodeId\n        }\n        eventRsvpsCollection(filter: {status: {eq: attending}}) {\n          edges {\n            node {\n              id\n              userId\n              status\n              nodeId\n            }\n          }\n        }\n        nodeId\n      }\n    }\n  }\n  currentUserRsvp: eventRsvpsCollection(filter: $rsvpFilter, first: 1) {\n    edges {\n      node {\n        id\n        status\n        nodeId\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "9b6a08b5934969e8223b94fc3b942037";
+(node as any).hash = "977f4cc0ec981251c887643bd378148c";
 
 export default node;

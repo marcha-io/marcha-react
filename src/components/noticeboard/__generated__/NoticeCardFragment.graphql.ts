@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<db4883c360ec46241f83fb76f8323e75>>
+ * @generated SignedSource<<9293cc46ce6e138cc3f0fd634087e212>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -16,6 +16,11 @@ export type NoticeCardFragment$data = {
   readonly createdBy: string;
   readonly id: string;
   readonly pinned: boolean;
+  readonly profiles: {
+    readonly avatarUrl: string | null | undefined;
+    readonly firstName: string | null | undefined;
+    readonly lastName: string | null | undefined;
+  } | null | undefined;
   readonly title: string;
   readonly " $fragmentType": "NoticeCardFragment";
 };
@@ -71,12 +76,44 @@ const node: ReaderFragment = {
       "kind": "ScalarField",
       "name": "createdBy",
       "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "concreteType": "Profiles",
+      "kind": "LinkedField",
+      "name": "profiles",
+      "plural": false,
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "firstName",
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "lastName",
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "avatarUrl",
+          "storageKey": null
+        }
+      ],
+      "storageKey": null
     }
   ],
   "type": "Notices",
   "abstractKey": null
 };
 
-(node as any).hash = "41884e07e770fee084cb174311bda2c2";
+(node as any).hash = "79e3d44726e7f35c0e616296e3671c97";
 
 export default node;
