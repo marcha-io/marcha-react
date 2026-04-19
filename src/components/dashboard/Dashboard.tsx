@@ -299,7 +299,7 @@ const Dashboard: EntryPointComponent<
       </Row>
 
       <Row gutter={[24, 24]}>
-        {/* ── Left column: Active Requests + Community Updates ─────────── */}
+        {/* ── Left column: Active Requests ─────────── */}
         <Col xs={24} lg={16}>
           <Card
             title="Active Requests"
@@ -319,23 +319,6 @@ const Dashboard: EntryPointComponent<
             />
           </Card>
 
-          <Card
-            title="Community Updates"
-            extra={
-              <Typography.Link
-                onClick={() => navigate(`${basePath}/${Paths.Community}`)}
-              >
-                See all &gt;
-              </Typography.Link>
-            }
-            style={{ borderRadius: RADIUS_LG }}
-          >
-            <List
-              dataSource={[]}
-              locale={{ emptyText: 'No community updates yet' }}
-              renderItem={() => null}
-            />
-          </Card>
         </Col>
 
         <Col xs={24} lg={8}>
