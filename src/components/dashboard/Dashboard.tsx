@@ -43,8 +43,8 @@ import {
 } from '../../design';
 import { getParseJsonAddress } from '../../utils/get_address';
 import { Paths } from '../../views/paths';
+import DashboardCommunityUpdates from './DashboardCommunityUpdates';
 import DashboardMarketplacePreview from './DashboardMarketplacePreview';
-import DashboardNotifications from './DashboardNotifications';
 import DashboardUpcomingEvents from './DashboardUpcomingEvents';
 import { DashboardComponentQuery } from './__generated__/DashboardComponentQuery.graphql';
 
@@ -72,6 +72,7 @@ const dashboardComponentQuery = graphql`
             description
             address
             image
+            ...DashboardCommunityUpdatesFragment
           }
         }
       }
@@ -79,7 +80,6 @@ const dashboardComponentQuery = graphql`
 
     ...DashboardMarketplacePreviewFragment
     ...DashboardUpcomingEventsFragment
-    ...DashboardNotificationsFragment
   }
 `;
 
@@ -357,10 +357,12 @@ const Dashboard: EntryPointComponent<
             />
           </Card>
 
-          <DashboardNotifications
-            fragmentRef={data}
-            onBrowse={() => navigate(`${basePath}/${Paths.Community}`)}
-          />
+          {communityUser?.community != null && (
+            <DashboardCommunityUpdates
+              fragmentRef={communityUser.community}
+              onBrowse={() => navigate(`${basePath}/${Paths.Community}`)}
+            />
+          )}
 
           <DashboardMarketplacePreview
             fragmentRef={data}
