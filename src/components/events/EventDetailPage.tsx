@@ -201,7 +201,7 @@ const EventDetailPage: React.FC<Props> = ({ data }) => {
   const isUpcoming = new Date(event.eventDate).getTime() > Date.now();
 
   return (
-    <div style={{ maxWidth: 720, margin: '0 auto' }}>
+    <div>
       <Button
         type="text"
         icon={<ArrowLeftOutlined />}
@@ -211,144 +211,153 @@ const EventDetailPage: React.FC<Props> = ({ data }) => {
         Back to Events
       </Button>
 
-      {event.imageUrl && (
-        <img
-          alt={event.title}
-          src={event.imageUrl}
-          style={{
-            width: '100%',
-            height: 280,
-            objectFit: 'cover',
-            borderRadius: RADIUS_LG,
-            marginBottom: 24,
-          }}
-        />
-      )}
+      <div style={{ maxWidth: 720, margin: '0 auto' }}>
+        {event.imageUrl && (
+          <img
+            alt={event.title}
+            src={event.imageUrl}
+            style={{
+              width: '100%',
+              height: 280,
+              objectFit: 'cover',
+              borderRadius: RADIUS_LG,
+              marginBottom: 24,
+            }}
+          />
+        )}
 
-      <Card style={{ borderRadius: RADIUS_LG }}>
-        <Space vertical size={16} style={{ width: '100%' }}>
-          <Flex justify="space-between" align="flex-start" wrap="wrap" gap={12}>
-            <div>
-              <Space size={8} style={{ marginBottom: 8 }}>
-                {isUpcoming ? (
-                  <Tag color="green">Upcoming</Tag>
-                ) : (
-                  <Tag color="default">Past</Tag>
-                )}
-              </Space>
-              <Typography.Title level={3} style={{ margin: 0 }}>
-                {event.title}
-              </Typography.Title>
-              {authorName && (
-                <Space size={6} style={{ marginTop: 4 }}>
-                  <Avatar
-                    src={authorProfile?.avatarUrl}
-                    icon={<UserOutlined />}
-                    size={20}
-                  />
-                  <Typography.Text style={{ fontSize: 13, color: NEUTRAL_500 }}>
-                    {authorName}
-                  </Typography.Text>
+        <Card style={{ maxWidth: 720, borderRadius: RADIUS_LG }}>
+          <Space vertical size={16} style={{ width: '100%' }}>
+            <Flex
+              justify="space-between"
+              align="flex-start"
+              wrap="wrap"
+              gap={12}
+            >
+              <div>
+                <Space size={8} style={{ marginBottom: 8 }}>
+                  {isUpcoming ? (
+                    <Tag color="green">Upcoming</Tag>
+                  ) : (
+                    <Tag color="default">Past</Tag>
+                  )}
                 </Space>
+                <Typography.Title level={3} style={{ margin: 0 }}>
+                  {event.title}
+                </Typography.Title>
+                {authorName && (
+                  <Space size={6} style={{ marginTop: 4 }}>
+                    <Avatar
+                      src={authorProfile?.avatarUrl}
+                      icon={<UserOutlined />}
+                      size={20}
+                    />
+                    <Typography.Text
+                      style={{ fontSize: 13, color: NEUTRAL_500 }}
+                    >
+                      {authorName}
+                    </Typography.Text>
+                  </Space>
+                )}
+              </div>
+              {isUpcoming && !isOwner && (
+                <Button
+                  type={isAttending ? 'default' : 'primary'}
+                  icon={isAttending ? <CheckCircleOutlined /> : undefined}
+                  loading={rsvpLoading}
+                  onClick={handleRsvp}
+                  size="large"
+                >
+                  {isAttending ? 'Attending' : 'RSVP'}
+                </Button>
               )}
-            </div>
-            {isUpcoming && !isOwner && (
-              <Button
-                type={isAttending ? 'default' : 'primary'}
-                icon={isAttending ? <CheckCircleOutlined /> : undefined}
-                loading={rsvpLoading}
-                onClick={handleRsvp}
-                size="large"
-              >
-                {isAttending ? 'Attending' : 'RSVP'}
-              </Button>
-            )}
-          </Flex>
+            </Flex>
 
-          <Space vertical size={8}>
-            <Space size={8}>
-              <CalendarOutlined
-                style={{ color: BRAND_PRIMARY, fontSize: 16 }}
-              />
-              <Typography.Text style={{ fontSize: 15, color: NEUTRAL_700 }}>
-                {formatEventDate(event.eventDate)}
-              </Typography.Text>
-            </Space>
-            {event.location && (
+            <Space vertical size={8}>
               <Space size={8}>
-                <EnvironmentOutlined
+                <CalendarOutlined
                   style={{ color: BRAND_PRIMARY, fontSize: 16 }}
                 />
                 <Typography.Text style={{ fontSize: 15, color: NEUTRAL_700 }}>
-                  {event.location}
+                  {formatEventDate(event.eventDate)}
                 </Typography.Text>
               </Space>
-            )}
-            <Space size={8}>
-              <TeamOutlined style={{ color: BRAND_PRIMARY, fontSize: 16 }} />
-              <Typography.Text style={{ fontSize: 15, color: NEUTRAL_500 }}>
-                {attendeeCount} attending
-                {event.maxAttendees != null && ` / ${event.maxAttendees} max`}
-              </Typography.Text>
+              {event.location && (
+                <Space size={8}>
+                  <EnvironmentOutlined
+                    style={{ color: BRAND_PRIMARY, fontSize: 16 }}
+                  />
+                  <Typography.Text style={{ fontSize: 15, color: NEUTRAL_700 }}>
+                    {event.location}
+                  </Typography.Text>
+                </Space>
+              )}
+              <Space size={8}>
+                <TeamOutlined style={{ color: BRAND_PRIMARY, fontSize: 16 }} />
+                <Typography.Text style={{ fontSize: 15, color: NEUTRAL_500 }}>
+                  {attendeeCount} attending
+                  {event.maxAttendees != null && ` / ${event.maxAttendees} max`}
+                </Typography.Text>
+              </Space>
             </Space>
-          </Space>
 
-          {event.description && (
-            <div>
-              <Typography.Title level={5} style={{ marginBottom: 8 }}>
-                About this event
-              </Typography.Title>
-              <Typography.Paragraph
-                style={{ color: NEUTRAL_700, whiteSpace: 'pre-wrap' }}
-              >
-                {event.description}
-              </Typography.Paragraph>
-            </div>
-          )}
+            {event.description && (
+              <div>
+                <Typography.Title level={5} style={{ marginBottom: 8 }}>
+                  About this event
+                </Typography.Title>
+                <Typography.Paragraph
+                  style={{ color: NEUTRAL_700, whiteSpace: 'pre-wrap' }}
+                >
+                  {event.description}
+                </Typography.Paragraph>
+              </div>
+            )}
 
-          {isOwner && (
-            <Flex gap={8} style={{ marginTop: 8 }}>
-              <Button
-                icon={<EditOutlined />}
-                onClick={() => {
-                  editForm.setFieldsValue({
-                    title: event.title,
-                    description: event.description,
-                    eventDate: dayjs(event.eventDate),
-                    location: event.location,
-                    imageUrl: event.imageUrl,
-                    maxAttendees: event.maxAttendees,
-                  });
-                  setEditModalOpen(true);
-                }}
-              >
-                Edit
-              </Button>
-              <Popconfirm
-                title="Delete this event?"
-                description="This action cannot be undone."
-                onConfirm={handleDelete}
-                okText="Delete"
-                okButtonProps={{ danger: true }}
-              >
-                <Button danger icon={<DeleteOutlined />}>
-                  Delete
+            {isOwner && (
+              <Flex gap={8} style={{ marginTop: 8 }}>
+                <Button
+                  icon={<EditOutlined />}
+                  onClick={() => {
+                    editForm.setFieldsValue({
+                      title: event.title,
+                      description: event.description,
+                      eventDate: dayjs(event.eventDate),
+                      location: event.location,
+                      imageUrl: event.imageUrl,
+                      maxAttendees: event.maxAttendees,
+                    });
+                    setEditModalOpen(true);
+                  }}
+                >
+                  Edit
                 </Button>
-              </Popconfirm>
-            </Flex>
-          )}
-        </Space>
-      </Card>
+                <Popconfirm
+                  title="Delete this event?"
+                  description="This action cannot be undone."
+                  onConfirm={handleDelete}
+                  okText="Delete"
+                  okButtonProps={{ danger: true }}
+                >
+                  <Button danger icon={<DeleteOutlined />}>
+                    Delete
+                  </Button>
+                </Popconfirm>
+              </Flex>
+            )}
+          </Space>
+        </Card>
 
-      <EventFormModal
-        title="Edit Event"
-        form={editForm}
-        isModalOpen={editModalOpen}
-        onSubmit={handleEditSubmit}
-        onCloseModal={() => setEditModalOpen(false)}
-        isLoading={editLoading}
-        submitLabel="Save Changes"
-      />
+        <EventFormModal
+          title="Edit Event"
+          form={editForm}
+          isModalOpen={editModalOpen}
+          onSubmit={handleEditSubmit}
+          onCloseModal={() => setEditModalOpen(false)}
+          isLoading={editLoading}
+          submitLabel="Save Changes"
+        />
+      </div>
     </div>
   );
 };
