@@ -12,12 +12,8 @@ import {
   Avatar,
   Button,
   Card,
-  DatePicker,
   Flex,
   Form,
-  Input,
-  InputNumber,
-  Modal,
   Popconfirm,
   Space,
   Tag,
@@ -36,7 +32,9 @@ import {
   NEUTRAL_700,
   RADIUS_LG,
 } from '../../design';
+import formatEventDate from '../../utils/format_event_date';
 import { Paths } from '../../views/paths';
+import EventFormModal from './EventFormModal';
 import type { EventDetailPageWrapperQuery$data } from './__generated__/EventDetailPageWrapperQuery.graphql';
 import DeleteEventMutation from './graphql/DeleteEventMutation.graphql';
 import {
@@ -53,45 +51,28 @@ type Props = {
   data: EventDetailPageWrapperQuery$data;
 };
 
-const formatEventDate = (dateStr: string): string => {
-  const date = new Date(dateStr);
-  return date.toLocaleDateString('en-GB', {
-    weekday: 'long',
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-  });
-};
-
 const EventDetailPage: React.FC<Props> = ({ data }) => {
   const navigate = useNavigate();
   const { communityId } = useParams<{ communityId: string }>();
   const { userId } = useAuth();
+
   const basePath = `/portal/${communityId}`;
 
   const event = data.eventsCollection?.edges?.[0]?.node;
   const currentRsvp = data.currentUserRsvp?.edges?.[0]?.node;
+
   const [isAttending, setIsAttending] = useState(currentRsvp != null);
   const [rsvpLoading, setRsvpLoading] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [editLoading, setEditLoading] = useState(false);
+
   const [editForm] = Form.useForm();
 
   const isOwner = userId != null && event?.createdBy === userId;
-  const authorProfile = (event as Record<string, unknown> | undefined)
-    ?.profiles as
-    | {
-        firstName: string | null;
-        lastName: string | null;
-        avatarUrl: string | null;
-      }
-    | null
-    | undefined;
-  const authorName = authorProfile
-    ? `${authorProfile.firstName ?? ''} ${authorProfile.lastName ?? ''}`.trim()
-    : '';
+
+  const authorProfile = event?.profiles;
+  const authorName =
+    `${authorProfile?.firstName ?? ''} ${authorProfile?.lastName ?? ''}`.trim();
 
   const attendees = event?.eventRsvpsCollection?.edges ?? [];
   const attendeeCount =
@@ -101,6 +82,7 @@ const EventDetailPage: React.FC<Props> = ({ data }) => {
     useMutation<RsvpMutationsInsertMutation>(insertRsvpMutation);
   const [commitDeleteRsvp] =
     useMutation<RsvpMutationsDeleteMutation>(deleteRsvpMutation);
+
   const [commitUpdateEvent] =
     useMutation<UpdateEventMutationType>(UpdateEventMutation);
   const [commitDeleteEvent] =
@@ -244,7 +226,7 @@ const EventDetailPage: React.FC<Props> = ({ data }) => {
       )}
 
       <Card style={{ borderRadius: RADIUS_LG }}>
-        <Space direction="vertical" size={16} style={{ width: '100%' }}>
+        <Space vertical size={16} style={{ width: '100%' }}>
           <Flex justify="space-between" align="flex-start" wrap="wrap" gap={12}>
             <div>
               <Space size={8} style={{ marginBottom: 8 }}>
@@ -270,7 +252,7 @@ const EventDetailPage: React.FC<Props> = ({ data }) => {
                 </Space>
               )}
             </div>
-            {isUpcoming && (
+            {isUpcoming && !isOwner && (
               <Button
                 type={isAttending ? 'default' : 'primary'}
                 icon={isAttending ? <CheckCircleOutlined /> : undefined}
@@ -283,7 +265,7 @@ const EventDetailPage: React.FC<Props> = ({ data }) => {
             )}
           </Flex>
 
-          <Space direction="vertical" size={8}>
+          <Space vertical size={8}>
             <Space size={8}>
               <CalendarOutlined
                 style={{ color: BRAND_PRIMARY, fontSize: 16 }}
@@ -358,50 +340,15 @@ const EventDetailPage: React.FC<Props> = ({ data }) => {
         </Space>
       </Card>
 
-      <Modal
+      <EventFormModal
         title="Edit Event"
-        open={editModalOpen}
-        onOk={handleEditSubmit}
-        onCancel={() => setEditModalOpen(false)}
-        confirmLoading={editLoading}
-        okText="Save Changes"
-        destroyOnClose
-      >
-        <Form form={editForm} layout="vertical" preserve={false}>
-          <Form.Item
-            name="title"
-            label="Event Title"
-            rules={[{ required: true, message: 'Please enter an event title' }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item name="description" label="Description">
-            <Input.TextArea rows={3} />
-          </Form.Item>
-          <Form.Item
-            name="eventDate"
-            label="Date & Time"
-            rules={[
-              { required: true, message: 'Please select a date and time' },
-            ]}
-          >
-            <DatePicker
-              showTime
-              format="DD/MM/YYYY HH:mm"
-              style={{ width: '100%' }}
-            />
-          </Form.Item>
-          <Form.Item name="location" label="Location">
-            <Input />
-          </Form.Item>
-          <Form.Item name="imageUrl" label="Image URL">
-            <Input />
-          </Form.Item>
-          <Form.Item name="maxAttendees" label="Max Attendees">
-            <InputNumber min={1} style={{ width: '100%' }} />
-          </Form.Item>
-        </Form>
-      </Modal>
+        form={editForm}
+        isModalOpen={editModalOpen}
+        onSubmit={handleEditSubmit}
+        onCloseModal={() => setEditModalOpen(false)}
+        isLoading={editLoading}
+        submitLabel="Save Changes"
+      />
     </div>
   );
 };

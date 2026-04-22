@@ -43,7 +43,7 @@ const NoticeboardPage: React.FC<Props> = ({ data }) => {
           </Button>
         </Empty>
       ) : (
-        <Space direction="vertical" size={16} style={{ width: '100%' }}>
+        <Space vertical size={16} style={{ width: '100%' }}>
           {edges.map((edge) => (
             <NoticeCard key={edge.node.id} fragmentRef={edge.node} />
           ))}

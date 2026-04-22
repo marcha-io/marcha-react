@@ -28,6 +28,8 @@ import {
   NEUTRAL_700,
   RADIUS_LG,
 } from '../../design';
+import timeFromDate from '../../utils/time_from_date_';
+import { AVATAR_DEFAULT } from '../marketplace/constants';
 import type { NoticeCardFragment$key } from './__generated__/NoticeCardFragment.graphql';
 import DeleteNoticeMutation from './graphql/DeleteNoticeMutation.graphql';
 import UpdateNoticeMutation from './graphql/UpdateNoticeMutation.graphql';
@@ -53,25 +55,6 @@ export const noticeCardFragment = graphql`
 type Props = {
   fragmentRef: NoticeCardFragment$key;
   onDeleted?: () => void;
-};
-
-const formatDate = (dateStr: string): string => {
-  const date = new Date(dateStr);
-  const now = new Date();
-  const diffMs = now.getTime() - date.getTime();
-  const diffMins = Math.floor(diffMs / 60000);
-  const diffHours = Math.floor(diffMs / 3600000);
-  const diffDays = Math.floor(diffMs / 86400000);
-
-  if (diffMins < 1) return 'Just now';
-  if (diffMins < 60) return `${diffMins}m ago`;
-  if (diffHours < 24) return `${diffHours}h ago`;
-  if (diffDays < 7) return `${diffDays}d ago`;
-  return date.toLocaleDateString('en-GB', {
-    day: 'numeric',
-    month: 'short',
-    year: 'numeric',
-  });
 };
 
 const NoticeCard: React.FC<Props> = ({ fragmentRef, onDeleted }) => {
@@ -136,6 +119,8 @@ const NoticeCard: React.FC<Props> = ({ fragmentRef, onDeleted }) => {
       });
   }, [notice.id, editForm, commitUpdate]);
 
+  console.log(notice.profiles?.avatarUrl);
+
   return (
     <Card
       style={{
@@ -143,7 +128,7 @@ const NoticeCard: React.FC<Props> = ({ fragmentRef, onDeleted }) => {
         borderLeft: notice.pinned ? `4px solid ${BRAND_PRIMARY}` : undefined,
       }}
     >
-      <Space direction="vertical" size={8} style={{ width: '100%' }}>
+      <Space vertical size={8} style={{ width: '100%' }}>
         <Space size={8} align="center">
           {notice.pinned && (
             <Tag
@@ -155,12 +140,12 @@ const NoticeCard: React.FC<Props> = ({ fragmentRef, onDeleted }) => {
             </Tag>
           )}
           <Typography.Text style={{ fontSize: 12, color: NEUTRAL_500 }}>
-            {formatDate(notice.createdAt)}
+            {timeFromDate(notice.createdAt)}
           </Typography.Text>
           {authorName && (
             <Space size={4}>
               <Avatar
-                src={notice.profiles?.avatarUrl}
+                src={notice.profiles?.avatarUrl ?? AVATAR_DEFAULT}
                 icon={<UserOutlined />}
                 size={18}
                 style={{ flexShrink: 0 }}
@@ -222,7 +207,7 @@ const NoticeCard: React.FC<Props> = ({ fragmentRef, onDeleted }) => {
         onCancel={() => setEditModalOpen(false)}
         confirmLoading={editLoading}
         okText="Save Changes"
-        destroyOnClose
+        destroyOnHidden
       >
         <Form form={editForm} layout="vertical" preserve={false}>
           <Form.Item

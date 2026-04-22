@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<6ade39c29e766825dd72c7160bf67592>>
+ * @generated SignedSource<<573dc1172e2e3f69dfc9f00379dc1235>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -30,6 +30,7 @@ export type EventCardFragment$data = {
     readonly avatarUrl: string | null | undefined;
     readonly firstName: string | null | undefined;
     readonly lastName: string | null | undefined;
+    readonly username: string | null | undefined;
   } | null | undefined;
   readonly title: string;
   readonly " $fragmentType": "EventCardFragment";
@@ -138,6 +139,13 @@ return {
           "kind": "ScalarField",
           "name": "avatarUrl",
           "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "username",
+          "storageKey": null
         }
       ],
       "storageKey": null
@@ -192,6 +200,6 @@ return {
 };
 })();
 
-(node as any).hash = "9bb240894725a0badf7b8bd18b4184f2";
+(node as any).hash = "31e232136d7d229a3efc71f8c322213f";
 
 export default node;
