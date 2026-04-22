@@ -36,7 +36,6 @@ export const eventCardFragment = graphql`
       firstName
       lastName
       avatarUrl
-      username
     }
     eventRsvpsCollection(filter: { status: { eq: attending } }) {
       edges {
@@ -62,10 +61,7 @@ const EventCard: React.FC<Props> = ({ fragmentRef, onClick }) => {
 
   useEffect(() => {
     if (event.profiles?.avatarUrl) {
-      fetchFromStorage(
-        event.profiles.avatarUrl,
-        `avatars/${event.profiles.username}`
-      ).then((blob) => {
+      fetchFromStorage(event.profiles.avatarUrl, `avatars`).then((blob) => {
         if (blob) setAvatarBlob(blob);
       });
     }

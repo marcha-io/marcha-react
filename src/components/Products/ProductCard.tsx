@@ -81,18 +81,16 @@ const ProductCard = ({
 
     if (imagePath) {
       setImageLoading(true);
-      fetchFromStorage(imagePath, `product-images/${product.id}`).then(
-        (blob) => {
-          if (blob) setImageBlob(blob);
-          setImageLoading(false);
-        }
-      );
+      fetchFromStorage(imagePath, `product-images/${userId}`).then((blob) => {
+        if (blob) setImageBlob(blob);
+        setImageLoading(false);
+      });
     }
   }, [product.productImagesCollection]);
 
   useEffect(() => {
     if (product.user?.avatarUrl) {
-      fetchFromStorage(product.user.avatarUrl, 'avatars').then((blob) => {
+      fetchFromStorage(product.user.avatarUrl, `avatars`).then((blob) => {
         if (blob) setAvatarBlob(blob);
       });
     }
