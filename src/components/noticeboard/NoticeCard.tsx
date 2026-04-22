@@ -28,8 +28,8 @@ import {
   NEUTRAL_700,
   RADIUS_LG,
 } from '../../design';
+import { useUserAvatarUrl } from '../../hooks/useUserAvatarUrl';
 import timeFromDate from '../../utils/time_from_date_';
-import { AVATAR_DEFAULT } from '../marketplace/constants';
 import type { NoticeCardFragment$key } from './__generated__/NoticeCardFragment.graphql';
 import DeleteNoticeMutation from './graphql/DeleteNoticeMutation.graphql';
 import UpdateNoticeMutation from './graphql/UpdateNoticeMutation.graphql';
@@ -70,6 +70,8 @@ const NoticeCard: React.FC<Props> = ({ fragmentRef, onDeleted }) => {
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [editLoading, setEditLoading] = useState(false);
   const [editForm] = Form.useForm();
+
+  const avatarUrl = useUserAvatarUrl(notice.profiles?.avatarUrl);
 
   const authorName =
     `${notice.profiles?.firstName ?? ''} ${notice.profiles?.lastName ?? ''}`.trim();
@@ -146,7 +148,7 @@ const NoticeCard: React.FC<Props> = ({ fragmentRef, onDeleted }) => {
           {authorName && (
             <Space size={4}>
               <Avatar
-                src={notice.profiles?.avatarUrl ?? AVATAR_DEFAULT}
+                src={avatarUrl}
                 icon={<UserOutlined />}
                 size={18}
                 style={{ flexShrink: 0 }}

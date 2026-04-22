@@ -32,6 +32,7 @@ import {
   NEUTRAL_700,
   RADIUS_LG,
 } from '../../design';
+import { useUserAvatarUrl } from '../../hooks/useUserAvatarUrl';
 import formatEventDate from '../../utils/format_event_date';
 import { Paths } from '../../views/paths';
 import EventFormModal from './EventFormModal';
@@ -67,6 +68,8 @@ const EventDetailPage: React.FC<Props> = ({ data }) => {
   const [editLoading, setEditLoading] = useState(false);
 
   const [editForm] = Form.useForm();
+
+  const avatarUrl = useUserAvatarUrl(event?.profiles?.avatarUrl);
 
   const isOwner = userId != null && event?.createdBy === userId;
 
@@ -247,11 +250,7 @@ const EventDetailPage: React.FC<Props> = ({ data }) => {
                 </Typography.Title>
                 {authorName && (
                   <Space size={6} style={{ marginTop: 4 }}>
-                    <Avatar
-                      src={authorProfile?.avatarUrl}
-                      icon={<UserOutlined />}
-                      size={20}
-                    />
+                    <Avatar src={avatarUrl} icon={<UserOutlined />} size={20} />
                     <Typography.Text
                       style={{ fontSize: 13, color: NEUTRAL_500 }}
                     >
