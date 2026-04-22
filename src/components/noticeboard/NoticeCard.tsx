@@ -18,7 +18,7 @@ import {
   message,
 } from 'antd';
 import graphql from 'babel-plugin-relay/macro';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { useFragment, useMutation } from 'react-relay';
 
 import { useAuth } from '../../contexts/AuthContext';
@@ -47,6 +47,7 @@ export const noticeCardFragment = graphql`
     profiles {
       firstName
       lastName
+      username
       avatarUrl
     }
   }
@@ -59,14 +60,19 @@ type Props = {
 
 const NoticeCard: React.FC<Props> = ({ fragmentRef, onDeleted }) => {
   const notice = useFragment(noticeCardFragment, fragmentRef);
+
   const { userId } = useAuth();
-  const isOwner = userId != null && notice.createdBy === userId;
+  const isOwner = useMemo(
+    () => userId != null && notice.createdBy === userId,
+    [userId, notice]
+  );
+
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [editLoading, setEditLoading] = useState(false);
   const [editForm] = Form.useForm();
-  const authorName = notice.profiles
-    ? `${notice.profiles.firstName ?? ''} ${notice.profiles.lastName ?? ''}`.trim()
-    : '';
+
+  const authorName =
+    `${notice.profiles?.firstName ?? ''} ${notice.profiles?.lastName ?? ''}`.trim();
 
   const [commitUpdate] =
     useMutation<UpdateNoticeMutationType>(UpdateNoticeMutation);
@@ -119,8 +125,6 @@ const NoticeCard: React.FC<Props> = ({ fragmentRef, onDeleted }) => {
       });
   }, [notice.id, editForm, commitUpdate]);
 
-  console.log(notice.profiles?.avatarUrl);
-
   return (
     <Card
       style={{
@@ -139,9 +143,6 @@ const NoticeCard: React.FC<Props> = ({ fragmentRef, onDeleted }) => {
               Pinned
             </Tag>
           )}
-          <Typography.Text style={{ fontSize: 12, color: NEUTRAL_500 }}>
-            {timeFromDate(notice.createdAt)}
-          </Typography.Text>
           {authorName && (
             <Space size={4}>
               <Avatar
@@ -155,6 +156,10 @@ const NoticeCard: React.FC<Props> = ({ fragmentRef, onDeleted }) => {
               </Typography.Text>
             </Space>
           )}
+
+          <Typography.Text style={{ fontSize: 12, color: NEUTRAL_500 }}>
+            {'| ' + timeFromDate(notice.createdAt)}
+          </Typography.Text>
         </Space>
         <Typography.Title level={5} style={{ margin: 0, color: NEUTRAL_700 }}>
           {notice.title}
