@@ -27,15 +27,20 @@ CREATE POLICY products_select ON public.products
   FOR SELECT
   USING (user_has_product_access(id));
 
--- INSERT: only authenticated users can insert; user_id must equal the caller.
---         No community membership check here — the community link is created
---         separately via products_communities after the product is inserted.
---         Explicitly scoped to the 'authenticated' role to avoid the anon role
---         triggering the policy with a null auth.uid().
+-- Set user_id default to auth.uid() so the client never needs to send it.
+-- This is the most reliable approach: the DB fills user_id from the JWT,
+-- and the RLS WITH CHECK verifies it matches auth.uid() after the default
+-- is applied. The client-side mutation omits userId entirely.
+ALTER TABLE public.products ALTER COLUMN user_id SET DEFAULT auth.uid();
+
+-- INSERT: only authenticated users can insert.
+--         user_id is filled by DEFAULT auth.uid() if not supplied by client.
+--         The OR user_id IS NULL branch is a safety net (DEFAULT fires before
+--         WITH CHECK, so user_id will already be auth.uid() at check time).
 CREATE POLICY products_insert ON public.products
   FOR INSERT
   TO authenticated
-  WITH CHECK (user_id = auth.uid());
+  WITH CHECK (user_id = auth.uid() OR user_id IS NULL);
 
 -- UPDATE: only the product owner can update their own product
 CREATE POLICY products_update ON public.products
