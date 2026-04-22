@@ -71,7 +71,7 @@ const CreateNoticeModal: React.FC<Props> = ({
       onCancel={onClose}
       confirmLoading={loading}
       okText="Post Notice"
-      destroyOnHidden
+      destroyOnClose
     >
       <Form form={form} layout="vertical" preserve={false}>
         <Form.Item

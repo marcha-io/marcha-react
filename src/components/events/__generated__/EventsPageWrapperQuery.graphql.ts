@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<49bf9eb29e64fd4476acf2b98e84990f>>
+ * @generated SignedSource<<2d603281c662ef1d7147d3b77398bd5b>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -343,13 +343,6 @@ return {
                         "name": "avatarUrl",
                         "storageKey": null
                       },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "username",
-                        "storageKey": null
-                      },
                       (v5/*: any*/)
                     ],
                     "storageKey": null
@@ -412,12 +405,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "8ec6912d36bd8e0663fb6f49269b7bcd",
+    "cacheID": "e9c01fb9a58ada6f7f398d7d868987dc",
     "id": null,
     "metadata": {},
     "name": "EventsPageWrapperQuery",
     "operationKind": "query",
-    "text": "query EventsPageWrapperQuery(\n  $filter: EventsFilter\n  $orderBy: [EventsOrderBy!]\n  $first: Int\n) {\n  eventsCollection(filter: $filter, orderBy: $orderBy, first: $first) {\n    edges {\n      node {\n        id\n        ...EventCardFragment\n        nodeId\n      }\n    }\n  }\n}\n\nfragment EventCardFragment on Events {\n  id\n  title\n  description\n  eventDate\n  location\n  imageUrl\n  maxAttendees\n  pinned\n  createdBy\n  profiles {\n    firstName\n    lastName\n    avatarUrl\n    username\n    nodeId\n  }\n  eventRsvpsCollection(filter: {status: {eq: attending}}) {\n    edges {\n      node {\n        id\n        nodeId\n      }\n    }\n  }\n}\n"
+    "text": "query EventsPageWrapperQuery(\n  $filter: EventsFilter\n  $orderBy: [EventsOrderBy!]\n  $first: Int\n) {\n  eventsCollection(filter: $filter, orderBy: $orderBy, first: $first) {\n    edges {\n      node {\n        id\n        ...EventCardFragment\n        nodeId\n      }\n    }\n  }\n}\n\nfragment EventCardFragment on Events {\n  id\n  title\n  description\n  eventDate\n  location\n  imageUrl\n  maxAttendees\n  pinned\n  createdBy\n  profiles {\n    firstName\n    lastName\n    avatarUrl\n    nodeId\n  }\n  eventRsvpsCollection(filter: {status: {eq: attending}}) {\n    edges {\n      node {\n        id\n        nodeId\n      }\n    }\n  }\n}\n"
   }
 };
 })();

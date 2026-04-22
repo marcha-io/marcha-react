@@ -18,7 +18,7 @@ import {
   message,
 } from 'antd';
 import graphql from 'babel-plugin-relay/macro';
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useFragment, useMutation } from 'react-relay';
 
 import { useAuth } from '../../contexts/AuthContext';
@@ -28,8 +28,6 @@ import {
   NEUTRAL_700,
   RADIUS_LG,
 } from '../../design';
-import { useUserAvatarUrl } from '../../hooks/useUserAvatarUrl';
-import timeFromDate from '../../utils/time_from_date_';
 import type { NoticeCardFragment$key } from './__generated__/NoticeCardFragment.graphql';
 import DeleteNoticeMutation from './graphql/DeleteNoticeMutation.graphql';
 import UpdateNoticeMutation from './graphql/UpdateNoticeMutation.graphql';
@@ -47,7 +45,6 @@ export const noticeCardFragment = graphql`
     profiles {
       firstName
       lastName
-      username
       avatarUrl
     }
   }
@@ -58,23 +55,35 @@ type Props = {
   onDeleted?: () => void;
 };
 
+const formatDate = (dateStr: string): string => {
+  const date = new Date(dateStr);
+  const now = new Date();
+  const diffMs = now.getTime() - date.getTime();
+  const diffMins = Math.floor(diffMs / 60000);
+  const diffHours = Math.floor(diffMs / 3600000);
+  const diffDays = Math.floor(diffMs / 86400000);
+
+  if (diffMins < 1) return 'Just now';
+  if (diffMins < 60) return `${diffMins}m ago`;
+  if (diffHours < 24) return `${diffHours}h ago`;
+  if (diffDays < 7) return `${diffDays}d ago`;
+  return date.toLocaleDateString('en-GB', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+  });
+};
+
 const NoticeCard: React.FC<Props> = ({ fragmentRef, onDeleted }) => {
   const notice = useFragment(noticeCardFragment, fragmentRef);
-
   const { userId } = useAuth();
-  const isOwner = useMemo(
-    () => userId != null && notice.createdBy === userId,
-    [userId, notice]
-  );
-
+  const isOwner = userId != null && notice.createdBy === userId;
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [editLoading, setEditLoading] = useState(false);
   const [editForm] = Form.useForm();
-
-  const avatarUrl = useUserAvatarUrl(notice.profiles?.avatarUrl);
-
-  const authorName =
-    `${notice.profiles?.firstName ?? ''} ${notice.profiles?.lastName ?? ''}`.trim();
+  const authorName = notice.profiles
+    ? `${notice.profiles.firstName ?? ''} ${notice.profiles.lastName ?? ''}`.trim()
+    : '';
 
   const [commitUpdate] =
     useMutation<UpdateNoticeMutationType>(UpdateNoticeMutation);
@@ -134,7 +143,7 @@ const NoticeCard: React.FC<Props> = ({ fragmentRef, onDeleted }) => {
         borderLeft: notice.pinned ? `4px solid ${BRAND_PRIMARY}` : undefined,
       }}
     >
-      <Space vertical size={8} style={{ width: '100%' }}>
+      <Space direction="vertical" size={8} style={{ width: '100%' }}>
         <Space size={8} align="center">
           {notice.pinned && (
             <Tag
@@ -145,10 +154,13 @@ const NoticeCard: React.FC<Props> = ({ fragmentRef, onDeleted }) => {
               Pinned
             </Tag>
           )}
+          <Typography.Text style={{ fontSize: 12, color: NEUTRAL_500 }}>
+            {formatDate(notice.createdAt)}
+          </Typography.Text>
           {authorName && (
             <Space size={4}>
               <Avatar
-                src={avatarUrl}
+                src={notice.profiles?.avatarUrl}
                 icon={<UserOutlined />}
                 size={18}
                 style={{ flexShrink: 0 }}
@@ -158,10 +170,6 @@ const NoticeCard: React.FC<Props> = ({ fragmentRef, onDeleted }) => {
               </Typography.Text>
             </Space>
           )}
-
-          <Typography.Text style={{ fontSize: 12, color: NEUTRAL_500 }}>
-            {'| ' + timeFromDate(notice.createdAt)}
-          </Typography.Text>
         </Space>
         <Typography.Title level={5} style={{ margin: 0, color: NEUTRAL_700 }}>
           {notice.title}
@@ -214,7 +222,7 @@ const NoticeCard: React.FC<Props> = ({ fragmentRef, onDeleted }) => {
         onCancel={() => setEditModalOpen(false)}
         confirmLoading={editLoading}
         okText="Save Changes"
-        destroyOnHidden
+        destroyOnClose
       >
         <Form form={editForm} layout="vertical" preserve={false}>
           <Form.Item

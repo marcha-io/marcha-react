@@ -12,8 +12,12 @@ import {
   Avatar,
   Button,
   Card,
+  DatePicker,
   Flex,
   Form,
+  Input,
+  InputNumber,
+  Modal,
   Popconfirm,
   Space,
   Tag,
@@ -32,10 +36,7 @@ import {
   NEUTRAL_700,
   RADIUS_LG,
 } from '../../design';
-import { useUserAvatarUrl } from '../../hooks/useUserAvatarUrl';
-import formatEventDate from '../../utils/format_event_date';
 import { Paths } from '../../views/paths';
-import EventFormModal from './EventFormModal';
 import type { EventDetailPageWrapperQuery$data } from './__generated__/EventDetailPageWrapperQuery.graphql';
 import DeleteEventMutation from './graphql/DeleteEventMutation.graphql';
 import {
@@ -52,30 +53,45 @@ type Props = {
   data: EventDetailPageWrapperQuery$data;
 };
 
+const formatEventDate = (dateStr: string): string => {
+  const date = new Date(dateStr);
+  return date.toLocaleDateString('en-GB', {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+};
+
 const EventDetailPage: React.FC<Props> = ({ data }) => {
   const navigate = useNavigate();
   const { communityId } = useParams<{ communityId: string }>();
   const { userId } = useAuth();
-
   const basePath = `/portal/${communityId}`;
 
   const event = data.eventsCollection?.edges?.[0]?.node;
   const currentRsvp = data.currentUserRsvp?.edges?.[0]?.node;
-
   const [isAttending, setIsAttending] = useState(currentRsvp != null);
   const [rsvpLoading, setRsvpLoading] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [editLoading, setEditLoading] = useState(false);
-
   const [editForm] = Form.useForm();
 
-  const avatarUrl = useUserAvatarUrl(event?.profiles?.avatarUrl);
-
   const isOwner = userId != null && event?.createdBy === userId;
-
-  const authorProfile = event?.profiles;
-  const authorName =
-    `${authorProfile?.firstName ?? ''} ${authorProfile?.lastName ?? ''}`.trim();
+  const authorProfile = (event as Record<string, unknown> | undefined)
+    ?.profiles as
+    | {
+        firstName: string | null;
+        lastName: string | null;
+        avatarUrl: string | null;
+      }
+    | null
+    | undefined;
+  const authorName = authorProfile
+    ? `${authorProfile.firstName ?? ''} ${authorProfile.lastName ?? ''}`.trim()
+    : '';
 
   const attendees = event?.eventRsvpsCollection?.edges ?? [];
   const attendeeCount =
@@ -85,7 +101,6 @@ const EventDetailPage: React.FC<Props> = ({ data }) => {
     useMutation<RsvpMutationsInsertMutation>(insertRsvpMutation);
   const [commitDeleteRsvp] =
     useMutation<RsvpMutationsDeleteMutation>(deleteRsvpMutation);
-
   const [commitUpdateEvent] =
     useMutation<UpdateEventMutationType>(UpdateEventMutation);
   const [commitDeleteEvent] =
@@ -204,7 +219,7 @@ const EventDetailPage: React.FC<Props> = ({ data }) => {
   const isUpcoming = new Date(event.eventDate).getTime() > Date.now();
 
   return (
-    <div>
+    <div style={{ maxWidth: 720, margin: '0 auto' }}>
       <Button
         type="text"
         icon={<ArrowLeftOutlined />}
@@ -214,149 +229,179 @@ const EventDetailPage: React.FC<Props> = ({ data }) => {
         Back to Events
       </Button>
 
-      <div style={{ maxWidth: 720, margin: '0 auto' }}>
-        {event.imageUrl && (
-          <img
-            alt={event.title}
-            src={event.imageUrl}
-            style={{
-              width: '100%',
-              height: 280,
-              objectFit: 'cover',
-              borderRadius: RADIUS_LG,
-              marginBottom: 24,
-            }}
-          />
-        )}
+      {event.imageUrl && (
+        <img
+          alt={event.title}
+          src={event.imageUrl}
+          style={{
+            width: '100%',
+            height: 280,
+            objectFit: 'cover',
+            borderRadius: RADIUS_LG,
+            marginBottom: 24,
+          }}
+        />
+      )}
 
-        <Card style={{ maxWidth: 720, borderRadius: RADIUS_LG }}>
-          <Space vertical size={16} style={{ width: '100%' }}>
-            <Flex
-              justify="space-between"
-              align="flex-start"
-              wrap="wrap"
-              gap={12}
-            >
-              <div>
-                <Space size={8} style={{ marginBottom: 8 }}>
-                  {isUpcoming ? (
-                    <Tag color="green">Upcoming</Tag>
-                  ) : (
-                    <Tag color="default">Past</Tag>
-                  )}
-                </Space>
-                <Typography.Title level={3} style={{ margin: 0 }}>
-                  {event.title}
-                </Typography.Title>
-                {authorName && (
-                  <Space size={6} style={{ marginTop: 4 }}>
-                    <Avatar src={avatarUrl} icon={<UserOutlined />} size={20} />
-                    <Typography.Text
-                      style={{ fontSize: 13, color: NEUTRAL_500 }}
-                    >
-                      {authorName}
-                    </Typography.Text>
-                  </Space>
+      <Card style={{ borderRadius: RADIUS_LG }}>
+        <Space direction="vertical" size={16} style={{ width: '100%' }}>
+          <Flex justify="space-between" align="flex-start" wrap="wrap" gap={12}>
+            <div>
+              <Space size={8} style={{ marginBottom: 8 }}>
+                {isUpcoming ? (
+                  <Tag color="green">Upcoming</Tag>
+                ) : (
+                  <Tag color="default">Past</Tag>
                 )}
-              </div>
-              {isUpcoming && !isOwner && (
-                <Button
-                  type={isAttending ? 'default' : 'primary'}
-                  icon={isAttending ? <CheckCircleOutlined /> : undefined}
-                  loading={rsvpLoading}
-                  onClick={handleRsvp}
-                  size="large"
-                >
-                  {isAttending ? 'Attending' : 'RSVP'}
-                </Button>
-              )}
-            </Flex>
-
-            <Space vertical size={8}>
-              <Space size={8}>
-                <CalendarOutlined
-                  style={{ color: BRAND_PRIMARY, fontSize: 16 }}
-                />
-                <Typography.Text style={{ fontSize: 15, color: NEUTRAL_700 }}>
-                  {formatEventDate(event.eventDate)}
-                </Typography.Text>
               </Space>
-              {event.location && (
-                <Space size={8}>
-                  <EnvironmentOutlined
-                    style={{ color: BRAND_PRIMARY, fontSize: 16 }}
+              <Typography.Title level={3} style={{ margin: 0 }}>
+                {event.title}
+              </Typography.Title>
+              {authorName && (
+                <Space size={6} style={{ marginTop: 4 }}>
+                  <Avatar
+                    src={authorProfile?.avatarUrl}
+                    icon={<UserOutlined />}
+                    size={20}
                   />
-                  <Typography.Text style={{ fontSize: 15, color: NEUTRAL_700 }}>
-                    {event.location}
+                  <Typography.Text style={{ fontSize: 13, color: NEUTRAL_500 }}>
+                    {authorName}
                   </Typography.Text>
                 </Space>
               )}
+            </div>
+            {isUpcoming && (
+              <Button
+                type={isAttending ? 'default' : 'primary'}
+                icon={isAttending ? <CheckCircleOutlined /> : undefined}
+                loading={rsvpLoading}
+                onClick={handleRsvp}
+                size="large"
+              >
+                {isAttending ? 'Attending' : 'RSVP'}
+              </Button>
+            )}
+          </Flex>
+
+          <Space direction="vertical" size={8}>
+            <Space size={8}>
+              <CalendarOutlined
+                style={{ color: BRAND_PRIMARY, fontSize: 16 }}
+              />
+              <Typography.Text style={{ fontSize: 15, color: NEUTRAL_700 }}>
+                {formatEventDate(event.eventDate)}
+              </Typography.Text>
+            </Space>
+            {event.location && (
               <Space size={8}>
-                <TeamOutlined style={{ color: BRAND_PRIMARY, fontSize: 16 }} />
-                <Typography.Text style={{ fontSize: 15, color: NEUTRAL_500 }}>
-                  {attendeeCount} attending
-                  {event.maxAttendees != null && ` / ${event.maxAttendees} max`}
+                <EnvironmentOutlined
+                  style={{ color: BRAND_PRIMARY, fontSize: 16 }}
+                />
+                <Typography.Text style={{ fontSize: 15, color: NEUTRAL_700 }}>
+                  {event.location}
                 </Typography.Text>
               </Space>
+            )}
+            <Space size={8}>
+              <TeamOutlined style={{ color: BRAND_PRIMARY, fontSize: 16 }} />
+              <Typography.Text style={{ fontSize: 15, color: NEUTRAL_500 }}>
+                {attendeeCount} attending
+                {event.maxAttendees != null && ` / ${event.maxAttendees} max`}
+              </Typography.Text>
             </Space>
-
-            {event.description && (
-              <div>
-                <Typography.Title level={5} style={{ marginBottom: 8 }}>
-                  About this event
-                </Typography.Title>
-                <Typography.Paragraph
-                  style={{ color: NEUTRAL_700, whiteSpace: 'pre-wrap' }}
-                >
-                  {event.description}
-                </Typography.Paragraph>
-              </div>
-            )}
-
-            {isOwner && (
-              <Flex gap={8} style={{ marginTop: 8 }}>
-                <Button
-                  icon={<EditOutlined />}
-                  onClick={() => {
-                    editForm.setFieldsValue({
-                      title: event.title,
-                      description: event.description,
-                      eventDate: dayjs(event.eventDate),
-                      location: event.location,
-                      imageUrl: event.imageUrl,
-                      maxAttendees: event.maxAttendees,
-                    });
-                    setEditModalOpen(true);
-                  }}
-                >
-                  Edit
-                </Button>
-                <Popconfirm
-                  title="Delete this event?"
-                  description="This action cannot be undone."
-                  onConfirm={handleDelete}
-                  okText="Delete"
-                  okButtonProps={{ danger: true }}
-                >
-                  <Button danger icon={<DeleteOutlined />}>
-                    Delete
-                  </Button>
-                </Popconfirm>
-              </Flex>
-            )}
           </Space>
-        </Card>
 
-        <EventFormModal
-          title="Edit Event"
-          form={editForm}
-          isModalOpen={editModalOpen}
-          onSubmit={handleEditSubmit}
-          onCloseModal={() => setEditModalOpen(false)}
-          isLoading={editLoading}
-          submitLabel="Save Changes"
-        />
-      </div>
+          {event.description && (
+            <div>
+              <Typography.Title level={5} style={{ marginBottom: 8 }}>
+                About this event
+              </Typography.Title>
+              <Typography.Paragraph
+                style={{ color: NEUTRAL_700, whiteSpace: 'pre-wrap' }}
+              >
+                {event.description}
+              </Typography.Paragraph>
+            </div>
+          )}
+
+          {isOwner && (
+            <Flex gap={8} style={{ marginTop: 8 }}>
+              <Button
+                icon={<EditOutlined />}
+                onClick={() => {
+                  editForm.setFieldsValue({
+                    title: event.title,
+                    description: event.description,
+                    eventDate: dayjs(event.eventDate),
+                    location: event.location,
+                    imageUrl: event.imageUrl,
+                    maxAttendees: event.maxAttendees,
+                  });
+                  setEditModalOpen(true);
+                }}
+              >
+                Edit
+              </Button>
+              <Popconfirm
+                title="Delete this event?"
+                description="This action cannot be undone."
+                onConfirm={handleDelete}
+                okText="Delete"
+                okButtonProps={{ danger: true }}
+              >
+                <Button danger icon={<DeleteOutlined />}>
+                  Delete
+                </Button>
+              </Popconfirm>
+            </Flex>
+          )}
+        </Space>
+      </Card>
+
+      <Modal
+        title="Edit Event"
+        open={editModalOpen}
+        onOk={handleEditSubmit}
+        onCancel={() => setEditModalOpen(false)}
+        confirmLoading={editLoading}
+        okText="Save Changes"
+        destroyOnClose
+      >
+        <Form form={editForm} layout="vertical" preserve={false}>
+          <Form.Item
+            name="title"
+            label="Event Title"
+            rules={[{ required: true, message: 'Please enter an event title' }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item name="description" label="Description">
+            <Input.TextArea rows={3} />
+          </Form.Item>
+          <Form.Item
+            name="eventDate"
+            label="Date & Time"
+            rules={[
+              { required: true, message: 'Please select a date and time' },
+            ]}
+          >
+            <DatePicker
+              showTime
+              format="DD/MM/YYYY HH:mm"
+              style={{ width: '100%' }}
+            />
+          </Form.Item>
+          <Form.Item name="location" label="Location">
+            <Input />
+          </Form.Item>
+          <Form.Item name="imageUrl" label="Image URL">
+            <Input />
+          </Form.Item>
+          <Form.Item name="maxAttendees" label="Max Attendees">
+            <InputNumber min={1} style={{ width: '100%' }} />
+          </Form.Item>
+        </Form>
+      </Modal>
     </div>
   );
 };

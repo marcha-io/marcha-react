@@ -66,7 +66,7 @@ const ProfilePage: EntryPointComponent<
       setUploading(true);
 
       try {
-        const filePath = `${profile.id}.jpg`;
+        const filePath = `${profile.username}/${profile.id}.jpg`;
 
         const { error: uploadError } = await supabase.storage
           .from('avatars')

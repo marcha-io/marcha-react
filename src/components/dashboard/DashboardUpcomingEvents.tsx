@@ -171,7 +171,7 @@ const DashboardUpcomingEvents: React.FC<Props> = ({
           View all
         </Typography.Link>
       }
-      style={{ borderRadius: RADIUS_LG, marginBottom: 24 }}
+      style={{ borderRadius: RADIUS_LG }}
       styles={{ body: { padding: '0 16px' } }}
     >
       {events.length === 0 ? (

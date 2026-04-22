@@ -16,8 +16,6 @@ import {
   NEUTRAL_700,
   RADIUS_LG,
 } from '../../design';
-import { useUserAvatarUrl } from '../../hooks/useUserAvatarUrl';
-import formatEventDate from '../../utils/format_event_date';
 import type { EventCardFragment$key } from './__generated__/EventCardFragment.graphql';
 
 export const eventCardFragment = graphql`
@@ -51,17 +49,28 @@ type Props = {
   onClick: (id: string) => void;
 };
 
+const formatEventDate = (dateStr: string): string => {
+  const date = new Date(dateStr);
+  return date.toLocaleDateString('en-GB', {
+    weekday: 'short',
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+};
+
 const isUpcoming = (dateStr: string): boolean =>
   new Date(dateStr).getTime() > Date.now();
 
 const EventCard: React.FC<Props> = ({ fragmentRef, onClick }) => {
   const event = useFragment(eventCardFragment, fragmentRef);
-  const avatarUrl = useUserAvatarUrl(event.profiles?.avatarUrl);
-
   const attendeeCount = event.eventRsvpsCollection?.edges?.length ?? 0;
   const upcoming = isUpcoming(event.eventDate);
-  const authorName =
-    `${event?.profiles?.firstName ?? ''} ${event?.profiles?.lastName ?? ''}`.trim();
+  const authorName = event.profiles
+    ? `${event.profiles.firstName ?? ''} ${event.profiles.lastName ?? ''}`.trim()
+    : '';
 
   return (
     <Card
@@ -99,7 +108,7 @@ const EventCard: React.FC<Props> = ({ fragmentRef, onClick }) => {
         )
       }
     >
-      <Space vertical size={8} style={{ width: '100%' }}>
+      <Space direction="vertical" size={8} style={{ width: '100%' }}>
         <Space size={4} wrap>
           {upcoming ? (
             <Tag color="green">Upcoming</Tag>
@@ -148,7 +157,7 @@ const EventCard: React.FC<Props> = ({ fragmentRef, onClick }) => {
         {authorName && (
           <Space size={6}>
             <Avatar
-              src={avatarUrl}
+              src={event.profiles?.avatarUrl}
               icon={<UserOutlined />}
               size={18}
               style={{ flexShrink: 0 }}

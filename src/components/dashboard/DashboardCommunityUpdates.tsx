@@ -1,4 +1,4 @@
-import { UserOutlined } from '@ant-design/icons';
+import { BellOutlined, UserOutlined } from '@ant-design/icons';
 import { Avatar, Card, Space, Typography } from 'antd';
 import graphql from 'babel-plugin-relay/macro';
 import React from 'react';
@@ -12,9 +12,14 @@ import {
   NEUTRAL_900,
   RADIUS_LG,
 } from '../../design';
-import timeFromDate from '../../utils/time_from_date_';
 import type { DashboardCommunityUpdatesFragment$key } from './__generated__/DashboardCommunityUpdatesFragment.graphql';
 
+/**
+ * Fragment anchored on Communities so it does NOT conflict with the
+ * root-level communityUsersCollection already in DashboardComponentQuery.
+ * It is spread on `community` inside the existing communityUsersCollection
+ * query in Dashboard.tsx.
+ */
 export const dashboardCommunityUpdatesFragment = graphql`
   fragment DashboardCommunityUpdatesFragment on Communities {
     communityUsersCollection(first: 20, filter: { role: { eq: admin } }) {
@@ -46,23 +51,22 @@ export const dashboardCommunityUpdatesFragment = graphql`
   }
 `;
 
-type CommunityUpdate = {
-  id: string;
-  title: string;
-  body: string;
-  createdAt: string;
-  profiles:
-    | {
-        firstName: string | null | undefined;
-        lastName: string | null | undefined;
-        avatarUrl: string | null | undefined;
-      }
-    | null
-    | undefined;
+const formatDate = (dateStr: string): string => {
+  const date = new Date(dateStr);
+  const now = new Date();
+  const diffMs = now.getTime() - date.getTime();
+  const diffMins = Math.floor(diffMs / 60000);
+  const diffHours = Math.floor(diffMs / 3600000);
+  const diffDays = Math.floor(diffMs / 86400000);
+  if (diffMins < 1) return 'Just now';
+  if (diffMins < 60) return `${diffMins}m ago`;
+  if (diffHours < 24) return `${diffHours}h ago`;
+  if (diffDays < 7) return `${diffDays}d ago`;
+  return date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
 };
 
 type Props = {
-  fragmentRef: DashboardCommunityUpdatesFragment$key | null | undefined;
+  fragmentRef: DashboardCommunityUpdatesFragment$key;
   onBrowse: () => void;
 };
 
@@ -72,23 +76,38 @@ const DashboardCommunityUpdates: React.FC<Props> = ({
 }) => {
   const data = useFragment(dashboardCommunityUpdatesFragment, fragmentRef);
 
-  const adminEdges = data?.communityUsersCollection?.edges ?? [];
-  let notice: CommunityUpdate | null = null;
+  // Collect the latest notice from each admin user and pick the most recent one
+  const adminEdges = data.communityUsersCollection?.edges ?? [];
+  let notice: {
+    id: string;
+    title: string;
+    body: string;
+    createdAt: string;
+    profiles:
+      | {
+          firstName: string | null | undefined;
+          lastName: string | null | undefined;
+          avatarUrl: string | null | undefined;
+        }
+      | null
+      | undefined;
+  } | null = null;
 
   for (const edge of adminEdges) {
     const candidate =
       edge.node.user?.noticesCollection?.edges?.[0]?.node ?? null;
     if (
-      candidate != null &&
-      (notice == null ||
+      candidate !== null &&
+      (notice === null ||
         new Date(candidate.createdAt) > new Date(notice.createdAt))
     ) {
       notice = candidate;
     }
   }
 
-  const authorName =
-    `${notice?.profiles?.firstName ?? ''} ${notice?.profiles?.lastName ?? ''}`.trim();
+  const authorName = notice?.profiles
+    ? `${notice.profiles.firstName ?? ''} ${notice.profiles.lastName ?? ''}`.trim()
+    : '';
 
   return (
     <Card
@@ -102,6 +121,7 @@ const DashboardCommunityUpdates: React.FC<Props> = ({
             color: NEUTRAL_500,
           }}
         >
+          <BellOutlined style={{ marginRight: 6 }} />
           Community Updates
         </Typography.Text>
       }
@@ -125,7 +145,7 @@ const DashboardCommunityUpdates: React.FC<Props> = ({
         </Typography.Text>
       ) : (
         <Space
-          vertical
+          direction="vertical"
           size={8}
           style={{
             width: '100%',
@@ -163,7 +183,7 @@ const DashboardCommunityUpdates: React.FC<Props> = ({
               &middot;
             </Typography.Text>
             <Typography.Text style={{ fontSize: 12, color: NEUTRAL_500 }}>
-              {timeFromDate(notice.createdAt)}
+              {formatDate(notice.createdAt)}
             </Typography.Text>
           </Space>
         </Space>

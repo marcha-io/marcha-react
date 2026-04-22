@@ -10,7 +10,6 @@ import {
   SHADOW_BUTTON,
   WHITE,
 } from '../../design';
-import { useUserAvatarUrl } from '../../hooks/useUserAvatarUrl';
 
 type ProfileHeaderProps = {
   displayName: string;
@@ -23,15 +22,12 @@ type ProfileHeaderProps = {
 const ProfileHeader: React.FC<ProfileHeaderProps> = ({
   displayName,
   username,
-  avatarUrl: avatarPhoto,
+  avatarUrl,
   uploading,
   onAvatarUpload,
-}) => {
-  const avatarUrl = useUserAvatarUrl(avatarPhoto);
-
-  return (
-    <>
-      <style>{`
+}) => (
+  <>
+    <style>{`
       @media (max-width: 767px) {
         .profile-header-card {
           border-radius: 12px !important;
@@ -56,84 +52,83 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
         }
       }
     `}</style>
-      <Card
-        className="profile-header-card"
+    <Card
+      className="profile-header-card"
+      style={{
+        borderRadius: RADIUS_XL,
+        overflow: 'hidden',
+        marginBottom: 24,
+        border: 'none',
+        width: '100%',
+      }}
+      styles={{ body: { padding: 0 } }}
+    >
+      <div
+        className="profile-header-banner"
         style={{
-          borderRadius: RADIUS_XL,
-          overflow: 'hidden',
-          marginBottom: 24,
-          border: 'none',
-          width: '100%',
+          background: BRAND_GRADIENT_SIMPLE,
+          height: 140,
         }}
-        styles={{ body: { padding: 0 } }}
+      />
+      <Flex
+        vertical
+        align="center"
+        className="profile-header-body"
+        style={{ marginTop: -60, paddingBottom: 24 }}
       >
-        <div
-          className="profile-header-banner"
-          style={{
-            background: BRAND_GRADIENT_SIMPLE,
-            height: 140,
-          }}
-        />
-        <Flex
-          vertical
-          align="center"
-          className="profile-header-body"
-          style={{ marginTop: -60, paddingBottom: 24 }}
-        >
-          <div style={{ position: 'relative', marginBottom: 12 }}>
-            <Avatar
-              size={120}
-              src={avatarUrl}
-              icon={<UserOutlined />}
-              className="profile-header-avatar"
+        <div style={{ position: 'relative', marginBottom: 12 }}>
+          <Avatar
+            size={120}
+            src={avatarUrl || undefined}
+            icon={!avatarUrl ? <UserOutlined /> : undefined}
+            className="profile-header-avatar"
+            style={{
+              border: `4px solid ${WHITE}`,
+              boxShadow: SHADOW_AVATAR,
+              backgroundColor: avatarUrl ? undefined : BRAND_PRIMARY,
+            }}
+          />
+          <Upload
+            accept="image/jpeg"
+            showUploadList={false}
+            beforeUpload={(file) => {
+              onAvatarUpload(file);
+            }}
+          >
+            <Button
+              shape="circle"
+              icon={uploading ? <Spin size="small" /> : <CameraOutlined />}
+              size="small"
               style={{
-                border: `4px solid ${WHITE}`,
-                boxShadow: SHADOW_AVATAR,
-                backgroundColor: avatarUrl ? undefined : BRAND_PRIMARY,
+                position: 'absolute',
+                bottom: 4,
+                right: 4,
+                backgroundColor: BRAND_PRIMARY,
+                borderColor: BRAND_PRIMARY,
+                color: WHITE,
+                boxShadow: SHADOW_BUTTON,
               }}
             />
-            <Upload
-              accept="image/jpeg"
-              showUploadList={false}
-              beforeUpload={(file) => {
-                onAvatarUpload(file);
-              }}
-            >
-              <Button
-                shape="circle"
-                icon={uploading ? <Spin size="small" /> : <CameraOutlined />}
-                size="small"
-                style={{
-                  position: 'absolute',
-                  bottom: 4,
-                  right: 4,
-                  backgroundColor: BRAND_PRIMARY,
-                  borderColor: BRAND_PRIMARY,
-                  color: WHITE,
-                  boxShadow: SHADOW_BUTTON,
-                }}
-              />
-            </Upload>
-          </div>
-          <Typography.Title
-            level={3}
-            className="profile-header-name"
-            style={{ margin: 0 }}
+          </Upload>
+        </div>
+        <Typography.Title
+          level={3}
+          className="profile-header-name"
+          style={{ margin: 0 }}
+        >
+          {displayName}
+        </Typography.Title>
+        {username && (
+          <Typography.Text
+            type="secondary"
+            style={{ fontSize: 14, marginTop: 4 }}
           >
-            {displayName}
-          </Typography.Title>
-          {username && (
-            <Typography.Text
-              type="secondary"
-              style={{ fontSize: 14, marginTop: 4 }}
-            >
-              @{username}
-            </Typography.Text>
-          )}
-        </Flex>
-      </Card>
-    </>
-  );
-};
+            @{username}
+          </Typography.Text>
+        )}
+      </Flex>
+    </Card>
+  </>
+);
 
 export default ProfileHeader;

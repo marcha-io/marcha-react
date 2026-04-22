@@ -1,11 +1,19 @@
-import { Form, message } from 'antd';
+import {
+  DatePicker,
+  Form,
+  Input,
+  InputNumber,
+  Modal,
+  Switch,
+  Tooltip,
+  message,
+} from 'antd';
 import React, { useCallback, useState } from 'react';
 import { useMutation } from 'react-relay';
 import { useParams } from 'react-router-dom';
 
 import { useAuth } from '../../contexts/AuthContext';
 import { useIsAdmin } from '../../hooks/useIsAdmin';
-import EventFormModal from './EventFormModal';
 import InsertEventMutation from './graphql/InsertEventMutation.graphql';
 import type { InsertEventMutation as InsertEventMutationType } from './graphql/__generated__/InsertEventMutation.graphql';
 
@@ -18,9 +26,7 @@ const CreateEventModal: React.FC<Props> = ({ open, onClose }) => {
   const [form] = Form.useForm();
   const { communityId } = useParams<{ communityId: string }>();
   const { userId } = useAuth();
-
   const isAdmin = useIsAdmin(communityId);
-
   const [loading, setLoading] = useState(false);
 
   const [commitInsert] =
@@ -40,7 +46,7 @@ const CreateEventModal: React.FC<Props> = ({ open, onClose }) => {
                 eventDate: values.eventDate.toISOString(),
                 location: values.location ?? null,
                 imageUrl: values.imageUrl ?? null,
-                maxAttendees: values.maxAttendees,
+                maxAttendees: values.maxAttendees ?? null,
                 pinned: values.pinned ?? false,
                 createdBy: userId,
                 communityId: communityId,
@@ -65,16 +71,64 @@ const CreateEventModal: React.FC<Props> = ({ open, onClose }) => {
   }, [form, commitInsert, userId, communityId, onClose]);
 
   return (
-    <EventFormModal
+    <Modal
       title="Create Event"
-      isModalOpen={open}
-      onSubmit={handleSubmit}
-      onCloseModal={onClose}
-      isLoading={loading}
-      submitLabel="Create Event"
-      form={form}
-      isPinnedToggleShowned={isAdmin}
-    />
+      open={open}
+      onOk={handleSubmit}
+      onCancel={onClose}
+      confirmLoading={loading}
+      okText="Create Event"
+      destroyOnClose
+    >
+      <Form form={form} layout="vertical" preserve={false}>
+        <Form.Item
+          name="title"
+          label="Event Title"
+          rules={[{ required: true, message: 'Please enter an event title' }]}
+        >
+          <Input placeholder="e.g. Community BBQ" />
+        </Form.Item>
+        <Form.Item name="description" label="Description">
+          <Input.TextArea rows={3} placeholder="Describe the event..." />
+        </Form.Item>
+        <Form.Item
+          name="eventDate"
+          label="Date & Time"
+          rules={[{ required: true, message: 'Please select a date and time' }]}
+        >
+          <DatePicker
+            showTime
+            format="DD/MM/YYYY HH:mm"
+            style={{ width: '100%' }}
+          />
+        </Form.Item>
+        <Form.Item name="location" label="Location">
+          <Input placeholder="e.g. Building courtyard" />
+        </Form.Item>
+        <Form.Item name="imageUrl" label="Image URL">
+          <Input placeholder="https://example.com/image.jpg" />
+        </Form.Item>
+        <Form.Item name="maxAttendees" label="Max Attendees">
+          <InputNumber
+            min={1}
+            placeholder="Leave empty for unlimited"
+            style={{ width: '100%' }}
+          />
+        </Form.Item>
+        {isAdmin && (
+          <Form.Item
+            name="pinned"
+            label="Pin this event"
+            valuePropName="checked"
+            initialValue={false}
+          >
+            <Tooltip title="Pinned events appear at the top of the events page">
+              <Switch />
+            </Tooltip>
+          </Form.Item>
+        )}
+      </Form>
+    </Modal>
   );
 };
 
