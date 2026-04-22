@@ -99,7 +99,11 @@ const CreateListingForm: React.FC<CreateListingFormProps> = ({
           </Form.Item>
         </Col>
         <Col xs={24} sm={8}>
-          <Form.Item name="categoryId" label="Category">
+          <Form.Item
+            name="categoryId"
+            label="Category"
+            rules={[{ required: true, message: 'Please selected a category' }]}
+          >
             <Select
               placeholder="Select category"
               allowClear
