@@ -30,12 +30,12 @@ CREATE POLICY products_select ON public.products
 -- INSERT: only authenticated users can insert; user_id must equal the caller.
 --         No community membership check here — the community link is created
 --         separately via products_communities after the product is inserted.
+--         Explicitly scoped to the 'authenticated' role to avoid the anon role
+--         triggering the policy with a null auth.uid().
 CREATE POLICY products_insert ON public.products
   FOR INSERT
-  WITH CHECK (
-    auth.uid() IS NOT NULL
-    AND user_id = auth.uid()
-  );
+  TO authenticated
+  WITH CHECK (user_id = auth.uid());
 
 -- UPDATE: only the product owner can update their own product
 CREATE POLICY products_update ON public.products
