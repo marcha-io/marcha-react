@@ -299,8 +299,11 @@ const Dashboard: EntryPointComponent<
       </Row>
 
       <Row gutter={[24, 24]}>
-        {/* ── Left column: Active Requests ─────────── */}
         <Col xs={24} lg={16}>
+          <DashboardCommunityUpdates
+            fragmentRef={communityUser?.community}
+            onBrowse={() => navigate(`${basePath}/${Paths.Community}`)}
+          />
           <Card
             title="Active Requests"
             extra={
@@ -310,7 +313,7 @@ const Dashboard: EntryPointComponent<
                 See all &gt;
               </Typography.Link>
             }
-            style={{ borderRadius: RADIUS_LG, marginBottom: 24 }}
+            style={{ borderRadius: RADIUS_LG }}
           >
             <List
               dataSource={[]}
@@ -318,10 +321,17 @@ const Dashboard: EntryPointComponent<
               renderItem={() => null}
             />
           </Card>
-
         </Col>
 
         <Col xs={24} lg={8}>
+          <DashboardUpcomingEvents
+            fragmentRef={data}
+            onBrowse={() => navigate(`${basePath}/${Paths.Events}`)}
+            onNavigateToEvent={(id) =>
+              navigate(`${basePath}/${Paths.Events}/${id}`)
+            }
+          />
+
           <Card
             title="Recent Messages"
             extra={
@@ -340,26 +350,11 @@ const Dashboard: EntryPointComponent<
             />
           </Card>
 
-          {communityUser?.community != null && (
-            <DashboardCommunityUpdates
-              fragmentRef={communityUser.community}
-              onBrowse={() => navigate(`${basePath}/${Paths.Community}`)}
-            />
-          )}
-
           <DashboardMarketplacePreview
             fragmentRef={data}
             onBrowse={() => navigate(`${basePath}/${Paths.Market}`)}
             onNavigateToListing={(id) =>
               navigate(`${basePath}/${Paths.Market}/${id}`)
-            }
-          />
-
-          <DashboardUpcomingEvents
-            fragmentRef={data}
-            onBrowse={() => navigate(`${basePath}/${Paths.Events}`)}
-            onNavigateToEvent={(id) =>
-              navigate(`${basePath}/${Paths.Events}/${id}`)
             }
           />
         </Col>
