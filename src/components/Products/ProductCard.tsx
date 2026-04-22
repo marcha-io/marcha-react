@@ -81,10 +81,12 @@ const ProductCard = ({
 
     if (imagePath) {
       setImageLoading(true);
-      fetchFromStorage(imagePath, 'product-images').then((blob) => {
-        if (blob) setImageBlob(blob);
-        setImageLoading(false);
-      });
+      fetchFromStorage(imagePath, `product-images/${product.id}`).then(
+        (blob) => {
+          if (blob) setImageBlob(blob);
+          setImageLoading(false);
+        }
+      );
     }
   }, [product.productImagesCollection]);
 
