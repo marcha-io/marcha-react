@@ -89,10 +89,10 @@ const CreateListingPage: EntryPointComponent<
     for (const file of fileList) {
       if (file.originFileObj) {
         const fileExt = file.name.split('.').pop();
-        const fileName = `${userId}/${crypto.randomUUID()}.${fileExt}`;
+        const fileName = `${crypto.randomUUID()}.${fileExt}`;
 
         const { error: uploadError } = await supabase.storage
-          .from('product-images')
+          .from(`product-images/${userId}`)
           .upload(fileName, file.originFileObj, {
             upsert: false,
             contentType: file.originFileObj.type,
@@ -140,7 +140,7 @@ const CreateListingPage: EntryPointComponent<
                 name: values.name,
                 description: values.description,
                 price: values.price,
-                categoryId: values.categoryId || null,
+                categoryId: values.categoryId,
                 condition: values.condition as
                   | 'New'
                   | 'Like_new'
