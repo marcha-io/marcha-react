@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<b57ea1a639b7c6fde41c8ce10ac6bec0>>
+ * @generated SignedSource<<62c385b4b22b53ba19e0ada9d298901c>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -34,6 +34,7 @@ export type DashboardComponentQuery$data = {
           readonly id: string;
           readonly image: string | null | undefined;
           readonly name: string;
+          readonly " $fragmentSpreads": FragmentRefs<"DashboardCommunityUpdatesFragment">;
         } | null | undefined;
         readonly communityId: string;
       };
@@ -48,7 +49,7 @@ export type DashboardComponentQuery$data = {
       };
     }>;
   } | null | undefined;
-  readonly " $fragmentSpreads": FragmentRefs<"DashboardMarketplacePreviewFragment">;
+  readonly " $fragmentSpreads": FragmentRefs<"DashboardMarketplacePreviewFragment" | "DashboardUpcomingEventsFragment">;
 };
 export type DashboardComponentQuery = {
   response: DashboardComponentQuery$data;
@@ -161,6 +162,46 @@ v13 = {
   "kind": "ScalarField",
   "name": "nodeId",
   "storageKey": null
+},
+v14 = [
+  (v3/*: any*/),
+  (v4/*: any*/),
+  (v5/*: any*/),
+  (v13/*: any*/)
+],
+v15 = {
+  "kind": "Literal",
+  "name": "orderBy",
+  "value": [
+    {
+      "createdAt": "DescNullsLast"
+    }
+  ]
+},
+v16 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "title",
+  "storageKey": null
+},
+v17 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "createdAt",
+  "storageKey": null
+},
+v18 = {
+  "fields": [
+    {
+      "kind": "Literal",
+      "name": "communityId",
+      "value": null
+    }
+  ],
+  "kind": "ObjectValue",
+  "name": "filter"
 };
 return {
   "fragment": {
@@ -242,7 +283,12 @@ return {
                       (v9/*: any*/),
                       (v10/*: any*/),
                       (v11/*: any*/),
-                      (v12/*: any*/)
+                      (v12/*: any*/),
+                      {
+                        "args": null,
+                        "kind": "FragmentSpread",
+                        "name": "DashboardCommunityUpdatesFragment"
+                      }
                     ],
                     "storageKey": null
                   }
@@ -259,6 +305,11 @@ return {
         "args": null,
         "kind": "FragmentSpread",
         "name": "DashboardMarketplacePreviewFragment"
+      },
+      {
+        "args": null,
+        "kind": "FragmentSpread",
+        "name": "DashboardUpcomingEventsFragment"
       }
     ],
     "type": "Query",
@@ -293,12 +344,7 @@ return {
                 "kind": "LinkedField",
                 "name": "node",
                 "plural": false,
-                "selections": [
-                  (v3/*: any*/),
-                  (v4/*: any*/),
-                  (v5/*: any*/),
-                  (v13/*: any*/)
-                ],
+                "selections": (v14/*: any*/),
                 "storageKey": null
               }
             ],
@@ -345,6 +391,124 @@ return {
                       (v10/*: any*/),
                       (v11/*: any*/),
                       (v12/*: any*/),
+                      {
+                        "alias": null,
+                        "args": [
+                          {
+                            "kind": "Literal",
+                            "name": "filter",
+                            "value": {
+                              "role": {
+                                "eq": "admin"
+                              }
+                            }
+                          },
+                          {
+                            "kind": "Literal",
+                            "name": "first",
+                            "value": 20
+                          }
+                        ],
+                        "concreteType": "CommunityUsersConnection",
+                        "kind": "LinkedField",
+                        "name": "communityUsersCollection",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "alias": null,
+                            "args": null,
+                            "concreteType": "CommunityUsersEdge",
+                            "kind": "LinkedField",
+                            "name": "edges",
+                            "plural": true,
+                            "selections": [
+                              {
+                                "alias": null,
+                                "args": null,
+                                "concreteType": "CommunityUsers",
+                                "kind": "LinkedField",
+                                "name": "node",
+                                "plural": false,
+                                "selections": [
+                                  {
+                                    "alias": null,
+                                    "args": null,
+                                    "concreteType": "Profiles",
+                                    "kind": "LinkedField",
+                                    "name": "user",
+                                    "plural": false,
+                                    "selections": [
+                                      {
+                                        "alias": null,
+                                        "args": [
+                                          (v1/*: any*/),
+                                          (v15/*: any*/)
+                                        ],
+                                        "concreteType": "NoticesConnection",
+                                        "kind": "LinkedField",
+                                        "name": "noticesCollection",
+                                        "plural": false,
+                                        "selections": [
+                                          {
+                                            "alias": null,
+                                            "args": null,
+                                            "concreteType": "NoticesEdge",
+                                            "kind": "LinkedField",
+                                            "name": "edges",
+                                            "plural": true,
+                                            "selections": [
+                                              {
+                                                "alias": null,
+                                                "args": null,
+                                                "concreteType": "Notices",
+                                                "kind": "LinkedField",
+                                                "name": "node",
+                                                "plural": false,
+                                                "selections": [
+                                                  (v8/*: any*/),
+                                                  (v16/*: any*/),
+                                                  {
+                                                    "alias": null,
+                                                    "args": null,
+                                                    "kind": "ScalarField",
+                                                    "name": "body",
+                                                    "storageKey": null
+                                                  },
+                                                  (v17/*: any*/),
+                                                  {
+                                                    "alias": null,
+                                                    "args": null,
+                                                    "concreteType": "Profiles",
+                                                    "kind": "LinkedField",
+                                                    "name": "profiles",
+                                                    "plural": false,
+                                                    "selections": (v14/*: any*/),
+                                                    "storageKey": null
+                                                  },
+                                                  (v13/*: any*/)
+                                                ],
+                                                "storageKey": null
+                                              }
+                                            ],
+                                            "storageKey": null
+                                          }
+                                        ],
+                                        "storageKey": "noticesCollection(first:1,orderBy:[{\"createdAt\":\"DescNullsLast\"}])"
+                                      },
+                                      (v13/*: any*/)
+                                    ],
+                                    "storageKey": null
+                                  },
+                                  (v13/*: any*/)
+                                ],
+                                "storageKey": null
+                              }
+                            ],
+                            "storageKey": null
+                          }
+                        ],
+                        "storageKey": "communityUsersCollection(filter:{\"role\":{\"eq\":\"admin\"}},first:20)"
+                      },
                       (v13/*: any*/)
                     ],
                     "storageKey": null
@@ -362,31 +526,13 @@ return {
       {
         "alias": null,
         "args": [
-          {
-            "fields": [
-              {
-                "kind": "Literal",
-                "name": "communityId",
-                "value": null
-              }
-            ],
-            "kind": "ObjectValue",
-            "name": "filter"
-          },
+          (v18/*: any*/),
           {
             "kind": "Literal",
             "name": "first",
             "value": 3
           },
-          {
-            "kind": "Literal",
-            "name": "orderBy",
-            "value": [
-              {
-                "createdAt": "DescNullsLast"
-              }
-            ]
-          }
+          (v15/*: any*/)
         ],
         "concreteType": "ProductsCommunitiesConnection",
         "kind": "LinkedField",
@@ -426,13 +572,7 @@ return {
                         "name": "price",
                         "storageKey": null
                       },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "createdAt",
-                        "storageKey": null
-                      },
+                      (v17/*: any*/),
                       {
                         "alias": null,
                         "args": [
@@ -498,20 +638,86 @@ return {
           }
         ],
         "storageKey": "productsCommunitiesCollection(filter:{\"communityId\":null},first:3,orderBy:[{\"createdAt\":\"DescNullsLast\"}])"
+      },
+      {
+        "alias": null,
+        "args": [
+          (v18/*: any*/),
+          {
+            "kind": "Literal",
+            "name": "first",
+            "value": 5
+          },
+          {
+            "kind": "Literal",
+            "name": "orderBy",
+            "value": [
+              {
+                "eventDate": "AscNullsLast"
+              }
+            ]
+          }
+        ],
+        "concreteType": "EventsConnection",
+        "kind": "LinkedField",
+        "name": "eventsCollection",
+        "plural": false,
+        "selections": [
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "EventsEdge",
+            "kind": "LinkedField",
+            "name": "edges",
+            "plural": true,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "Events",
+                "kind": "LinkedField",
+                "name": "node",
+                "plural": false,
+                "selections": [
+                  (v8/*: any*/),
+                  (v16/*: any*/),
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "eventDate",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "location",
+                    "storageKey": null
+                  },
+                  (v13/*: any*/)
+                ],
+                "storageKey": null
+              }
+            ],
+            "storageKey": null
+          }
+        ],
+        "storageKey": "eventsCollection(filter:{\"communityId\":null},first:5,orderBy:[{\"eventDate\":\"AscNullsLast\"}])"
       }
     ]
   },
   "params": {
-    "cacheID": "c7e400a7a322684fb64be824d3f881d1",
+    "cacheID": "749696d6278554866ac289581317759f",
     "id": null,
     "metadata": {},
     "name": "DashboardComponentQuery",
     "operationKind": "query",
-    "text": "query DashboardComponentQuery(\n  $communityId: BigIntFilter!\n) {\n  profilesCollection(first: 1) {\n    edges {\n      node {\n        firstName\n        lastName\n        avatarUrl\n        nodeId\n      }\n    }\n  }\n  communityUsersCollection(filter: {communityId: $communityId, status: {eq: ACCEPTED}}, first: 1) {\n    edges {\n      node {\n        communityId\n        community {\n          id\n          name\n          description\n          address\n          image\n          nodeId\n        }\n        nodeId\n      }\n    }\n  }\n  ...DashboardMarketplacePreviewFragment\n}\n\nfragment DashboardMarketplacePreviewFragment on Query {\n  productsCommunitiesCollection(first: 3, orderBy: [{createdAt: DescNullsLast}], filter: {}) {\n    edges {\n      node {\n        product {\n          id\n          name\n          price\n          createdAt\n          productImagesCollection(first: 1, orderBy: [{displayOrder: AscNullsLast}]) {\n            edges {\n              node {\n                imageUrl\n                nodeId\n              }\n            }\n          }\n          nodeId\n        }\n        nodeId\n      }\n    }\n  }\n}\n"
+    "text": "query DashboardComponentQuery(\n  $communityId: BigIntFilter!\n) {\n  profilesCollection(first: 1) {\n    edges {\n      node {\n        firstName\n        lastName\n        avatarUrl\n        nodeId\n      }\n    }\n  }\n  communityUsersCollection(filter: {communityId: $communityId, status: {eq: ACCEPTED}}, first: 1) {\n    edges {\n      node {\n        communityId\n        community {\n          id\n          name\n          description\n          address\n          image\n          ...DashboardCommunityUpdatesFragment\n          nodeId\n        }\n        nodeId\n      }\n    }\n  }\n  ...DashboardMarketplacePreviewFragment\n  ...DashboardUpcomingEventsFragment\n}\n\nfragment DashboardCommunityUpdatesFragment on Communities {\n  communityUsersCollection(first: 20, filter: {role: {eq: admin}}) {\n    edges {\n      node {\n        user {\n          noticesCollection(first: 1, orderBy: [{createdAt: DescNullsLast}]) {\n            edges {\n              node {\n                id\n                title\n                body\n                createdAt\n                profiles {\n                  firstName\n                  lastName\n                  avatarUrl\n                  nodeId\n                }\n                nodeId\n              }\n            }\n          }\n          nodeId\n        }\n        nodeId\n      }\n    }\n  }\n}\n\nfragment DashboardMarketplacePreviewFragment on Query {\n  productsCommunitiesCollection(first: 3, orderBy: [{createdAt: DescNullsLast}], filter: {}) {\n    edges {\n      node {\n        product {\n          id\n          name\n          price\n          createdAt\n          productImagesCollection(first: 1, orderBy: [{displayOrder: AscNullsLast}]) {\n            edges {\n              node {\n                imageUrl\n                nodeId\n              }\n            }\n          }\n          nodeId\n        }\n        nodeId\n      }\n    }\n  }\n}\n\nfragment DashboardUpcomingEventsFragment on Query {\n  eventsCollection(first: 5, orderBy: [{eventDate: AscNullsLast}], filter: {}) {\n    edges {\n      node {\n        id\n        title\n        eventDate\n        location\n        nodeId\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "ef1525fd58b2335bb774c8993953366f";
+(node as any).hash = "e06001a48123bbe681fcaba4804e6822";
 
 export default node;

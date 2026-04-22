@@ -43,7 +43,9 @@ import {
 } from '../../design';
 import { getParseJsonAddress } from '../../utils/get_address';
 import { Paths } from '../../views/paths';
+import DashboardCommunityUpdates from './DashboardCommunityUpdates';
 import DashboardMarketplacePreview from './DashboardMarketplacePreview';
+import DashboardUpcomingEvents from './DashboardUpcomingEvents';
 import { DashboardComponentQuery } from './__generated__/DashboardComponentQuery.graphql';
 
 const dashboardComponentQuery = graphql`
@@ -70,12 +72,14 @@ const dashboardComponentQuery = graphql`
             description
             address
             image
+            ...DashboardCommunityUpdatesFragment
           }
         }
       }
     }
 
     ...DashboardMarketplacePreviewFragment
+    ...DashboardUpcomingEventsFragment
   }
 `;
 
@@ -295,8 +299,11 @@ const Dashboard: EntryPointComponent<
       </Row>
 
       <Row gutter={[24, 24]}>
-        {/* ── Left column: Active Requests + Community Updates ─────────── */}
         <Col xs={24} lg={16}>
+          <DashboardCommunityUpdates
+            fragmentRef={communityUser?.community}
+            onBrowse={() => navigate(`${basePath}/${Paths.Community}`)}
+          />
           <Card
             title="Active Requests"
             extra={
@@ -306,7 +313,7 @@ const Dashboard: EntryPointComponent<
                 See all &gt;
               </Typography.Link>
             }
-            style={{ borderRadius: RADIUS_LG, marginBottom: 24 }}
+            style={{ borderRadius: RADIUS_LG }}
           >
             <List
               dataSource={[]}
@@ -314,27 +321,17 @@ const Dashboard: EntryPointComponent<
               renderItem={() => null}
             />
           </Card>
-
-          <Card
-            title="Community Updates"
-            extra={
-              <Typography.Link
-                onClick={() => navigate(`${basePath}/${Paths.Community}`)}
-              >
-                See all &gt;
-              </Typography.Link>
-            }
-            style={{ borderRadius: RADIUS_LG }}
-          >
-            <List
-              dataSource={[]}
-              locale={{ emptyText: 'No community updates yet' }}
-              renderItem={() => null}
-            />
-          </Card>
         </Col>
 
         <Col xs={24} lg={8}>
+          <DashboardUpcomingEvents
+            fragmentRef={data}
+            onBrowse={() => navigate(`${basePath}/${Paths.Events}`)}
+            onNavigateToEvent={(id) =>
+              navigate(`${basePath}/${Paths.Events}/${id}`)
+            }
+          />
+
           <Card
             title="Recent Messages"
             extra={
@@ -360,14 +357,6 @@ const Dashboard: EntryPointComponent<
               navigate(`${basePath}/${Paths.Market}/${id}`)
             }
           />
-
-          <Card title="Upcoming Events" style={{ borderRadius: RADIUS_LG }}>
-            <List
-              dataSource={[]}
-              locale={{ emptyText: 'No upcoming events' }}
-              renderItem={() => null}
-            />
-          </Card>
         </Col>
       </Row>
     </div>

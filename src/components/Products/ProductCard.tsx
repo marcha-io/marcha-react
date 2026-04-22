@@ -81,10 +81,12 @@ const ProductCard = ({
 
     if (imagePath) {
       setImageLoading(true);
-      fetchFromStorage(imagePath, 'product-images').then((blob) => {
-        if (blob) setImageBlob(blob);
-        setImageLoading(false);
-      });
+      fetchFromStorage(imagePath, `product-images/${product.id}`).then(
+        (blob) => {
+          if (blob) setImageBlob(blob);
+          setImageLoading(false);
+        }
+      );
     }
   }, [product.productImagesCollection]);
 
@@ -100,6 +102,7 @@ const ProductCard = ({
     () => (imageBlob ? URL.createObjectURL(imageBlob) : null),
     [imageBlob]
   );
+
   const avatarUrl = useMemo(
     () => (avatarBlob ? URL.createObjectURL(avatarBlob) : AVATAR_DEFAULT),
     [avatarBlob]
@@ -108,6 +111,7 @@ const ProductCard = ({
   const handleClick = () => {
     if (hoverable) navigate(`${product.id}`);
   };
+
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (hoverable && (e.key === 'Enter' || e.key === ' ')) {
       navigate(`${product.id}`);
@@ -117,8 +121,10 @@ const ProductCard = ({
   const isFree = product.price === 0;
   const priceDisplay = isFree ? 'Free' : `£${product.price}`;
   const priceColor = isFree ? COLOR_SUCCESS : BRAND_PRIMARY;
+
   const sellerName =
     product.user?.firstName || product.user?.username || 'Seller';
+
   const statusTag = getStatusTag(product.price);
 
   /**
@@ -259,7 +265,6 @@ const ProductCard = ({
       }}
       styles={{ body: { padding: '12px 14px 14px' } }}
     >
-      {/* Product name */}
       <Typography.Text
         strong
         ellipsis={{ tooltip: product.name }}
@@ -274,7 +279,6 @@ const ProductCard = ({
         {product.name}
       </Typography.Text>
 
-      {/* Price */}
       <Typography.Text
         style={{
           display: 'block',
@@ -288,7 +292,6 @@ const ProductCard = ({
         {priceDisplay}
       </Typography.Text>
 
-      {/* Seller row: avatar + name */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
         <Avatar
           size={22}

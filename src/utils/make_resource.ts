@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import { JSResourceReference } from 'react-relay';
 
 export default function JSResource<T>(
@@ -55,4 +54,3 @@ class Resource<T> implements JSResourceReference<T> {
     return this._loadingPromise;
   }
 }
-

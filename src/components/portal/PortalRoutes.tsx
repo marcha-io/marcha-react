@@ -3,10 +3,13 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 
 import { RADIUS_MD, WHITE } from '../../design';
 import Dashboard from '../../views/dashboard/Dashboard.entrypoint';
+import EventDetail from '../../views/events/EventDetail.entrypoint';
+import Events from '../../views/events/Events.entrypoint';
 import CreateListing from '../../views/market/CreateListing.entrypoint';
 import Market from '../../views/market/Market.entrypoint';
 import MyListings from '../../views/market/MyListings.entrypoint';
 import ProductDetail from '../../views/market/Product.entrypoint';
+import Noticeboard from '../../views/noticeboard/Noticeboard.entrypoint';
 import { Paths } from '../../views/paths';
 import Profile from '../../views/profile/Profile.entrypoint';
 import MarketplaceHeader from '../marketplace/MarketplaceHeader';
@@ -52,10 +55,10 @@ const PortalRoutes = () => (
         path={Paths.Messages}
         element={<div>Messages - Coming Soon</div>}
       />
-      <Route
-        path={Paths.Community}
-        element={<div>Noticeboard - Coming Soon</div>}
-      />
+      <Route path={Paths.Community} element={<Noticeboard />} />
+
+      <Route path={Paths.Events} element={<Events />} />
+      <Route path={`${Paths.Events}/:eventId`} element={<EventDetail />} />
 
       <Route path={Paths.Market} element={<MarketplaceHeader />}>
         <Route index element={<Market />} />

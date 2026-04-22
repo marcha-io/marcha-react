@@ -10,6 +10,7 @@ export enum Paths {
   Community = 'community',
   Messages = 'messages',
   Market = 'market',
+  Events = 'events',
   Subletting = 'subletting',
   Profile = 'profile',
   Notifications = 'notifications',
