@@ -7,7 +7,7 @@ import {
 } from '@ant-design/icons';
 import { Avatar, Card, Space, Tag, Typography } from 'antd';
 import graphql from 'babel-plugin-relay/macro';
-import React, { useEffect, useMemo, useState } from 'react';
+import React from 'react';
 import { useFragment } from 'react-relay';
 
 import {
@@ -16,9 +16,8 @@ import {
   NEUTRAL_700,
   RADIUS_LG,
 } from '../../design';
-import fetchFromStorage from '../../utils/fetch_from_storage';
+import { useUserAvatarUrl } from '../../hooks/useUserAvatarUrl';
 import formatEventDate from '../../utils/format_event_date';
-import { AVATAR_DEFAULT } from '../marketplace/constants';
 import type { EventCardFragment$key } from './__generated__/EventCardFragment.graphql';
 
 export const eventCardFragment = graphql`
@@ -36,7 +35,6 @@ export const eventCardFragment = graphql`
       firstName
       lastName
       avatarUrl
-      username
     }
     eventRsvpsCollection(filter: { status: { eq: attending } }) {
       edges {
@@ -57,24 +55,8 @@ const isUpcoming = (dateStr: string): boolean =>
   new Date(dateStr).getTime() > Date.now();
 
 const EventCard: React.FC<Props> = ({ fragmentRef, onClick }) => {
-  const [avatarBlob, setAvatarBlob] = useState<Blob | null>(null);
   const event = useFragment(eventCardFragment, fragmentRef);
-
-  useEffect(() => {
-    if (event.profiles?.avatarUrl) {
-      fetchFromStorage(
-        event.profiles.avatarUrl,
-        `avatars/${event.profiles.username}`
-      ).then((blob) => {
-        if (blob) setAvatarBlob(blob);
-      });
-    }
-  }, [event.profiles?.avatarUrl]);
-
-  const avatarUrl = useMemo(
-    () => (avatarBlob ? URL.createObjectURL(avatarBlob) : AVATAR_DEFAULT),
-    [avatarBlob]
-  );
+  const avatarUrl = useUserAvatarUrl(event.profiles?.avatarUrl);
 
   const attendeeCount = event.eventRsvpsCollection?.edges?.length ?? 0;
   const upcoming = isUpcoming(event.eventDate);
