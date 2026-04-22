@@ -10,7 +10,7 @@ import {
 import { FormInstance } from 'antd/es/form';
 
 type Props = {
-  form: FormInstance<any>;
+  form: FormInstance;
   onSubmit: () => void;
   onCloseModal: () => void;
   isModalOpen: boolean;
