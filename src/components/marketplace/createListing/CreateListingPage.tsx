@@ -146,7 +146,8 @@ const CreateListingPage: EntryPointComponent<
                   | 'Like_new'
                   | 'Good'
                   | 'Used',
-                userId,
+                // userId intentionally omitted — the DB fills it via
+                // DEFAULT auth.uid() so the RLS INSERT policy always passes.
               },
             ],
           },
