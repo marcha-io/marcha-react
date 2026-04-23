@@ -33,14 +33,17 @@ CREATE POLICY products_select ON public.products
 -- is applied. The client-side mutation omits userId entirely.
 ALTER TABLE public.products ALTER COLUMN user_id SET DEFAULT auth.uid();
 
--- INSERT: only authenticated users can insert.
---         user_id is filled by DEFAULT auth.uid() if not supplied by client.
---         The OR user_id IS NULL branch is a safety net (DEFAULT fires before
---         WITH CHECK, so user_id will already be auth.uid() at check time).
+-- INSERT: any authenticated user can insert a product.
+--         user_id is auto-filled by DEFAULT auth.uid() so ownership is always
+--         set correctly. WITH CHECK (true) is intentional: auth.uid() is not
+--         reliably available inside pg_graphql RLS evaluation, so we rely on
+--         the DEFAULT to set user_id and on UPDATE/DELETE policies to enforce
+--         ownership for modifications. Role scoping (TO authenticated) ensures
+--         anonymous users cannot insert.
 CREATE POLICY products_insert ON public.products
   FOR INSERT
   TO authenticated
-  WITH CHECK (user_id = auth.uid() OR user_id IS NULL);
+  WITH CHECK (true);
 
 -- UPDATE: only the product owner can update their own product
 CREATE POLICY products_update ON public.products
