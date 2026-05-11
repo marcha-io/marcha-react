@@ -32,10 +32,7 @@ const AppRoutes = (): React.ReactElement => {
               path={Paths.SignIn}
               element={<Navigate to={Paths.Main} replace />}
             />
-            <Route
-              path={Paths.ResetPassword}
-              element={<ResetPassword />}
-            />
+            <Route path={Paths.ResetPassword} element={<ResetPassword />} />
             <Route path="*" element={<Navigate to={Paths.Main} replace />} />
           </>
         ) : (

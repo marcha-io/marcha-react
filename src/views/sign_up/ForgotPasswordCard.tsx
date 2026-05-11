@@ -103,10 +103,7 @@ const ForgotPasswordCard = () => {
         styles={{ body: { padding: '40px 40px 32px' } }}
       >
         <Space direction="vertical" size={4} style={{ marginBottom: 32 }}>
-          <Typography.Title
-            level={3}
-            style={{ margin: 0, color: NEUTRAL_900 }}
-          >
+          <Typography.Title level={3} style={{ margin: 0, color: NEUTRAL_900 }}>
             Forgot your password?
           </Typography.Title>
           <Typography.Text type="secondary">

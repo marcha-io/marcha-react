@@ -16,7 +16,9 @@ interface AuthPageLayoutProps {
   children: React.ReactNode;
 }
 
-const AuthPageLayout = ({ children }: AuthPageLayoutProps): React.ReactElement => {
+const AuthPageLayout = ({
+  children,
+}: AuthPageLayoutProps): React.ReactElement => {
   return (
     <>
       <style>{`

@@ -71,10 +71,7 @@ const ResetPasswordCard = () => {
         styles={{ body: { padding: '40px 40px 32px' } }}
       >
         <Space direction="vertical" size={4} style={{ marginBottom: 32 }}>
-          <Typography.Title
-            level={3}
-            style={{ margin: 0, color: NEUTRAL_900 }}
-          >
+          <Typography.Title level={3} style={{ margin: 0, color: NEUTRAL_900 }}>
             Set new password
           </Typography.Title>
           <Typography.Text type="secondary">
@@ -125,9 +122,7 @@ const ResetPasswordCard = () => {
                   if (!value || getFieldValue('password') === value) {
                     return Promise.resolve();
                   }
-                  return Promise.reject(
-                    new Error('Passwords do not match')
-                  );
+                  return Promise.reject(new Error('Passwords do not match'));
                 },
               }),
             ]}
