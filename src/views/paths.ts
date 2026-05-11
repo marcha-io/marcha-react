@@ -1,6 +1,9 @@
 export enum Paths {
   Main = '/',
   SignIn = '/sign_in',
+  SignUp = '/sign_up',
+  ForgotPassword = '/forgot-password',
+  ResetPassword = '/reset-password',
   Portal = '/portal',
   Dashboard = 'dashboard',
   Documents = 'documents',

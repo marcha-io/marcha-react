@@ -71,7 +71,7 @@ const SignInCard = () => {
       }}
       styles={{ body: { padding: '40px 40px 32px' } }}
     >
-      <Space vertical size={4} style={{ marginBottom: 32 }}>
+      <Space direction="vertical" size={4} style={{ marginBottom: 32 }}>
         <Typography.Title level={3} style={{ margin: 0, color: NEUTRAL_900 }}>
           Sign in to Marcha
         </Typography.Title>
@@ -125,7 +125,7 @@ const SignInCard = () => {
         <Form.Item style={{ marginBottom: 16, marginTop: 0 }}>
           <Flex justify="flex-end">
             <Typography.Link
-              href=""
+              onClick={() => navigate(Paths.ForgotPassword)}
               style={{ fontSize: 13, color: BRAND_PRIMARY }}
             >
               Forgot password?
@@ -169,7 +169,7 @@ const SignInCard = () => {
       <Button
         block
         size="large"
-        href=""
+        onClick={() => navigate(Paths.SignUp)}
         style={{
           borderRadius: RADIUS_MD,
           height: 48,
