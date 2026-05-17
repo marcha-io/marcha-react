@@ -1,5 +1,5 @@
 import { BankOutlined, MessageOutlined, ToolOutlined } from '@ant-design/icons';
-import { Col, Flex, Image, Row, Space, Typography, notification } from 'antd';
+import { Col, Flex, Image, Row, Space, Typography } from 'antd';
 
 import {
   BRAND_GRADIENT,
@@ -11,14 +11,16 @@ import {
   WHITE,
 } from '../../design';
 import FeatureBullet from './FeatureBullet';
-import SignInCard from './SignInCard';
 
-const SignIn = (): React.ReactElement => {
-  const [_, contextHolder] = notification.useNotification();
+interface AuthPageLayoutProps {
+  children: React.ReactNode;
+}
 
+const AuthPageLayout = ({
+  children,
+}: AuthPageLayoutProps): React.ReactElement => {
   return (
     <>
-      {contextHolder}
       <style>{`
         html, body, #root { height: 100%; margin: 0; }
         .signin-hero { display: flex !important; }
@@ -84,7 +86,7 @@ const SignIn = (): React.ReactElement => {
               }}
             />
 
-            <Space vertical size={12}>
+            <Space direction="vertical" size={12}>
               <Typography.Title
                 level={2}
                 style={{ color: WHITE, margin: 0, lineHeight: 1.2 }}
@@ -99,7 +101,7 @@ const SignIn = (): React.ReactElement => {
               </Typography.Text>
             </Space>
 
-            <Space vertical size={24}>
+            <Space direction="vertical" size={24}>
               <FeatureBullet
                 icon={<BankOutlined />}
                 title="Service Charges & Finances"
@@ -148,7 +150,7 @@ const SignIn = (): React.ReactElement => {
                 />
               </Flex>
 
-              <SignInCard />
+              {children}
 
               <Typography.Text
                 type="secondary"
@@ -159,7 +161,7 @@ const SignIn = (): React.ReactElement => {
                   display: 'block',
                 }}
               >
-                By signing in you agree to Marcha's{' '}
+                By using Marcha you agree to our{' '}
                 <Typography.Link href="" style={{ color: BRAND_PRIMARY }}>
                   Terms of Service
                 </Typography.Link>{' '}
@@ -177,4 +179,4 @@ const SignIn = (): React.ReactElement => {
   );
 };
 
-export default SignIn;
+export default AuthPageLayout;
