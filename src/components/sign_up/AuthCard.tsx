@@ -1,6 +1,6 @@
 import { Card } from 'antd';
 
-import { RADIUS_XL, SHADOW_CARD } from '../../../design';
+import { RADIUS_XL, SHADOW_CARD } from '../../design';
 
 interface AuthCardProps {
   children: React.ReactNode;

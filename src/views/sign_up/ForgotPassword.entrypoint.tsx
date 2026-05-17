@@ -1,5 +1,5 @@
-import AuthPageLayout from './AuthPageLayout';
-import ForgotPasswordCard from './ForgotPasswordCard';
+import AuthPageLayout from '../../components/sign_up/AuthPageLayout';
+import ForgotPasswordCard from '../../components/sign_up/ForgotPasswordCard';
 
 const ForgotPassword = (): React.ReactElement => {
   return (

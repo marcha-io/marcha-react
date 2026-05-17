@@ -2,14 +2,11 @@ import { Form } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
 import { supabase } from '../../utils/supabase';
-import { Paths } from '../paths';
-import {
-  AuthCard,
-  AuthCardHeader,
-  AuthSubmitButton,
-  ConfirmPasswordField,
-  PasswordField,
-} from './components';
+import { Paths } from '../../views/paths';
+import AuthCard from './AuthCard';
+import AuthCardHeader from './AuthCardHeader';
+import { ConfirmPasswordField, PasswordField } from './AuthFormFields';
+import AuthSubmitButton from './AuthSubmitButton';
 import useAuthAction from './hooks/useAuthAction';
 
 type TResetPasswordForm = {

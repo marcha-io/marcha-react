@@ -1,6 +1,6 @@
 import { Space, Typography } from 'antd';
 
-import { NEUTRAL_900 } from '../../../design';
+import { NEUTRAL_900 } from '../../design';
 
 interface AuthCardHeaderProps {
   title: string;

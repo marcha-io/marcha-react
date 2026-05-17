@@ -1,8 +1,8 @@
 import { Button, Space, Typography } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
-import { BRAND_PRIMARY, NEUTRAL_900 } from '../../../design';
-import { Paths } from '../../paths';
+import { BRAND_PRIMARY, NEUTRAL_900 } from '../../design';
+import { Paths } from '../../views/paths';
 import AuthCard from './AuthCard';
 
 interface AuthSuccessMessageProps {

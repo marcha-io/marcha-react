@@ -4,14 +4,12 @@ import { useNavigate } from 'react-router-dom';
 
 import { BRAND_PRIMARY } from '../../design';
 import { supabase } from '../../utils/supabase';
-import { Paths } from '../paths';
-import {
-  AuthCard,
-  AuthCardHeader,
-  AuthSubmitButton,
-  AuthSuccessMessage,
-  EmailField,
-} from './components';
+import { Paths } from '../../views/paths';
+import AuthCard from './AuthCard';
+import AuthCardHeader from './AuthCardHeader';
+import { EmailField } from './AuthFormFields';
+import AuthSubmitButton from './AuthSubmitButton';
+import AuthSuccessMessage from './AuthSuccessMessage';
 import useAuthAction from './hooks/useAuthAction';
 
 type TForgotPasswordForm = {

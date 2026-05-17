@@ -1,7 +1,7 @@
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Form, Input, Typography } from 'antd';
 
-import { NEUTRAL_400, RADIUS_MD } from '../../../design';
+import { NEUTRAL_400, RADIUS_MD } from '../../design';
 
 /** Shared label style used across all auth form fields. */
 const FieldLabel = ({ text }: { text: string }) => (

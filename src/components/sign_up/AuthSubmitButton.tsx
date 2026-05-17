@@ -1,6 +1,6 @@
 import { Button, Form } from 'antd';
 
-import { BRAND_PRIMARY, RADIUS_MD } from '../../../design';
+import { BRAND_PRIMARY, RADIUS_MD } from '../../design';
 
 interface AuthSubmitButtonProps {
   label: string;

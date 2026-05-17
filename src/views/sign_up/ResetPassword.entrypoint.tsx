@@ -1,5 +1,5 @@
-import AuthPageLayout from './AuthPageLayout';
-import ResetPasswordCard from './ResetPasswordCard';
+import AuthPageLayout from '../../components/sign_up/AuthPageLayout';
+import ResetPasswordCard from '../../components/sign_up/ResetPasswordCard';
 
 const ResetPassword = (): React.ReactElement => {
   return (

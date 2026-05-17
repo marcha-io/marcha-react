@@ -10,10 +10,10 @@ import environment from './utils/relay_environment';
 import CommunityPicker from './views/community_picker/CommunityPicker.entrypoint';
 import { Paths } from './views/paths';
 import Portal from './views/portal/Portal.entrypoint';
-import ForgotPassword from './views/sign_up/ForgotPassword';
-import ResetPassword from './views/sign_up/ResetPassword';
-import SignIn from './views/sign_up/SignIn';
-import SignUp from './views/sign_up/SignUp';
+import ForgotPassword from './views/sign_up/ForgotPassword.entrypoint';
+import ResetPassword from './views/sign_up/ResetPassword.entrypoint';
+import SignIn from './views/sign_up/SignIn.entrypoint';
+import SignUp from './views/sign_up/SignUp.entrypoint';
 
 const AppRoutes = (): React.ReactElement => {
   const { isUserLoggedIn } = useAuth();

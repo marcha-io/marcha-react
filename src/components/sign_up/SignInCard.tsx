@@ -5,14 +5,11 @@ import { useAuth } from '../../contexts/AuthContext';
 import { BRAND_PRIMARY } from '../../design';
 import { invalidateRelayStore } from '../../utils/relay_environment';
 import { supabase } from '../../utils/supabase';
-import { Paths } from '../paths';
-import {
-  AuthCard,
-  AuthCardHeader,
-  AuthSubmitButton,
-  EmailField,
-  PasswordField,
-} from './components';
+import { Paths } from '../../views/paths';
+import AuthCard from './AuthCard';
+import AuthCardHeader from './AuthCardHeader';
+import { EmailField, PasswordField } from './AuthFormFields';
+import AuthSubmitButton from './AuthSubmitButton';
 import useAuthAction from './hooks/useAuthAction';
 
 type TSignInForm = {
