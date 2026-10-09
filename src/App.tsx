@@ -10,7 +10,10 @@ import environment from './utils/relay_environment';
 import CommunityPicker from './views/community_picker/CommunityPicker.entrypoint';
 import { Paths } from './views/paths';
 import Portal from './views/portal/Portal.entrypoint';
-import SignIn from './views/sign_up/SignIn';
+import ForgotPassword from './views/sign_up/ForgotPassword.entrypoint';
+import ResetPassword from './views/sign_up/ResetPassword.entrypoint';
+import SignIn from './views/sign_up/SignIn.entrypoint';
+import SignUp from './views/sign_up/SignUp.entrypoint';
 
 const AppRoutes = (): React.ReactElement => {
   const { isUserLoggedIn } = useAuth();
@@ -29,11 +32,15 @@ const AppRoutes = (): React.ReactElement => {
               path={Paths.SignIn}
               element={<Navigate to={Paths.Main} replace />}
             />
+            <Route path={Paths.ResetPassword} element={<ResetPassword />} />
             <Route path="*" element={<Navigate to={Paths.Main} replace />} />
           </>
         ) : (
           <>
             <Route path={Paths.SignIn} element={<SignIn />} />
+            <Route path={Paths.SignUp} element={<SignUp />} />
+            <Route path={Paths.ForgotPassword} element={<ForgotPassword />} />
+            <Route path={Paths.ResetPassword} element={<ResetPassword />} />
             <Route path="*" element={<Navigate to={Paths.SignIn} replace />} />
           </>
         )}
